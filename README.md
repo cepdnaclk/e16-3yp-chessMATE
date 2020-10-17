@@ -1,2 +1,5 @@
 # e16-3yp-chessMATE
-E/16/012 E/16/069 E/16/070
+Group Members:
+  Isurika Adikari : E/16/012 
+  Damsy De Silva : E/16/069 
+  Chaminie De Silva : E/16/070
