@@ -11,7 +11,7 @@
   
   When chess players have trouble finding competent opponents in their locality, they try online chess on a mobile or desktop application. We found out that most of the professional as well as casual chess players are more likely to play chess game on a physical chess board rather than on a mobile or desktop screen. 
 
-![problem picture](Images/problem.png)
+![problem picture](../Images/problem.png)
   
    Many chess players have stated that they have trouble in focusing and attacking aggressively during games played through mobile or desktop applications. And also, they have confessed that when playing using the physical chess board, they get to touch the pieces as they make a move, and this really draws them into the game.  
    
@@ -19,7 +19,7 @@
  
  Our solution is an IOT platform which will provide the grand usual chess board experience to whom that need online chess. 
  
- ![solution picture](Images/solution.png)
+ ![solution picture](../Images/solution.png)
  
  ## About Product
 
@@ -44,7 +44,7 @@
 
 Given below diagram shows the high-level architecture of our solution. 
 
-![solution_architecture](Images/Solution_Architecture.png)
+![solution_architecture](../Images/Solution_Architecture.png)
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
