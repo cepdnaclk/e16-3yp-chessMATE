@@ -48,7 +48,7 @@ Given below diagram shows the high-level architecture of our solution.
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
- - Dr. Ziyan Marikkar
+ - Dr. Ziyan Maraikar
  
 ### Links
 
