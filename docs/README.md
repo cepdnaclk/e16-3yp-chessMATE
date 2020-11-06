@@ -47,7 +47,7 @@ Given below diagram shows the high-level architecture of our solution.
 
 ## Budget of the Product
 
-![solution_architecture](../Images/budget.png)
+![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
@@ -59,4 +59,4 @@ Given below diagram shows the high-level architecture of our solution.
 - [Faculty of Engineering](http://eng.pdn.ac.lk/)
 - [University of Peradeniya](https://www.pdn.ac.lk/)
 
-#### [Back to repo](https://github.com/cepdnaclk/e16-3yp-chessMATE)
+### [Back to repo](https://github.com/cepdnaclk/e16-3yp-chessMATE)
