@@ -62,3 +62,5 @@ The budget for the project is given below.
 - [Department of Computer Engineering](http://www.ce.pdn.ac.lk/)
 - [Faculty of Engineering](http://eng.pdn.ac.lk/)
 - [University of Peradeniya](https://www.pdn.ac.lk/)
+
+#### [Back to repo](https://github.com/cepdnaclk/e16-3yp-chessMATE)
