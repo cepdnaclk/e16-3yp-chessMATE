@@ -6,7 +6,7 @@
   - Damsy De Silva    : E/16/069 : e16069@eng.pdn.ac.lk
   - Chaminie De Silva : E/16/070 : e16070@eng.pdn.ac.lk
   
-  - [Here is the ;ink to our website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
+[Here is the ;ink to our website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
  
 
 ## Problem
