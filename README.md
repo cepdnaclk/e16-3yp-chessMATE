@@ -5,9 +5,7 @@
   - Isurika Adikari   : E/16/012 : e16012@eng.pdn.ac.lk
   - Damsy De Silva    : E/16/069 : e16069@eng.pdn.ac.lk
   - Chaminie De Silva : E/16/070 : e16070@eng.pdn.ac.lk
-  
-[Here is the ;ink to our website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
- 
+   
 
 ## Problem
   Chess is one of the most popular and oldest board games played by millions of people worldwide. But still there are some difficulties chess players face which limits them to enjoy this game to its fullest. 
@@ -48,6 +46,9 @@
 Given below diagram shows the high-level architecture of our solution. 
 
 ![solution_architecture](Images/Solution_Architecture.png)
+
+
+[Visit our website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
