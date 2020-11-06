@@ -46,6 +46,11 @@ Given below diagram shows the high-level architecture of our solution.
 
 ![solution_architecture](../Images/Solution_Architecture.png)
 
+
+### Budget
+The budget for the project is given below
+![solution_architecture](../Images/budget.png)
+
 ### Advising Lecturers
  - Dr. Isuru Nawinne
  - Dr. Ziyan Marikkar
