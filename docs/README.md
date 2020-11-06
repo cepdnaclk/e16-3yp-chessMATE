@@ -1,6 +1,8 @@
 # chessMATE 
 ## Smart Chess Platform
 
+### [Back to Repo](https://github.com/cepdnaclk/e16-3yp-chessMATE)
+
 ### Group Members:
   - Isurika Adikari   : E/16/012 : e16012@eng.pdn.ac.lk
   - Damsy De Silva    : E/16/069 : e16069@eng.pdn.ac.lk
@@ -59,4 +61,4 @@ Given below diagram shows the high-level architecture of our solution.
 - [Faculty of Engineering](http://eng.pdn.ac.lk/)
 - [University of Peradeniya](https://www.pdn.ac.lk/)
 
-### [Back to repo](https://github.com/cepdnaclk/e16-3yp-chessMATE)
+
