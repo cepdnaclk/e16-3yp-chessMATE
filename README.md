@@ -48,7 +48,7 @@ Given below diagram shows the high-level architecture of our solution.
 ![solution_architecture](Images/Solution_Architecture.png)
 
 
-[Visit our website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
+### [Visit our website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
