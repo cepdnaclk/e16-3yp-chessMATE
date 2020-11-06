@@ -55,3 +55,5 @@ Given below diagram shows the high-level architecture of our solution.
 - [Department of Computer Engineering](http://www.ce.pdn.ac.lk/)
 - [Faculty of Engineering](http://eng.pdn.ac.lk/)
 - [University of Peradeniya](https://www.pdn.ac.lk/)
+
+### [Visit Our Website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
