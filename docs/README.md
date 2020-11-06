@@ -48,7 +48,9 @@ Given below diagram shows the high-level architecture of our solution.
 
 
 ### Budget
-The budget for the project is given below
+
+The budget for the project is given below.
+
 ![solution_architecture](../Images/budget.png)
 
 ### Advising Lecturers
