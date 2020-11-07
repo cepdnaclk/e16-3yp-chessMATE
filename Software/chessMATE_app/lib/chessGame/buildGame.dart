@@ -36,7 +36,7 @@ class _PlayGameState extends State<PlayGame> {
             Expanded(
               child: FittedBox(
                 fit: BoxFit.contain,
-                // child: _buildGameHistory(),
+                child: _buildGameHistory(),
               ),
             ),
           ]),
@@ -104,14 +104,14 @@ class _PlayGameState extends State<PlayGame> {
     );
   }
 
-  // method to reset the game 
+  // method to reset the game
   void _resetGame() {
     controller.resetBoard();
     gameHistory.clear();
     setState(() {});
   }
 
-  // method to undo the last move 
+  // method to undo the last move
   void _undoMove() {
     controller.game.undo_move();
     if (gameHistory.length != 0) {
@@ -120,4 +120,24 @@ class _PlayGameState extends State<PlayGame> {
     setState(() {});
   }
 
+  // method to return a widget containing gameHistory
+  Widget _buildGameHistory() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: Text(_buildMovesString()),
+    );
+  }
+
+  // method to retun the gamehistory as a string
+  String _buildMovesString() {
+    String history = '';
+    for (int i = 0; i < gameHistory.length; i++) {
+      if (i % 2 == 0) {
+        history += (i / 2 + 1).toString() + "." + gameHistory[i] + " ";
+      } else {
+        history += " " + gameHistory[i] + "  ";
+      }
+    }
+    return history;
+  }
 }
