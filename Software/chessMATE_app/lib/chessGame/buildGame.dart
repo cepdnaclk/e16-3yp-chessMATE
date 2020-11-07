@@ -9,7 +9,7 @@ class PlayGame extends StatefulWidget {
 
 class _PlayGameState extends State<PlayGame> {
   static ChessBoardController controller;
-  static List<String> gameHistory;
+  static List<String> gameHistory = [];
 
   // will call this method exactly once for each [State] object it creates.
   @override
@@ -18,8 +18,7 @@ class _PlayGameState extends State<PlayGame> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp
     ]); // fix the orientation up for this game interface
-    controller = new ChessBoardController();
-    gameHistory = [];
+    controller = ChessBoardController();
   }
 
   @override
@@ -30,15 +29,10 @@ class _PlayGameState extends State<PlayGame> {
           title: const Text('ChessMATE'),
         ),
         body: SafeArea(
-          child: Column(children: <Widget>[
+          child: ListView(children: <Widget>[
             _buildChessBoard(),
-            _buildOptionButtons(),
-            Expanded(
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: _buildGameHistory(),
-              ),
-            ),
+            // _buildGameHistory(),
+            // _buildOptionButtons(),
           ]),
         ),
       ),
@@ -131,11 +125,13 @@ class _PlayGameState extends State<PlayGame> {
   // method to retun the gamehistory as a string
   String _buildMovesString() {
     String history = '';
-    for (int i = 0; i < gameHistory.length; i++) {
-      if (i % 2 == 0) {
-        history += (i / 2 + 1).toString() + "." + gameHistory[i] + " ";
-      } else {
-        history += " " + gameHistory[i] + "  ";
+    if (gameHistory.length > 0){
+      for (int i = 0; i < gameHistory.length; i++) {
+        if (i % 2 == 0) {
+          history += (i / 2 + 1).toString() + "." + gameHistory[i] + " ";
+        } else {
+          history += " " + gameHistory[i] + "  ";
+        }
       }
     }
     return history;
