@@ -82,7 +82,7 @@ class _PlayGameState extends State<PlayGame> {
                   color: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () {
-                    // _resetGame();
+                    _resetGame();
                   },
                 ),
               ),
@@ -95,7 +95,7 @@ class _PlayGameState extends State<PlayGame> {
                   color: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () {
-                    // _undoMove();
+                    _undoMove();
                   },
                 ),
               ),
@@ -103,4 +103,21 @@ class _PlayGameState extends State<PlayGame> {
           ]),
     );
   }
+
+  // method to reset the game 
+  void _resetGame() {
+    controller.resetBoard();
+    gameHistory.clear();
+    setState(() {});
+  }
+
+  // method to undo the last move 
+  void _undoMove() {
+    controller.game.undo_move();
+    if (gameHistory.length != 0) {
+      gameHistory.removeLast();
+    }
+    setState(() {});
+  }
+
 }
