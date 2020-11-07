@@ -31,7 +31,7 @@ class _PlayGameState extends State<PlayGame>{
         body: SafeArea(
           child: Column(
             children: <Widget>[
-              // _buildChessBoard(),
+              _buildChessBoard(),
               // -buildOptionButtons(),
               Expanded(
                 child: FittedBox(
@@ -42,6 +42,28 @@ class _PlayGameState extends State<PlayGame>{
             ]
           ),
         ),
+      ),
+    );
+  }
+
+  // method to return the chessboard widget
+  Widget _buildChessBoard() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: ChessBoard(
+        size: MediaQuery.of(context).size.width,
+        onMove: (moveNotation) {
+          gameHistory.add(moveNotation);
+          setState(() {});
+        },
+        onCheckMate: (winColor) { 
+          // --> todo : pass the winning deatils to results screen
+          // Navigator.pushNamed(context, ResultsScreen.id);
+        },
+        onDraw: () {
+          // Navigator.pushNamed(context, ResultsScreen.id);
+        },
+        chessBoardController: controller,
       ),
     );
   }
