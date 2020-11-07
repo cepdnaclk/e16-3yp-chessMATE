@@ -1,7 +1,7 @@
 # chessMATE 
 ## Smart Chess Platform
 
-### [Visit Our Website]( https://cepdnaclk.github.io/e16-3yp-chessMATE/)
+### [Back to Repo](https://github.com/cepdnaclk/e16-3yp-chessMATE)
 
 ### Group Members:
   - Isurika Adikari   : E/16/012 : e16012@eng.pdn.ac.lk
@@ -13,24 +13,23 @@
   
   When chess players have trouble finding competent opponents in their locality, they try online chess on a mobile or desktop application. We found out that most of the professional as well as casual chess players are more likely to play chess game on a physical chess board rather than on a mobile or desktop screen. 
 
-![problem picture](Images/problem.png)
+![problem picture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/problem.png)
   
    Many chess players have stated that they have trouble in focusing and attacking aggressively during games played through mobile or desktop applications. And also, they have confessed that when playing using the physical chess board, they get to touch the pieces as they make a move, and this really draws them into the game.  
    
- ## Solution
+## Solution
  
  Our solution is an IOT platform which will provide the grand usual chess board experience to whom that need online chess. 
  
- ![solution picture](Images/solution.png)
+ ![solution picture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/solution.png)
  
- ## About Product
+## About Product
 
 ### Vision of the Product:
 
    The vision of the chessMATE is to add a cool online chess game experience on everyday lives of people. Our endeavour is to give people more human experience with the new next generation technology. 
 
  
-
 ### Product Overview:
 
    Our product consists of two main sections; an electrically powered chess board (Smart chess board) and a mobile app. 
@@ -46,7 +45,11 @@
 
 Given below diagram shows the high-level architecture of our solution. 
 
-![solution_architecture](Images/Solution_Architecture.png)
+![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/Solution_Architecture.png)
+
+<!-- ## Budget of the Product
+
+![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png) -->
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
