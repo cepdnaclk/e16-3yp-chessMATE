@@ -23,8 +23,27 @@ class _PlayGameState extends State<PlayGame>{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('ChessMATE'),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              // _buildChessBoard(),
+              // -buildOptionButtons(),
+              Expanded(
+                child: FittedBox(
+                fit: BoxFit.contain,
+                  // child: _buildGameHistory(),
+                ),
+              ),
+            ]
+          ),
+        ),
+      ),
+    );
   }
 
 }
