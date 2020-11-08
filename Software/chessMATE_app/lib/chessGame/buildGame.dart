@@ -28,13 +28,33 @@ class _PlayGameState extends State<PlayGame> {
         appBar: AppBar(
           title: const Text('ChessMATE'),
         ),
+        backgroundColor: Colors.black54,
         body: SafeArea(
-          child: ListView(children: <Widget>[
-            _buildChessBoard(),
+          child: Row(children: <Widget>[
             Expanded(
-              child:_buildGameHistory(),
+                child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    "White : " + "_PlayerName_",
+                    style:
+                        TextStyle(color: Colors.white, height: 5, fontSize: 10),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    "Black : " + "_PlayerName_",
+                    style:
+                        TextStyle(color: Colors.white, height: 5, fontSize: 10),
+                  ),
+                )
+              ],
+            )),
+            Expanded(child: _buildChessBoard()),
+            Expanded(
+              child: _buildGameHistory(),
             ),
-            _buildOptionButtons(),
+            Expanded(child: _buildOptionButtons()),
           ]),
         ),
       ),
@@ -127,12 +147,13 @@ class _PlayGameState extends State<PlayGame> {
   // method to retun the gamehistory as a string
   String _buildMovesString() {
     String history = '';
-    if (gameHistory.length > 0){
+    if (gameHistory.length > 0) {
       for (int i = 0; i < gameHistory.length; i++) {
         if (i % 2 == 0) {
-          history += (i / 2 + 1).toString() + "." + gameHistory[i] + " ";
-        } else {
-          history += " " + gameHistory[i] + "  ";
+          history += "${(i / 2 + 1).toInt()}" + "." + gameHistory[i] + " ";
+          if (gameHistory.length > (i + 1)) {
+            history += gameHistory[i + 1] + "   ";
+          }
         }
       }
     }
