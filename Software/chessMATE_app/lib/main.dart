@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chessMATE_app/screens/gameScreen.dart';
+import 'package:chessMATE_app/screens/game_mode_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         // ForgotPassScreen.id: (context) => ForgotPassScreen(),
         GameScreen.id: (context) => GameScreen(),
         // OptionScreen.id: (context) => OptionScreen(),
-        // GameModeScreen.id: (context) => GameModeScreen(),
+        GameModeScreen.id: (context) => GameModeScreen(),
         // ResultsScreen.id: (context) => ResultsScreen(),
         // SignInScreen.id: (context) => SignInScreen(),
       },
