@@ -28,33 +28,24 @@ class _PlayGameState extends State<PlayGame> {
         appBar: AppBar(
           title: const Text('ChessMATE'),
         ),
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.black,
         body: SafeArea(
-          child: Row(children: <Widget>[
-            Expanded(
-                child: Column(
+          child: ListView(children: <Widget>[
+            Row(
               children: <Widget>[
-                Expanded(
-                  child: Text(
-                    "White : " + "_PlayerName_",
-                    style:
-                        TextStyle(color: Colors.white, height: 5, fontSize: 10),
-                  ),
+                Text(
+                  "White : " + "_PlayerName_    ",
+                  style: TextStyle(color: Colors.white, height: 5),
                 ),
-                Expanded(
-                  child: Text(
-                    "Black : " + "_PlayerName_",
-                    style:
-                        TextStyle(color: Colors.white, height: 5, fontSize: 10),
-                  ),
-                )
+                Text(
+                  "Black : " + "_PlayerName_",
+                  style: TextStyle(color: Colors.white, height: 5),
+                ),
               ],
-            )),
-            Expanded(child: _buildChessBoard()),
-            Expanded(
-              child: _buildGameHistory(),
             ),
-            Expanded(child: _buildOptionButtons()),
+            _buildChessBoard(),
+            _buildGameHistory(),
+            _buildOptionButtons(),
           ]),
         ),
       ),
@@ -140,7 +131,10 @@ class _PlayGameState extends State<PlayGame> {
   Widget _buildGameHistory() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Text(_buildMovesString()),
+      child: Text(
+        _buildMovesString(),
+        style: TextStyle(color: Colors.white),
+      ),
     );
   }
 
