@@ -31,8 +31,10 @@ class _PlayGameState extends State<PlayGame> {
         body: SafeArea(
           child: ListView(children: <Widget>[
             _buildChessBoard(),
-            // _buildGameHistory(),
-            // _buildOptionButtons(),
+            Expanded(
+              child:_buildGameHistory(),
+            ),
+            _buildOptionButtons(),
           ]),
         ),
       ),
