@@ -1,7 +1,6 @@
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/text_field_container.dart';
 import 'package:flutter/material.dart';
 
-
 class ConfirmPasswordField extends StatelessWidget {
   final String text;
   final ValueChanged<String> onChanged;
