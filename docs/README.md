@@ -47,7 +47,7 @@ Given below diagram shows the high-level architecture of our solution.
 
 ![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/Solution_Architecture.png)
 
--- ## Budget of the Product
+## Budget of the Product
 
 ![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
 
