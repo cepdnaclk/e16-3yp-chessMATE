@@ -5,6 +5,7 @@ import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_passwo
 import 'package:chessMATE_app/screens/loginScreen.dart';
 import 'package:flutter/material.dart';
 
+// forgot password screen
 
 class BodyForgotPass extends StatelessWidget {
   const BodyForgotPass({
