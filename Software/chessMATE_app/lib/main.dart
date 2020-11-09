@@ -5,6 +5,9 @@ import 'package:chessMATE_app/screens/playerDetails_screen.dart';
 import 'package:chessMATE_app/screens/option_screen.dart';
 import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:chessMATE_app/screens/welcome_screen.dart';
+import 'package:chessMATE_app/screens/forgotPass_screen.dart'
+import 'package:chessMATE_app/screens/loginScreen.dart'
+import 'package:chessMATE_app/screens/signInScreen.dart'
 
 void main() => runApp(MyApp());
 
@@ -17,13 +20,13 @@ class MyApp extends StatelessWidget {
       
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
-        // LoginScreen.id: (context) => LoginScreen(),
-        // ForgotPassScreen.id: (context) => ForgotPassScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+        ForgotPassScreen.id: (context) => ForgotPassScreen(),
         GameScreen.id: (context) => GameScreen(),
         OptionScreen.id: (context) => OptionScreen(),
         GameModeScreen.id: (context) => GameModeScreen(),
         ResultsScreen.id: (context) => ResultsScreen(),
-        // SignInScreen.id: (context) => SignInScreen(),
+        SignInScreen.id: (context) => SignInScreen(),
         PlayerDataScreen.id: (context) => PlayerDataScreen(),
       },
     );
