@@ -1,3 +1,4 @@
+import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chess_board/flutter_chess_board.dart';
@@ -25,21 +26,41 @@ class _PlayGameState extends State<PlayGame> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('ChessMATE'),
-        ),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: ListView(children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  "White : " + "_PlayerName_    ",
-                  style: TextStyle(color: Colors.white, height: 5),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "chessMATE",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.grey,
+                      fontFamily: "Audiowide",
+                    ),
+                  ),
                 ),
-                Text(
-                  "Black : " + "_PlayerName_",
-                  style: TextStyle(color: Colors.white, height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "White : " + "_PlayerName_    ",
+                      style: TextStyle(
+                          color: Colors.black,
+                          height: 5,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Black : " + "_PlayerName_",
+                      style: TextStyle(
+                          color: Colors.black,
+                          height: 5,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -64,10 +85,10 @@ class _PlayGameState extends State<PlayGame> {
         },
         onCheckMate: (winColor) {
           // --> todo : pass the winning deatils to results screen
-          // Navigator.pushNamed(context, ResultsScreen.id);
+          Navigator.pushNamed(context, ResultsScreen.id);
         },
         onDraw: () {
-          // Navigator.pushNamed(context, ResultsScreen.id);
+          Navigator.pushNamed(context, ResultsScreen.id);
         },
         chessBoardController: controller,
       ),
@@ -85,9 +106,9 @@ class _PlayGameState extends State<PlayGame> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FlatButton(
-                  child: Text("Reset game"),
-                  color: Colors.blue,
-                  textColor: Colors.white,
+                  child: Text("Reset Game"),
+                  color: Colors.grey[400],
+                  textColor: Colors.black,
                   onPressed: () {
                     _resetGame();
                   },
@@ -98,9 +119,9 @@ class _PlayGameState extends State<PlayGame> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FlatButton(
-                  child: Text("undo Move"),
-                  color: Colors.blue,
-                  textColor: Colors.white,
+                  child: Text("Undo Move"),
+                  color: Colors.grey[400],
+                  textColor: Colors.black,
                   onPressed: () {
                     _undoMove();
                   },
@@ -129,12 +150,9 @@ class _PlayGameState extends State<PlayGame> {
 
   // method to return a widget containing gameHistory
   Widget _buildGameHistory() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Text(
-        _buildMovesString(),
-        style: TextStyle(color: Colors.white),
-      ),
+    return Text(
+      _buildMovesString(),
+      style: TextStyle(color: Colors.black),
     );
   }
 
