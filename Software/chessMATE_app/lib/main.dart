@@ -9,6 +9,8 @@ import 'package:chessMATE_app/screens/forgotPass_screen.dart';
 import 'package:chessMATE_app/screens/loginScreen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 
+import 'screens/welcome_screen.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       
-      initialRoute: GameScreen.id,
+      initialRoute: WelcomeScreen.id,
       
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),

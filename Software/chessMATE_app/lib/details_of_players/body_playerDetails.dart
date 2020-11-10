@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 class Player{
   final String profileImg;
   final String username;
-  final String ratingLevel;
+  final String rating_level;
   final String age;
 
-  Player({this.profileImg,this.username, this.ratingLevel, this.age});
+  Player({this.profileImg,this.username, this.rating_level, this.age});
 
 }
 
@@ -21,14 +21,14 @@ class _PlayerDataBodyState extends State<PlayerDataBody>  {
 
 
   List<Player> players = [
-    Player(profileImg: 'assets/player.png', username: 'chessMaster',ratingLevel: "1",age: "25"),
-    Player(profileImg: 'assets/player.png', username: 'queen543',ratingLevel: "2",age: "33"),
-    Player(profileImg: 'assets/player.png', username: 'knight_78',ratingLevel: "3",age: "19"),
-    Player(profileImg: 'assets/player.png', username: 'chessKing',ratingLevel: "4",age: "30"),
-    Player(profileImg: 'assets/player.png', username: 'pawnMaster',ratingLevel: "5",age: "28"),
-    Player(profileImg: 'assets/player.png', username: 'chessDragon',ratingLevel: "6",age: "20"),
-    Player(profileImg: 'assets/player.png', username: 'fighter44',ratingLevel: "7",age: "33"),
-    Player(profileImg: 'assets/player.png', username: 'chessRuler',ratingLevel: "8",age: "40")
+    Player(profileImg: 'assets/player.png', username: 'chessMaster',rating_level: "1",age: "25"),
+    Player(profileImg: 'assets/player.png', username: 'queen543',rating_level: "2",age: "33"),
+    Player(profileImg: 'assets/player.png', username: 'knight_78',rating_level: "3",age: "19"),
+    Player(profileImg: 'assets/player.png', username: 'chessKing',rating_level: "4",age: "30"),
+    Player(profileImg: 'assets/player.png', username: 'pawnMaster',rating_level: "5",age: "28"),
+    Player(profileImg: 'assets/player.png', username: 'chessDragon',rating_level: "6",age: "20"),
+    Player(profileImg: 'assets/player.png', username: 'fighter44',rating_level: "7",age: "33"),
+    Player(profileImg: 'assets/player.png', username: 'chessRuler',rating_level: "8",age: "40")
   ];
 
   Widget personDetailCard(Player) {
