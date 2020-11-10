@@ -5,9 +5,9 @@ import 'package:chessMATE_app/screens/playerDetails_screen.dart';
 import 'package:chessMATE_app/screens/option_screen.dart';
 import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:chessMATE_app/screens/welcome_screen.dart';
-import 'package:chessMATE_app/screens/forgotPass_screen.dart'
-import 'package:chessMATE_app/screens/loginScreen.dart'
-import 'package:chessMATE_app/screens/signInScreen.dart'
+import 'package:chessMATE_app/screens/forgotPass_screen.dart';
+import 'package:chessMATE_app/screens/loginScreen.dart';
+import 'package:chessMATE_app/screens/signInScreen.dart';
 
 void main() => runApp(MyApp());
 
