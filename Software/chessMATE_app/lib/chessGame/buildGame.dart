@@ -85,10 +85,10 @@ class _PlayGameState extends State<PlayGame> {
         },
         onCheckMate: (winColor) {
           // --> todo : pass the winning deatils to results screen
-          //Navigator.pushNamed(context, ResultsScreen.id);
+          Navigator.pushNamed(context, ResultsScreen.id);
         },
         onDraw: () {
-          // Navigator.pushNamed(context, ResultsScreen.id);
+          Navigator.pushNamed(context, ResultsScreen.id);
         },
         chessBoardController: controller,
       ),
