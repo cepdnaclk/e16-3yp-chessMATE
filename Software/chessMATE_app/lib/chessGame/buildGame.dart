@@ -164,7 +164,7 @@ class _PlayGameState extends State<PlayGame> {
   Widget _buildGameHistory() {
     return Text(
       _buildMovesString(),
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Colors.white),
     );
   }
 
