@@ -24,21 +24,12 @@ class BodyOptions extends StatelessWidget {
               height: size.height * 0.05,
             ),
             OptionButton(
-              text: "PLAY WITH A FRIEND",
+              text: "PLAY WITH FRIENDS",
               press: () {
                 Navigator.pushNamed(context, PlayerDataScreen.id);
               },
               color: Colors.lightBlue[300],
               icon: Icons.person,
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-            OptionButton(
-              text: "PLAY WITH AI",
-              press: () {},
-              color: Colors.lightBlue[500],
-              icon: Icons.computer,
             ),
             SizedBox(
               height: size.height * 0.01,
