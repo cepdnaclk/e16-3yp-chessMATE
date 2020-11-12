@@ -19,42 +19,42 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
   List<Player> players = [
     Player(
         profileImg: 'assets/player.png',
-        username: 'chessMaster',
+        username: 'John',
         rating_level: "1",
         age: "25"),
     Player(
         profileImg: 'assets/player.png',
-        username: 'queen543',
+        username: 'CharlesLewis',
         rating_level: "2",
         age: "33"),
     Player(
         profileImg: 'assets/player.png',
-        username: 'knight_78',
+        username: 'Brenden',
         rating_level: "3",
         age: "19"),
     Player(
         profileImg: 'assets/player.png',
-        username: 'chessKing',
+        username: 'Mathew',
         rating_level: "4",
         age: "30"),
     Player(
         profileImg: 'assets/player.png',
-        username: 'pawnMaster',
+        username: 'PeterRoger',
         rating_level: "5",
         age: "28"),
     Player(
         profileImg: 'assets/player.png',
-        username: 'chessDragon',
+        username: 'Thomas',
         rating_level: "6",
         age: "20"),
     Player(
         profileImg: 'assets/player.png',
-        username: 'fighter44',
+        username: 'Mandy',
         rating_level: "7",
         age: "33"),
     Player(
         profileImg: 'assets/player.png',
-        username: 'chessRuler',
+        username: 'William',
         rating_level: "8",
         age: "40")
   ];
@@ -96,7 +96,7 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: "SyneTactile",
+                        fontFamily: "Acme",
                         letterSpacing: 2,
                         fontWeight: FontWeight.bold,
                       ),
@@ -183,7 +183,7 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
-                      color: Colors.black,
+                      color: Colors.white,
                       fontFamily: "Acme",
                       letterSpacing: 7,
                     ),
