@@ -2,12 +2,10 @@ import 'package:chessMATE_app/game_mode/game_mode_buttons.dart';
 import 'package:chessMATE_app/screens/option_screen.dart';
 import 'package:flutter/material.dart';
 
-
 class GameModeBody extends StatelessWidget {
   const GameModeBody({
     Key key,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +16,9 @@ class GameModeBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "chessMATE",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 28,
-                fontFamily: "Audiowide",
-                color: Colors.grey[900].withOpacity(0.5),
-              ),
+            Image.asset(
+              "assets/logo.png",
+              height: size.height * 0.2,
             ),
             SizedBox(
               height: size.height * 0.05,
@@ -56,10 +49,11 @@ class GameModeBody extends StatelessWidget {
                   radius: 90.0,
                   backgroundColor: Colors.orange[800],
                 ),
-
                 CircleAvatar(
                   child: CircleAvatar(
-                    child: Image.asset('assets/mobileApp.png',),
+                    child: Image.asset(
+                      'assets/mobileApp.png',
+                    ),
                     radius: 80.0,
                     backgroundColor: Colors.white,
                   ),
