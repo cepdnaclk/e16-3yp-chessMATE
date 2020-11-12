@@ -1,12 +1,26 @@
 # chessMATE 
 ## Smart Chess Platform
 
-### [Back to Repo](https://github.com/cepdnaclk/e16-3yp-chessMATE)
+### [Back to our Repository](https://github.com/cepdnaclk/e16-3yp-chessMATE)
 
 ### Group Members:
   - Isurika Adikari   : E/16/012 : e16012@eng.pdn.ac.lk
   - Damsy De Silva    : E/16/069 : e16069@eng.pdn.ac.lk
   - Chaminie De Silva : E/16/070 : e16070@eng.pdn.ac.lk
+  
+## Table of Contents
+
+  - [Problem](#problem)
+  - [Solution](#solution)
+  - [About Product](#about-product)
+    - [Vision of the Product](#vision-of-the-product)
+    - [Product Overview](#product-overview)
+    - [High-Level Architecture](#high-level-architecture)
+  - [3D Model of our Product](#3d-model-of-our-product)
+  - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
+  - [Budget of the Product](#budget-of-the-product)
+  - [Advising Lecturers](#advising-lecturers)
+  - [Links](#links)
 
 ## Problem
   Chess is one of the most popular and oldest board games played by millions of people worldwide. But still there are some difficulties chess players face which limits them to enjoy this game to its fullest. 
@@ -46,6 +60,23 @@
 Given below diagram shows the high-level architecture of our solution. 
 
 ![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/Solution_Architecture.png)
+
+## 3D Model of our Product
+
+Given below is the 3D overview of our chess board.
+
+<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/chessboard_3D.png" width="800" height="400"/>
+
+## User Interfaces for Mobile Application
+
+These are our currently implemented user interface designs.
+
+<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/UI_design_1.jpg" width="600" height="400"/>
+
+<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/UI_design_2.jpg" width="600" height="400"/>
+
+<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/UI_design_3.jpg" width="600" height="400"/> 
+
 
 ## Budget of the Product
 
