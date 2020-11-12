@@ -35,7 +35,7 @@ class BodyForgotPass extends StatelessWidget {
                   fontSize: 30,
                   fontFamily: "Acme",
                   letterSpacing: 5,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               SizedBox(
