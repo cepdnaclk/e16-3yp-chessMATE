@@ -33,13 +33,13 @@ class Body extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 40,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontFamily: "Acme",
                   letterSpacing: 7,
                 ),
               ),
               SizedBox(
-                height: size.height * 0.1,
+                height: size.height * 0.05,
               ),
               RoudedInputField(
                 hintText: "Email Address",
