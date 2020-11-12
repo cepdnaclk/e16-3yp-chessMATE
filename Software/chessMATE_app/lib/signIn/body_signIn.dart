@@ -33,7 +33,7 @@ class BodySignIn extends StatelessWidget {
                   fontSize: 40,
                   fontFamily: "Acme",
                   letterSpacing: 5,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               SizedBox(
