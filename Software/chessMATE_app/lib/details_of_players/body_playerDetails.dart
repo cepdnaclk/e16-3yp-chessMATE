@@ -1,4 +1,4 @@
-import 'package:chess_mate_app/screens/gameScreen.dart';
+import 'package:chessMATE_app/screens/gameScreen.dart';
 import 'package:flutter/material.dart';
 
 class Player{
