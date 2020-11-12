@@ -30,7 +30,7 @@ class GameModeBody extends StatelessWidget {
                 fontSize: 35,
                 fontFamily: "Acme",
                 letterSpacing: 5,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             SizedBox(
