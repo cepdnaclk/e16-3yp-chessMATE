@@ -65,17 +65,17 @@ Given below diagram shows the high-level architecture of our solution.
 
 Given below is the 3D overview of our chess board.
 
-<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/chessboard_3D.png" width="800" height="400"/>
+![3D model](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/chessboard_3D.png)
 
 ## User Interfaces for Mobile Application
 
 These are our currently implemented user interface designs.
 
-<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/UI_design_1.jpg" width="600" height="400"/>
+![UI_Design 1](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_1.jpg)
 
-<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/UI_design_2.jpg" width="600" height="400"/>
+![UI_Design 2](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_2.jpg)
 
-<img src="https://github.com/cepdnaclk/e16-3yp-chessMATE/blob/main/Images/UI_design_3.jpg" width="600" height="400"/> 
+![UI_Design 3](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_3.jpg) 
 
 
 ## Budget of the Product
