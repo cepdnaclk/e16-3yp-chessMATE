@@ -21,17 +21,8 @@ class WelcomeBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "chessMATE",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 38,
-                fontFamily: "Audiowide",
-                color: Colors.black,
-              ),
-            ),
             SizedBox(
-              height: size.height * 0.1,
+              height: size.height * 0.5,
             ),
             Text(
               "Smart Chess Platform",
