@@ -38,6 +38,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                 fontSize: 40,
                 fontFamily: "Acme",
                 letterSpacing: 5,
+                color: Colors.white,
               ),
             ),
             SizedBox(
@@ -61,6 +62,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -78,6 +80,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -96,6 +99,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
                     fontFamily: "Acme",
+                    color: Colors.white,
                   ),
                 ),
                 Text(
@@ -104,6 +108,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
                     fontFamily: "Acme",
+                    color: Colors.white,
                   ),
                 ),
               ],
