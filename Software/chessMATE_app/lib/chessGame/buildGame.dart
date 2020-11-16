@@ -24,40 +24,40 @@ class _PlayGameState extends State<PlayGame> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromRGBO(4, 7, 40, 3),
         body: SafeArea(
           child: ListView(children: <Widget>[
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    "chessMATE",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Colors.grey,
-                      fontFamily: "Audiowide",
-                    ),
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Image.asset(
+                    "assets/logo.png",
+                    height: size.height * 0.12,
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "White : " + "_PlayerName_    ",
+                      "White : " + "Player_1",
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           height: 5,
+                          fontFamily: "Acme",
+                          fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Black : " + "_PlayerName_",
+                      "Black : " + "Player_2",
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           height: 5,
+                          fontFamily: "Acme",
+                          fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -106,8 +106,14 @@ class _PlayGameState extends State<PlayGame> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FlatButton(
-                  child: Text("Reset Game"),
-                  color: Colors.grey[400],
+                  child: Text(
+                    "Reset Game",
+                    style: TextStyle(
+                      fontFamily: "Acme",
+                      fontSize: 20,
+                    ),
+                  ),
+                  color: Colors.blue[400],
                   textColor: Colors.black,
                   onPressed: () {
                     _resetGame();
@@ -119,8 +125,14 @@ class _PlayGameState extends State<PlayGame> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FlatButton(
-                  child: Text("Undo Move"),
-                  color: Colors.grey[400],
+                  child: Text(
+                    "Undo Move",
+                    style: TextStyle(
+                      fontFamily: "Acme",
+                      fontSize: 20,
+                    ),
+                  ),
+                  color: Colors.blue[400],
                   textColor: Colors.black,
                   onPressed: () {
                     _undoMove();
@@ -152,7 +164,7 @@ class _PlayGameState extends State<PlayGame> {
   Widget _buildGameHistory() {
     return Text(
       _buildMovesString(),
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Colors.white),
     );
   }
 

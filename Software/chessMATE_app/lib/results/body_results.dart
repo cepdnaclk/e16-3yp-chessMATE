@@ -3,7 +3,6 @@ import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
-
 class ResultsBody extends StatefulWidget {
   const ResultsBody({
     Key key,
@@ -14,9 +13,7 @@ class ResultsBody extends StatefulWidget {
 }
 
 class _ResultsBodyState extends State<ResultsBody> {
-
   int won = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +24,9 @@ class _ResultsBodyState extends State<ResultsBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "chessMATE",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                fontFamily: "Audiowide",
-                color: Colors.black.withOpacity(0.5),
-              ),
+            Image.asset(
+              "assets/logo.png",
+              height: size.height * 0.2,
             ),
             SizedBox(
               height: size.height * 0.05,
@@ -46,9 +38,9 @@ class _ResultsBodyState extends State<ResultsBody> {
                 fontSize: 40,
                 fontFamily: "Acme",
                 letterSpacing: 5,
+                color: Colors.white,
               ),
             ),
-
             SizedBox(
               height: size.height * 0.05,
             ),
@@ -68,9 +60,9 @@ class _ResultsBodyState extends State<ResultsBody> {
                     "1",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -85,11 +77,10 @@ class _ResultsBodyState extends State<ResultsBody> {
                   child: Text(
                     "$won",
                     textAlign: TextAlign.center,
-
                     style: TextStyle(
-
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -108,6 +99,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
                     fontFamily: "Acme",
+                    color: Colors.white,
                   ),
                 ),
                 Text(
@@ -116,6 +108,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
                     fontFamily: "Acme",
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -150,5 +143,3 @@ class _ResultsBodyState extends State<ResultsBody> {
     );
   }
 }
-
-

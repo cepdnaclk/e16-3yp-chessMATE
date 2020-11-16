@@ -5,12 +5,10 @@ import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_passwo
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:flutter/material.dart';
 
-
 class BodySignIn extends StatelessWidget {
   const BodySignIn({
     Key key,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +19,9 @@ class BodySignIn extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "chessMATE",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    fontFamily: "Audiowide",
-                  color: Colors.grey.withOpacity(0.5),
-                ),
+              Image.asset(
+                "assets/logo.png",
+                height: size.height * 0.2,
               ),
               SizedBox(
                 height: size.height * 0.01,
@@ -40,7 +33,7 @@ class BodySignIn extends StatelessWidget {
                   fontSize: 40,
                   fontFamily: "Acme",
                   letterSpacing: 5,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               SizedBox(
@@ -72,12 +65,10 @@ class BodySignIn extends StatelessWidget {
               RoundedButton(
                 text: "Create Account",
                 press: () {
-                  Navigator
-                      .push(
+                  Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => GameModeScreen()
-                      )
-                  );
+                      MaterialPageRoute(
+                          builder: (context) => GameModeScreen()));
                 },
               ),
               SizedBox(

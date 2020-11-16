@@ -7,12 +7,10 @@ import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 import 'package:flutter/material.dart';
 
-
 class Body extends StatelessWidget {
   const Body({
     Key key,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +21,9 @@ class Body extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "chessMATE",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  color: Colors.grey.withOpacity(0.5),
-                  fontFamily: "Audiowide",
-                ),
+              Image.asset(
+                "assets/logo.png",
+                height: size.height * 0.2,
               ),
               SizedBox(
                 height: size.height * 0.05,
@@ -38,17 +31,16 @@ class Body extends StatelessWidget {
               Text(
                 "LOGIN",
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40,
+                  color: Colors.white,
                   fontFamily: "Acme",
                   letterSpacing: 7,
                 ),
               ),
               SizedBox(
-                height: size.height * 0.1,
+                height: size.height * 0.05,
               ),
-
               RoudedInputField(
                 hintText: "Email Address",
                 onChanged: (value) {},
@@ -78,7 +70,6 @@ class Body extends StatelessWidget {
                   ),
                 ],
               ),
-
               RoundedButton(
                 text: "LOGIN",
                 press: () {
@@ -131,7 +122,6 @@ class Body extends StatelessWidget {
                   ),
                 ],
               ),
-
               SizedBox(
                 height: size.height * 0.03,
               ),
@@ -147,11 +137,3 @@ class Body extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
