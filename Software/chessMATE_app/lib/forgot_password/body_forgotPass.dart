@@ -12,7 +12,6 @@ class BodyForgotPass extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -22,14 +21,9 @@ class BodyForgotPass extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "chessMATE",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  fontFamily: "Audiowide",
-                  color: Colors.grey.withOpacity(0.5),
-                ),
+              Image.asset(
+                "assets/logo.png",
+                height: size.height * 0.2,
               ),
               SizedBox(
                 height: size.height * 0.05,
@@ -41,7 +35,7 @@ class BodyForgotPass extends StatelessWidget {
                   fontSize: 30,
                   fontFamily: "Acme",
                   letterSpacing: 5,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               SizedBox(

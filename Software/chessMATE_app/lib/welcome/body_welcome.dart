@@ -2,35 +2,27 @@ import 'package:chessMATE_app/screens/loginScreen.dart';
 import 'package:chessMATE_app/welcome/welcome_button.dart';
 import 'package:flutter/material.dart';
 
-
-
-
 class WelcomeBody extends StatelessWidget {
   const WelcomeBody({
     Key key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/chessMATElogo.png"),
+        ),
+      ),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "chessMATE",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 38,
-                fontFamily: "Audiowide",
-                color: Colors.black,
-              ),
-            ),
             SizedBox(
-              height: size.height * 0.1,
+              height: size.height * 0.5,
             ),
             Text(
               "Smart Chess Platform",
@@ -48,12 +40,8 @@ class WelcomeBody extends StatelessWidget {
             WelcomeButton(
               text: "PLAY",
               press: () {
-                Navigator
-                .push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()
-                    )
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
               },
               color: Colors.lightBlue,
             ),
