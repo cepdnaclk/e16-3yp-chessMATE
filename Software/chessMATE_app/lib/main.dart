@@ -17,8 +17,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Let's initialize the WebSockets communication
-      sockets.initCommunication();
     return MaterialApp(
       
       initialRoute: WelcomeScreen.id,

@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage>{
   void initState() {
     super.initState();
     // Ask to be notified when messages related to the game are sent by the server
-    // game.addListener(_onGameDataReceived);
+    // game.addListener();
   }
 
   @override
@@ -109,10 +109,14 @@ class _LoginPageState extends State<LoginPage>{
               ),
               RoundedButton(
                 text: "LOGIN",
-                press: sockets.socketStatus()? ()=> {
+                // press: sockets.socketStatus()? ()=>{
+                //   game.send('join', _userName),
+                //   Navigator.pushNamed(context, GameModeScreen.id)
+                // }:null,
+                press: () {
                   game.send('join', _userName);
                   Navigator.pushNamed(context, GameModeScreen.id);
-                }:null,
+                },
               ),
               Text(
                 'Or',
