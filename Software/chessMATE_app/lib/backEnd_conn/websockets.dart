@@ -26,4 +26,16 @@ class WebSocketsNotifications {
   // List of methods to be called when a new message comes in.
   ObserverList<Function> _listeners = new ObserverList<Function>();
 
+  // -----------------------------------
+  // Closes the WebSocket communication
+  // -----------------------------------
+  reset(){
+    if (_channel != null){
+      if (_channel.sink != null){
+        _channel.sink.close();
+        _isOn = false;
+      }
+    }
+  }
+
 }
