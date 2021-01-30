@@ -15,10 +15,27 @@ class LoginPage extends StatefulWidget{
 }
 
 
-class _LoginPageState extends StatelessWidget {
-  // const Body({
-  //   Key key,
-  // }) : super(key: key);
+class _LoginPageState extends State<LoginPage>{
+
+  // static final TextEditingController _name = new TextEditingController();
+  static String _userName;
+  static String _password;
+  String playerName;
+  List<dynamic> playersList = <dynamic>[];
+
+  
+  @override
+  void initState() {
+    super.initState();
+    // Ask to be notified when messages related to the game are sent by the server
+    // game.addListener(_onGameDataReceived);
+  }
+
+  @override
+  void dispose() {
+    // game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +67,14 @@ class _LoginPageState extends StatelessWidget {
                 height: size.height * 0.05,
               ),
               RoudedInputField(
-                hintText: "Email Address",
+                hintText: "Username",
                 onChanged: (value) {},
                 icon: Icons.email,
               ),
               RoundedPasswordField(
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _password = value;
+                },
                 text: "Password",
               ),
               Row(
@@ -81,6 +100,7 @@ class _LoginPageState extends StatelessWidget {
               RoundedButton(
                 text: "LOGIN",
                 press: () {
+                  game.send('join', _userName);
                   Navigator.pushNamed(context, GameModeScreen.id);
                 },
               ),
