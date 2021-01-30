@@ -36,3 +36,19 @@ function Player(id, connection){
     this.opponentIndex = null;
     this.index = Players.length;
 }
+
+Player.prototype = {
+    getId: function(){
+        return {name: this.name, id: this.id};
+    },
+    setOpponent: function(id){
+        var self = this;
+        Players.forEach(function(player, index){
+            if (player.id == id){
+                self.opponentIndex = index;
+                Players[index].opponentIndex = self.index;
+                return false;
+            }
+        });
+    }
+};
