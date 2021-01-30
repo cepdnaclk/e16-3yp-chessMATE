@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 import 'package:chessMATE_app/chessGame/buildGame.dart';
 
+const String profile_Img = 'assets/player.png';
+
 class Player {
   final String profileImg;
   final String username;
@@ -69,13 +71,13 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
   }
 
 
-  Widget personDetailCard(Player) {
+  Widget personDetailCard(Player, String id) {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: InkWell(
         splashColor: Colors.red,
         onTap: () {
-          Navigator.pushNamed(context, GameScreen.id);
+          _onPlayGame(Player.username, id);
         },
         child: Card(
           elevation: 20,
@@ -111,63 +113,29 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          "Rating Level: ",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontFamily: "Acme",
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          Player.rating_level,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontFamily: "Acme",
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          "Age: ",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontFamily: "Acme",
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          Player.age,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontFamily: "Acme",
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ],
-            ),
+            ), 
           ),
         ),
       ),
     );
   }
+
+  _onPlayGame(String opponentName, String opponentId){
+    // We need to send the opponentId to initiate a new game
+    game.send('new_game', opponentId);
+	
+    Navigator.push(context, new MaterialPageRoute(
+      builder: (BuildContext context) 
+                  => new PlayGame(
+                      opponentName: opponentName, 
+                      character: 'w',
+                    ),
+    ));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -201,8 +169,9 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
                 ],
               ),
               Column(
-                  children: playersList.map((p) {
-                return personDetailCard(p);
+                  children: playersList.map((playerInfo) {
+                    Player player = new Player(profileImg: profile_Img,username: playerInfo["name"] );
+                return personDetailCard(player, playerInfo["id"]);
               }).toList()),
             ],
           ),
