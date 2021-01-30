@@ -57,6 +57,13 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
       /// As we are not the new game initiator, we will be playing "black" (temp)
       ///
       case 'new_game':
+        Navigator.push(context, new MaterialPageRoute(
+          builder: (BuildContext context)
+                      => new PlayGame(
+                            opponentName: message["data"], // Name of the opponent
+                            character: 'b',
+                        ),
+        ));
         break;
     }
   }
