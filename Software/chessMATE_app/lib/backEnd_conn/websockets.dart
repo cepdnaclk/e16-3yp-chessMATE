@@ -49,5 +49,25 @@ class WebSocketsNotifications {
     }
   }
 
+  // --------------------------------------------------------------
+  // Adds a callback to be invoked in case of incoming notification
+  // --------------------------------------------------------------
+  addListener(Function callback){
+    _listeners.add(callback);
+  }
+  removeListener(Function callback){
+    _listeners.remove(callback);
+  }
+
+  // -----------------------------------------------------------------------------------
+  // Callback which is invoked each time that we are receiving a message from the server
+  // -----------------------------------------------------------------------------------
+  _onReceptionOfMessageFromServer(message){
+    _isOn = true;
+    _listeners.forEach((Function callback){
+      callback(message);
+    });
+  }
+
 
 }
