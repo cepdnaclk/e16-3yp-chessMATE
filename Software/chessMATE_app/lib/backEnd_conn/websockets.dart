@@ -26,6 +26,25 @@ class WebSocketsNotifications {
   // List of methods to be called when a new message comes in.
   ObserverList<Function> _listeners = new ObserverList<Function>();
 
+  // ----------------------------------------------------------
+  // Initialization the WebSockets connection with the server
+  // ----------------------------------------------------------
+  initCommunication() async {
+    
+    //Just in case, close any previous communication
+    reset();
+
+    // Open a new WebSocket communication
+    try {
+      _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS);
+      // Start listening to new notifications / messages
+      _channel.stream.listen(_onReceptionOfMessageFromServer);
+
+    } catch(e){
+      // General error handling
+    }
+  }
+
   // -----------------------------------
   // Closes the WebSocket communication
   // -----------------------------------
@@ -68,6 +87,5 @@ class WebSocketsNotifications {
       callback(message);
     });
   }
-
 
 }
