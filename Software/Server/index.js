@@ -99,7 +99,17 @@ wsServer.on('request', function(request) {
                     }, 0);
                 break;
 
+            //
+            // A player initiates a new game.
+            // Let's create a relationship between the 2 players and
+            // notify the other player that a new game starts
+            // 
             case 'new_game':
+                player.setOpponent(message.data);
+                Players[player.opponentIndex]
+                .connection
+                .sendUTF(JSON.stringify({'action':'new_game', 'data': player.name}));
+                break;
 
             case 'play':
     
