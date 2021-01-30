@@ -7,6 +7,7 @@ import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
+import 'package:chessMATE_app/backEnd_conn/websockets.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -63,6 +64,15 @@ class _LoginPageState extends State<LoginPage>{
                   letterSpacing: 7,
                 ),
               ),
+              Container(
+                child: sockets.socketStatus()?null:Text("Server not connected",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                    color: Colors.red
+                  ),
+                )
+              ),
               SizedBox(
                 height: size.height * 0.05,
               ),
@@ -99,10 +109,10 @@ class _LoginPageState extends State<LoginPage>{
               ),
               RoundedButton(
                 text: "LOGIN",
-                press: () {
+                press: sockets.socketStatus()? ()=> {
                   game.send('join', _userName);
                   Navigator.pushNamed(context, GameModeScreen.id);
-                },
+                }:null,
               ),
               Text(
                 'Or',

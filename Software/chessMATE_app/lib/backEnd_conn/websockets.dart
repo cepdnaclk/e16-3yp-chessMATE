@@ -60,6 +60,10 @@ class WebSocketsNotifications {
     }
   }
 
+  bool socketStatus(){
+    return _isOn;
+  }
+
   // -----------------------------
   // Sends a message to the server
   // -----------------------------
