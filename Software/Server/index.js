@@ -75,10 +75,17 @@ wsServer.on('request', function(request) {
 
         switch(message.action){
 
+            //
+            // When the user sends the "join" action, he provides a name.
+            // Let's record it and as the player has a name,
+            //
             case 'join':
+                player.name = message.data;
+                console.log(player.name);
+                break;
 
             case 'players_list':
-
+                
             case 'resign':
 
             case 'new_game':
