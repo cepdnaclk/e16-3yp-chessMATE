@@ -38,4 +38,16 @@ class WebSocketsNotifications {
     }
   }
 
+  // -----------------------------
+  // Sends a message to the server
+  // -----------------------------
+  send(String message){
+    if (_channel != null){
+      if (_channel.sink != null && _isOn){
+        _channel.sink.add(message);
+      }
+    }
+  }
+
+
 }
