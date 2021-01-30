@@ -6,11 +6,19 @@ import 'package:chessMATE_app/screens/forgotPass_screen.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 
-class Body extends StatelessWidget {
-  const Body({
-    Key key,
-  }) : super(key: key);
+class LoginPage extends StatefulWidget{
+  @override
+  _LoginPageState createState() => _LoginPageState();
+
+}
+
+
+class _LoginPageState extends StatelessWidget {
+  // const Body({
+  //   Key key,
+  // }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
