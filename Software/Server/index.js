@@ -111,8 +111,15 @@ wsServer.on('request', function(request) {
                 .sendUTF(JSON.stringify({'action':'new_game', 'data': player.name}));
                 break;
 
+            //
+            // A player sends a move.  Let's forward the move to the other player
+            //
             case 'play':
-    
+                Players[player.opponentIndex]
+                .connection
+                .sendUTF(JSON.stringify({'action':'play', 'data': message.data}));
+                break;
+                
         }
     });
 
