@@ -52,3 +52,9 @@ Player.prototype = {
         });
     }
 };
+
+// This callback function is called every time someone tries to connect to the WebSocket server
+wsServer.on('request', function(request) {
+    
+    var connection = request.accept(null, request.origin); 
+}
