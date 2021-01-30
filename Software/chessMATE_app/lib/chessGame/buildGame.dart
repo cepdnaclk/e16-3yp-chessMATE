@@ -60,12 +60,22 @@ class _PlayGameState extends State<PlayGame> {
       // The opponent played a move. So record it and rebuild the board
       case 'play':
         var data = (message["data"] as String).split(';');
-        
-        controller.makeMove(data[0],  data[1]);
+        gameHistory.add(data[0]);
+        controller.makeMove(data[1],  data[2]);
         // Force rebuild
         setState((){});
         break;
     }
+  }
+
+  // ---------------------------------------------------------
+  // This player resigns
+  // We need to send this notification to the other player
+  // Then, leave this screen
+  // ---------------------------------------------------------
+  _doResign(){
+    game.send('resign', '');
+    Navigator.of(context).pop();
   }
 
   @override
@@ -125,8 +135,15 @@ class _PlayGameState extends State<PlayGame> {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: ChessBoard(
         size: MediaQuery.of(context).size.width,
+
+        enableUserMoves: true,
+        whiteSideTowardsUser: ({widget.character} != 'b'),
+
         onMove: (moveNotation, from, to) {
           gameHistory.add(moveNotation);
+          // To send a move, we provide the starting square and end square
+          game.send('play', '$moveNotation$from;$to');
+          // Force rebuild
           setState(() {});
         },
         onCheckMate: (winColor) {
