@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/io.dart';
 
+// Application-level global variable to access the WebSockets
+WebSocketsNotifications sockets = new WebSocketsNotifications();
+
 // substitute your server's IP and port
 const YOUR_SERVER_IP = '192.168.8.101';
 const YOUR_SERVER_PORT = '3000';
