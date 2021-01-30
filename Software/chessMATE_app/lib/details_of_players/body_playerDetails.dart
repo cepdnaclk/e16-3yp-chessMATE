@@ -1,13 +1,15 @@
 import 'package:chessMATE_app/screens/gameScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
+import 'package:chessMATE_app/chessGame/buildGame.dart';
 
 class Player {
   final String profileImg;
   final String username;
-  final String rating_level;
-  final String age;
+  // final String rating_level;
+  // final String age;
 
-  Player({this.profileImg, this.username, this.rating_level, this.age});
+  Player({this.profileImg, this.username});
 }
 
 class PlayerDataBody extends StatefulWidget {
@@ -16,48 +18,31 @@ class PlayerDataBody extends StatefulWidget {
 }
 
 class _PlayerDataBodyState extends State<PlayerDataBody> {
-  List<Player> players = [
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'John',
-        rating_level: "1",
-        age: "25"),
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'CharlesLewis',
-        rating_level: "2",
-        age: "33"),
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'Brenden',
-        rating_level: "3",
-        age: "19"),
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'Mathew',
-        rating_level: "4",
-        age: "30"),
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'PeterRoger',
-        rating_level: "5",
-        age: "28"),
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'Thomas',
-        rating_level: "6",
-        age: "20"),
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'Mandy',
-        rating_level: "7",
-        age: "33"),
-    Player(
-        profileImg: 'assets/player.png',
-        username: 'William',
-        rating_level: "8",
-        age: "40")
-  ];
+  String playerName;
+  List<dynamic> playersList = <dynamic>[];
+
+  @override
+  void initState() {
+    super.initState();
+    // Ask to be notified when messages related to the game are sent by the server
+    game.addListener(_onGameDataReceived);
+  }
+
+  @override
+  void dispose() {
+    game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
+
+  /// -------------------------------------------------------------------
+  /// This routine handles all messages that are sent by the server.
+  /// In this page, only the following 2 actions have to be processed
+  ///  - players_list
+  ///  - new_game
+  /// -------------------------------------------------------------------
+  _onGameDataReceived(message) {
+  }
+
 
   Widget personDetailCard(Player) {
     return Padding(
