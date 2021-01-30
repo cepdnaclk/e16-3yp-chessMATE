@@ -118,9 +118,14 @@ wsServer.on('request', function(request) {
                 Players[player.opponentIndex]
                 .connection
                 .sendUTF(JSON.stringify({'action':'play', 'data': message.data}));
-                break;
-                
+                break;  
         }
+    });
+
+    // user disconnected
+    connection.on('close', function(connection) {
+        // We need to remove the corresponding player
+        // TODO
     });
 
 });
