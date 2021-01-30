@@ -57,4 +57,14 @@ Player.prototype = {
 wsServer.on('request', function(request) {
     
     var connection = request.accept(null, request.origin); 
+    
+    // New Player has connected.  So let's record its socket
+    var player = new Player(request.key, connection);
+
+    // Add the player to the list of all players
+    Players.push(player);
+
+    // We need to return the unique id of that player to the player itself
+    connection.sendUTF(JSON.stringify({action: 'connect', data: player.id}));
+
 }
