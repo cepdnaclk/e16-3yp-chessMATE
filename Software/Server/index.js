@@ -22,3 +22,17 @@ var wsServer = new webSocketServer({
     // WebSocket server is tied to a HTTP server. WebSocket request is just an enhanced HTTP request. 
     httpServer: server
 });
+
+// -----------------------------------------------------------
+// List of all players
+// -----------------------------------------------------------
+var Players = [];
+
+// player detail structure
+function Player(id, connection){
+    this.id = id;
+    this.connection = connection;
+    this.name = "";
+    this.opponentIndex = null;
+    this.index = Players.length;
+}
