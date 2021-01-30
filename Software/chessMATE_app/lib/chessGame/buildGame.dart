@@ -2,9 +2,22 @@ import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'chess_board.dart';
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 
 
 class PlayGame extends StatefulWidget {
+  PlayGame({
+    Key key,
+    this.opponentName,
+    this.character,
+  }):super(key: key);
+
+  // Name of the opponent
+  final String opponentName;
+  
+  // color to be used by the player for his/her moves ("w" or "b")
+  final String character;
+
   @override
   _PlayGameState createState() => _PlayGameState();
 }
@@ -21,6 +34,8 @@ class _PlayGameState extends State<PlayGame> {
       DeviceOrientation.portraitUp
     ]); // fix the orientation up for this game interface
     controller = ChessBoardController();
+    // Ask to be notified when a message from the server comes in.
+    // game.addListener(_onAction);
   }
 
   @override
