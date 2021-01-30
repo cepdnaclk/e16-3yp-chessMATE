@@ -6,11 +6,36 @@ import 'package:chessMATE_app/screens/forgotPass_screen.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 
-class Body extends StatelessWidget {
-  const Body({
-    Key key,
-  }) : super(key: key);
+class LoginPage extends StatefulWidget{
+  @override
+  _LoginPageState createState() => _LoginPageState();
+
+}
+
+
+class _LoginPageState extends State<LoginPage>{
+
+  // static final TextEditingController _name = new TextEditingController();
+  static String _userName;
+  static String _password;
+  String playerName;
+  List<dynamic> playersList = <dynamic>[];
+
+  
+  @override
+  void initState() {
+    super.initState();
+    // Ask to be notified when messages related to the game are sent by the server
+    // game.addListener(_onGameDataReceived);
+  }
+
+  @override
+  void dispose() {
+    // game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +67,14 @@ class Body extends StatelessWidget {
                 height: size.height * 0.05,
               ),
               RoudedInputField(
-                hintText: "Email Address",
+                hintText: "Username",
                 onChanged: (value) {},
                 icon: Icons.email,
               ),
               RoundedPasswordField(
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _password = value;
+                },
                 text: "Password",
               ),
               Row(
@@ -73,6 +100,7 @@ class Body extends StatelessWidget {
               RoundedButton(
                 text: "LOGIN",
                 press: () {
+                  game.send('join', _userName);
                   Navigator.pushNamed(context, GameModeScreen.id);
                 },
               ),
