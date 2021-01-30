@@ -52,11 +52,24 @@ class GameCommunication {
       // For any other incoming message, we need to
       // dispatch it to all the listeners
       default:
-        // _listeners.forEach((Function callback){
-        //   callback(message);
-        // });
+        _listeners.forEach((Function callback){
+          callback(message);
+        });
         break;   
     }
   }
 
+  // Listeners to allow the different pages to be notified when messages come in
+  ObserverList<Function> _listeners = new ObserverList<Function>();
+
+  // ---------------------------------------------------------
+  // Adds a callback to be invoked in case of incoming notification
+  // ---------------------------------------------------------
+  addListener(Function callback){
+    _listeners.add(callback);
+  }
+  removeListener(Function callback){
+    _listeners.remove(callback);
+  }
+  
 }
