@@ -89,6 +89,15 @@ wsServer.on('request', function(request) {
                 break;
                 
             case 'resign':
+                console.log('resigned');
+                    Players[player.opponentIndex]
+                    .connection
+                    .sendUTF(JSON.stringify({'action':'resigned'}));
+
+                    setTimeout(function(){
+                    Players[player.opponentIndex].opponentIndex = player.opponentIndex = null;
+                    }, 0);
+                break;
 
             case 'new_game':
 
