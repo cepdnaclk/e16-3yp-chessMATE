@@ -85,6 +85,8 @@ wsServer.on('request', function(request) {
                 break;
 
             case 'players_list':
+                BroadcastPlayersList();
+                break;
                 
             case 'resign':
 
@@ -96,3 +98,24 @@ wsServer.on('request', function(request) {
     });
 
 });
+
+// ---------------------------------------------------------
+// Routine to broadcast the list of all players to everyone
+// ---------------------------------------------------------
+function BroadcastPlayersList(){
+    var playersList = [];
+    Players.forEach(function(player){
+        if (player.name !== ''){
+            playersList.push(player.getId());
+        }
+    });
+
+    var message = JSON.stringify({
+        'action': 'b_players_list',
+        'data': playersList
+    });
+
+    Players.forEach(function(player){
+        player.connection.sendUTF(message);
+    });
+}
