@@ -67,4 +67,25 @@ wsServer.on('request', function(request) {
     // We need to return the unique id of that player to the player itself
     connection.sendUTF(JSON.stringify({action: 'connect', data: player.id}));
 
-}
+    // Listen to any message sent by that player
+    connection.on('message', function(data) {
+
+        // Process the requested action
+        var message = JSON.parse(data.utf8Data);
+
+        switch(message.action){
+
+            case 'join':
+
+            case 'players_list':
+
+            case 'resign':
+
+            case 'new_game':
+
+            case 'play':
+    
+        }
+    });
+
+});
