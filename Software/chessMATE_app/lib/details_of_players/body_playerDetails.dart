@@ -41,6 +41,24 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
   ///  - new_game
   /// -------------------------------------------------------------------
   _onGameDataReceived(message) {
+    switch (message["action"]) {
+
+      // Each time a new player joins, we need to
+      //   * record the new list of players
+      //   * rebuild the list of all the players
+      case 'b_players_list':
+        playersList = message["data"];
+        // force rebuild
+        setState(() {});
+        break;
+
+      ///
+      /// When a game is launched by another player, we accept the new game and automatically redirect to the game board.
+      /// As we are not the new game initiator, we will be playing "black" (temp)
+      ///
+      case 'new_game':
+        break;
+    }
   }
 
 
@@ -176,7 +194,7 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
                 ],
               ),
               Column(
-                  children: players.map((p) {
+                  children: playersList.map((p) {
                 return personDetailCard(p);
               }).toList()),
             ],
