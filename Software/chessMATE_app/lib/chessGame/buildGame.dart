@@ -1,7 +1,8 @@
 import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_chess_board/flutter_chess_board.dart';
+import 'chess_board.dart';
+
 
 class PlayGame extends StatefulWidget {
   @override
@@ -79,7 +80,7 @@ class _PlayGameState extends State<PlayGame> {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: ChessBoard(
         size: MediaQuery.of(context).size.width,
-        onMove: (moveNotation) {
+        onMove: (moveNotation, from, to) {
           gameHistory.add(moveNotation);
           setState(() {});
         },
