@@ -59,6 +59,24 @@ class GameCommunication {
     }
   }
 
+  // ----------------------------------------------------------
+  // Common method to send requests to the server
+  // ----------------------------------------------------------
+  send(String action, String data){
+      
+    // When a player joins, we need to record the name he provides
+    if (action == 'join'){
+      _playerName = data;
+    }
+
+    // Send the action to the server
+    // To send the message, we need to serialize the JSON 
+    sockets.send(json.encode({
+      "action": action,
+      "data": data
+    }));
+  }
+
   // Listeners to allow the different pages to be notified when messages come in
   ObserverList<Function> _listeners = new ObserverList<Function>();
 
