@@ -64,21 +64,23 @@ class _LoginPageState extends State<LoginPage>{
                   letterSpacing: 7,
                 ),
               ),
-              Container(
-                child: sockets.socketStatus()?null:Text("Server not connected",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10,
-                    color: Colors.red
-                  ),
-                )
-              ),
+              // Container(
+              //   child: sockets.socketStatus()?null:Text("Server not connected",
+              //     style: TextStyle(
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 10,
+              //       color: Colors.red
+              //     ),
+              //   )
+              // ),
               SizedBox(
                 height: size.height * 0.05,
               ),
               RoudedInputField(
                 hintText: "Username",
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _userName = value;
+                },
                 icon: Icons.email,
               ),
               RoundedPasswordField(

@@ -26,7 +26,7 @@ class GameCommunication {
     print("Game communication started");
 
     // // Let's initialize the WebSockets communication
-    // sockets.initCommunication();
+    sockets.initCommunication();
 
     // and ask to be notified as soon as a message comes in
     sockets.addListener(_onMessageReceived);
