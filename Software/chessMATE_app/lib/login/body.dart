@@ -166,8 +166,8 @@ class _LoginPageState extends State<LoginPage> {
                           isValid = validate_login(_userName, _password),
                           if (isValid == 4)
                             {
-                              game.send('join', _userName),
-                              Navigator.pushNamed(context, GameModeScreen.id),
+                              dataMsgLogin = [_userName, _password],
+                              game.send('join', dataMsgLogin.join(':')),
                             }
                           else
                             {
