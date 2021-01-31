@@ -24,7 +24,7 @@ var wsServer = new webSocketServer({
 });
 
 // -----------------------------------------------------------
-// List of all players
+// List of all players and List of all matches 
 // -----------------------------------------------------------
 var Players = [];
 var Matches = [];
@@ -56,17 +56,17 @@ Player.prototype = {
 
 
 // Match detail structure
-function Match(player_1_id, player_2_id, id){
-    this.id = id;
-    this.player_1 = player_1_id;
-    this.player_2 = player_2_id;
+function Match(player_1, player_2, id){
+    this.id = id;               // player_1_id;player_2_id
+    this.player_1 = player_1;
+    this.player_2 = player_2;
     this.is_Stream = false;
     this.viewList = [];
 }
 
 Match.prototype = {
     getId: function(){
-        return {player_1: this.Player_1, player_2: this.Player_2};
+        return {player_1: this.Player_1.name, player_2: this.Player_2.name, id: this.id};
     },
 
     addViewers: function(viewer_id){
@@ -109,7 +109,8 @@ wsServer.on('request', function(request) {
                 break;
 
             case 'players_list':
-                BroadcastPlayersList();
+                request_player_id = message.data;
+                BroadcastPlayersList(player.id);
                 break;
                 
             case 'resign':
@@ -159,7 +160,7 @@ wsServer.on('request', function(request) {
                 Matches[match_id].viewList.push(player);
                 break;
 
-            // 
+            //
             // when a player wants to stream the match
             // set the is_Stream  to true of the corresponding match
             // 
@@ -171,7 +172,9 @@ wsServer.on('request', function(request) {
             // 
             // to get the streaming matches
             // 
-            // 
+            case 'streaming_matches':
+                BroadcastStramingMatches();
+                break;
 
         }
     });
@@ -187,10 +190,10 @@ wsServer.on('request', function(request) {
 // ---------------------------------------------------------
 // Routine to broadcast the list of all players to everyone
 // ---------------------------------------------------------
-function BroadcastPlayersList(){
+function BroadcastPlayersList(request_player_id){
     var playersList = [];
     Players.forEach(function(player){
-        if (player.name !== ''){
+        if (player.id != request_player_id){
             playersList.push(player.getId());
         }
     });
@@ -203,4 +206,28 @@ function BroadcastPlayersList(){
     Players.forEach(function(player){
         player.connection.sendUTF(message);
     });
+}
+
+
+// ------------------------------------------------------------------
+// Routine to broadcast the list of all streaming matches to everyone
+// ------------------------------------------------------------------
+
+function BroadcastStramingMatches(){
+    var stream_matchList = [];
+    Matches.forEach(function(match){
+        if (match.is_Stream == true){
+            stream_matchList.push(match.getId());
+        }
+    })
+
+    var message = JSON.stringify({
+        'action': 'b_match_list',
+        'data': stream_matchList
+    });
+
+    Players.forEach(function(player){
+        player.connection.sendUTF(message);
+    });
+
 }
