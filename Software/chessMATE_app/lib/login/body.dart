@@ -64,15 +64,15 @@ class _LoginPageState extends State<LoginPage>{
                   letterSpacing: 7,
                 ),
               ),
-              // Container(
-              //   child: sockets.socketStatus()?null:Text("Server not connected",
-              //     style: TextStyle(
-              //       fontWeight: FontWeight.bold,
-              //       fontSize: 10,
-              //       color: Colors.red
-              //     ),
-              //   )
-              // ),
+              Container(
+                child: sockets.socketStatus()?null:Text("Server not connected",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                    color: Colors.red
+                  ),
+                )
+              ),
               SizedBox(
                 height: size.height * 0.05,
               ),
@@ -111,14 +111,10 @@ class _LoginPageState extends State<LoginPage>{
               ),
               RoundedButton(
                 text: "LOGIN",
-                // press: sockets.socketStatus()? ()=>{
-                //   game.send('join', _userName),
-                //   Navigator.pushNamed(context, GameModeScreen.id)
-                // }:null,
-                press: () {
-                  game.send('join', _userName);
-                  Navigator.pushNamed(context, GameModeScreen.id);
-                },
+                press: sockets.socketStatus()? ()=>{
+                  game.send('join', _userName),
+                  Navigator.pushNamed(context, GameModeScreen.id)
+                }:null,
               ),
               Text(
                 'Or',
