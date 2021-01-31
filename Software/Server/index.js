@@ -172,6 +172,19 @@ wsServer.on('request', function(request) {
                 }));
                 break;
                 
+            case 'sign_in':
+                var dataSignIn = message.data.split(':');
+    
+                let sqlSignIn = `INSERT INTO user(Username,EmailAddress,Password,DateOfBirth) VALUES(?,?,?,?)`;
+                let dataInsert = [dataSignIn[0], dataSignIn[1], dataSignIn[2], dataSignIn[3]];
+                pool.query(sqlSignIn,dataInsert,(err, results, fields)=>{
+                    if(err){
+                        return console.log(err);
+                    }
+                    return console.log(results);
+                });
+                break;
+
             case 'resign':
                 console.log('resigned');
                     Players[player.opponentIndex]
