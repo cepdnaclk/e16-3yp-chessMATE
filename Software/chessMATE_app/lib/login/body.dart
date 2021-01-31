@@ -34,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
   String playerName;
   List<dynamic> playersList = <dynamic>[];
   bool userCorrect;
+  String userError = "";
 
   @override
   void initState() {
@@ -113,10 +114,20 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.red),
                         )),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.01,
+              ),
+              Text(
+                userError,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  fontFamily: "Acme",
+                  letterSpacing: 5,
+                  color: Colors.red,
+                ),
               ),
               RoudedInputField(
-                hintText: "Username",
+                hintText: "Email Address",
                 onChanged: (value) {
                   _userName = value;
                 },
