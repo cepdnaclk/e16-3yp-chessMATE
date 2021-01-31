@@ -1,3 +1,6 @@
+import 'package:chessMATE_app/learn_chess/opening_page.dart';
+import 'package:chessMATE_app/learn_chess/piece_list.dart';
+import 'package:chessMATE_app/screens/learn_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chessMATE_app/screens/gameScreen.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
@@ -32,6 +35,9 @@ class MyApp extends StatelessWidget {
         ResultsScreen.id: (context) => ResultsScreen(),
         SignInScreen.id: (context) => SignInScreen(),
         PlayerDataScreen.id: (context) => PlayerDataScreen(),
+        LearnScreen.id: (context) => LearnScreen(),
+        PiecesPage.id: (context) => PiecesPage(),
+        OpeningsPage.id: (context) => OpeningsPage(),
       },
     );
   }

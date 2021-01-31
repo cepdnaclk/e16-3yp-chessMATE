@@ -145,10 +145,9 @@ class _LoginPageState extends State<LoginPage>{
                             ],
                           );
                         }),
-                   
-                  }
-                  //game.send('join', _userName),
-                  //Navigator.pushNamed(context, GameModeScreen.id)
+                  } 
+                 // game.send('join', _userName),
+                 // Navigator.pushNamed(context, GameModeScreen.id)
                 }:null,
               ),
               Text(
