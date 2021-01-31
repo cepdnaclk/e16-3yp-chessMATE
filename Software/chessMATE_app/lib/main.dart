@@ -8,7 +8,7 @@ import 'package:chessMATE_app/screens/welcome_screen.dart';
 import 'package:chessMATE_app/screens/forgotPass_screen.dart';
 import 'package:chessMATE_app/screens/loginScreen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
-// import 'package:chessMATE_app/backENd_conn/websockets.dart';
+import 'package:chessMATE_app/backEnd_conn/websockets.dart';
 
 import 'screens/welcome_screen.dart';
 
@@ -17,10 +17,11 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Let's initialize the WebSockets communication
+    sockets.initCommunication();
     return MaterialApp(
       
       initialRoute: WelcomeScreen.id,
-      
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
