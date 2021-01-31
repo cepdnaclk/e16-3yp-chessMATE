@@ -193,52 +193,10 @@ wsServer.on('request', function(request) {
     // user disconnected
     connection.on('close', function(connection) {
         // We need to remove the corresponding player
-        // TODO
+        var index = Players.indexOf(player);
+        if (index > -1) {
+            Players.splice(index, 1);
+        }
     });
 
 });
-
-// ---------------------------------------------------------
-// Routine to broadcast the list of all players to everyone
-// ---------------------------------------------------------
-function SendPlayersList(request_player_id){
-    var playersList = [];
-    Players.forEach(function(player){
-        if (player.id != request_player_id){
-            playersList.push(player.getId());
-        }
-    });
-
-    var message = JSON.stringify({
-        'action': 'b_players_list',
-        'data': playersList
-    });
-
-    Players.forEach(function(player){
-        player.connection.sendUTF(message);
-    });
-}
-
-
-// ------------------------------------------------------------------
-// Routine to broadcast the list of all streaming matches to everyone
-// ------------------------------------------------------------------
-
-function BroadcastStramingMatches(){
-    var stream_matchList = [];
-    Matches.forEach(function(match){
-        if (match.is_Stream == true){
-            stream_matchList.push(match.getId());
-        }
-    })
-
-    var message = JSON.stringify({
-        'action': 'b_match_list',
-        'data': stream_matchList
-    });
-
-    Players.forEach(function(player){
-        player.connection.sendUTF(message);
-    });
-
-}
