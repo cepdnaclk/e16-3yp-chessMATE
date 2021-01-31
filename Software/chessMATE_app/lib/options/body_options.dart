@@ -1,6 +1,7 @@
 import 'package:chessMATE_app/options/option_button.dart';
 import 'package:chessMATE_app/screens/playerDetails_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 
 class BodyOptions extends StatelessWidget {
   const BodyOptions({
@@ -26,6 +27,7 @@ class BodyOptions extends StatelessWidget {
             OptionButton(
               text: "PLAY WITH FRIENDS",
               press: () {
+                game.send('players_list', '');
                 Navigator.pushNamed(context, PlayerDataScreen.id);
               },
               color: Colors.lightBlue[300],
