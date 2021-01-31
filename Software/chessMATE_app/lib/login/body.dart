@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   List<dynamic> playersList = <dynamic>[];
   bool userCorrect;
   String userError = "";
+  List<String> dataMsgLogin = <String>[];
 
   @override
   void initState() {
