@@ -33,6 +33,9 @@ class GameCommunication {
   // Getter to return the player's name
   String get playerName => _playerName;
 
+  // Getter to return the player's id
+  String get playerID => _playerID;
+  
   /// ----------------------------------------------------------
   /// Common handler for all received messages, from the server
   /// ----------------------------------------------------------
