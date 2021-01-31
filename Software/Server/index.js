@@ -5,6 +5,18 @@ var webSocketsServerPort = 3000;
 var webSocketServer = require('websocket').server;
 var http = require('http');
 
+//import mysql
+const {createPool} = require('mysql');
+
+const pool = createPool({
+    host: "localhost",
+    user:"root",
+    password:"",
+    database:"chessapp_db",
+    connectionLimit:10
+
+})
+
 /**
 * HTTP server to implement WebSockets
 */
