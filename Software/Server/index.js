@@ -27,6 +27,7 @@ var wsServer = new webSocketServer({
 // List of all players
 // -----------------------------------------------------------
 var Players = [];
+var Matches = [];
 
 // player detail structure
 function Player(id, connection){
@@ -52,6 +53,29 @@ Player.prototype = {
         });
     }
 };
+
+
+// Match detail structure
+function Match(player_1_id, player_2_id, id){
+    this.id = id;
+    this.player_1 = player_1_id;
+    this.player_2 = player_2_id;
+    this.is_Stream = false;
+    this.viewList = [];
+}
+
+Match.prototype = {
+    getId: function(){
+        return {player_1: this.Player_1, player_2: this.Player_2};
+    },
+
+    addViewers: function(viewer_id){
+        var self = this;
+        self.viewList.push(viewer_id);
+        return false;
+    }
+};
+
 
 // This callback function is called every time someone tries to connect to the WebSocket server
 wsServer.on('request', function(request) {
@@ -109,6 +133,10 @@ wsServer.on('request', function(request) {
                 Players[player.opponentIndex]
                 .connection
                 .sendUTF(JSON.stringify({'action':'new_game', 'data': player.name}));
+                
+                match_id = (player.id).concat(";").concat(message.data);
+                var match = new Match(player.id);
+                Matches.push
                 break;
 
             //
@@ -118,7 +146,12 @@ wsServer.on('request', function(request) {
                 Players[player.opponentIndex]
                 .connection
                 .sendUTF(JSON.stringify({'action':'play', 'data': message.data}));
-                break;  
+                break;
+                
+            case  'request_to_view':
+                viewer_id = player;
+                match_id = message.data;
+                Matches[]
         }
     });
 
