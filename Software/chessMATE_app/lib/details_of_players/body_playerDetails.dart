@@ -48,7 +48,7 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
       // Each time a new player joins, we need to
       //   * record the new list of players
       //   * rebuild the list of all the players
-      case 'b_players_list':
+      case 'players_list':
         playersList = message["data"];
         // force rebuild
         setState(() {});
