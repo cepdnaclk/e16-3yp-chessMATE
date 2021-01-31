@@ -149,10 +149,30 @@ wsServer.on('request', function(request) {
                 .sendUTF(JSON.stringify({'action':'play', 'data': message.data}));
                 break;
                 
+            // 
+            // when a third party player wants to view a streaming game 
+            // and the player to the correponding viewList
+            //  
             case  'request_to_view':
                 viewer_id = player;
                 match_id = message.data;
                 Matches[match_id].viewList.push(player);
+                break;
+
+            // 
+            // when a player wants to stream the match
+            // set the is_Stream  to true of the corresponding match
+            // 
+            case 'request_to_stream':
+                match_id = message.data;
+                Matches[match_id].is_Stream = true;
+                break;
+
+            // 
+            // to get the streaming matches
+            // 
+            // 
+
         }
     });
 
