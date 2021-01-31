@@ -27,7 +27,7 @@ class BodyOptions extends StatelessWidget {
             OptionButton(
               text: "PLAY WITH FRIENDS",
               press: () {
-                game.send('players_list', game.playerID);
+                game.send('request_players_list', game.playerID);
                 Navigator.pushNamed(context, PlayerDataScreen.id);
               },
               color: Colors.lightBlue[300],

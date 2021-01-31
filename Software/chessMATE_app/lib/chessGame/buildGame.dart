@@ -25,6 +25,8 @@ class PlayGame extends StatefulWidget {
 class _PlayGameState extends State<PlayGame> {
   static ChessBoardController controller;
   static List<String> gameHistory = [];
+  bool isMyMove;
+  
 
   // will call this method exactly once for each [State] object it creates.
   @override
@@ -37,12 +39,22 @@ class _PlayGameState extends State<PlayGame> {
     
     // Ask to be notified when a message from the server comes in.
     game.addListener(_onAction);
+
+    isMyMove = _firstStatusMyTurn();
   }
 
   @override
   void dispose(){
     game.removeListener(_onAction);
     super.dispose();
+  }
+
+  // method to check first satus of move
+  _firstStatusMyTurn(){
+    if (widget.character == 'w'){
+      return true;
+    } 
+    return false;
   }
 
   // ---------------------------------------------------------
@@ -58,10 +70,11 @@ class _PlayGameState extends State<PlayGame> {
         break;
 
       // The opponent played a move. So record it and rebuild the board
-      case 'play':
+      case 'onMove':
         var data = (message["data"] as String).split(';');
         gameHistory.add(data[0]);
         controller.makeMove(data[1],  data[2]);
+        isMyMove = true;  // after recieving move the local player has the turn
         // Force rebuild
         setState((){});
         break;
@@ -136,13 +149,14 @@ class _PlayGameState extends State<PlayGame> {
       child: ChessBoard(
         size: MediaQuery.of(context).size.width,
 
-        enableUserMoves: true,
-        whiteSideTowardsUser: ({widget.character} != 'b'),
+        enableUserMoves: isMyMove,
+        whiteSideTowardsUser: isPlayerWhite(),
 
         onMove: (moveNotation, from, to) {
+          isMyMove = false;
           gameHistory.add(moveNotation);
           // To send a move, we provide the starting square and end square
-          game.send('play', '$moveNotation;$from;$to');
+          game.send('onMove', '$moveNotation;$from;$to');
           // Force rebuild
           setState(() {});
         },
@@ -157,6 +171,14 @@ class _PlayGameState extends State<PlayGame> {
       ),
     );
   }
+
+  // method to flip the board side (white side or black side)
+  bool isPlayerWhite(){
+    if (widget.character == 'b'){
+      return false;
+    }
+    return true;
+  } 
 
   // method to return the widget containing option buttons
   Widget _buildOptionButtons() {

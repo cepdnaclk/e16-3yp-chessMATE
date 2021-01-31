@@ -108,7 +108,7 @@ wsServer.on('request', function(request) {
                 console.log(player.name);
                 break;
 
-            case 'players_list':
+            case 'request_players_list':
                 
                 var playersList = [];
                 Players.forEach(function(player){
@@ -118,7 +118,7 @@ wsServer.on('request', function(request) {
                 });
             
                 var send_message = JSON.stringify({
-                    'action': 'b_players_list',
+                    'action': 'players_list',
                     'data': playersList
                 });
                 Players[player.id].connection.sendUTF(send_message)
@@ -155,10 +155,10 @@ wsServer.on('request', function(request) {
             //
             // A player sends a move.  Let's forward the move to the other player
             //
-            case 'play':
+            case 'onMove':
                 Players[player.opponentIndex]
                 .connection
-                .sendUTF(JSON.stringify({'action':'play', 'data': message.data}));
+                .sendUTF(JSON.stringify({'action':'onMove', 'data': message.data}));
                 break;
                 
             // 
@@ -184,9 +184,18 @@ wsServer.on('request', function(request) {
             // to get the streaming matches
             // 
             case 'streaming_matches':
-                BroadcastStramingMatches();
+                var matchList = [];
+                Matches.forEach(function(match){
+                    matchList.push(match.getId());
+                    
+                });
+            
+                var send_message = JSON.stringify({
+                    'action': 'match_list',
+                    'data': matchList
+                });
+                Players[player.id].connection.sendUTF(send_message)
                 break;
-
         }
     });
 
