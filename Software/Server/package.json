@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "nodemon": "^2.0.7",
-    "websocket": "^1.0.33"
+    "websocket": "^1.0.33",
+    "mysql": "^2.18.1"
   }
 }
