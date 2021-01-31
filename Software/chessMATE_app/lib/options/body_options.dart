@@ -1,4 +1,5 @@
 import 'package:chessMATE_app/options/option_button.dart';
+import 'package:chessMATE_app/screens/learn_screen.dart';
 import 'package:chessMATE_app/screens/playerDetails_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
@@ -38,7 +39,9 @@ class BodyOptions extends StatelessWidget {
             ),
             OptionButton(
               text: "LEARN CHESS",
-              press: () {},
+              press: () {
+                Navigator.pushNamed(context, LearnScreen.id);
+              },
               color: Colors.lightBlue[700],
               icon: Icons.book,
             ),

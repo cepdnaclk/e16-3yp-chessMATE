@@ -1,3 +1,4 @@
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_button.dart';
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_input_field.dart';
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_password_field.dart';
@@ -6,8 +7,9 @@ import 'package:chessMATE_app/screens/forgotPass_screen.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 import 'package:chessMATE_app/backEnd_conn/websockets.dart';
+
+import 'login_validate.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -17,14 +19,17 @@ class LoginPage extends StatefulWidget{
 
 
 class _LoginPageState extends State<LoginPage>{
-
+  
+  List topics = ["Invalid email","Invalid password", "Invalid email & password"];
+  List msgs = ["Enter a valid email","Enter a valid password", "Enter valid email & password"];
+  static int isValid;
   // static final TextEditingController _name = new TextEditingController();
   static String _userName;
   static String _password;
   String playerName;
   List<dynamic> playersList = <dynamic>[];
 
-  
+
   @override
   void initState() {
     super.initState();
@@ -112,8 +117,37 @@ class _LoginPageState extends State<LoginPage>{
               RoundedButton(
                 text: "LOGIN",
                 press: sockets.socketStatus()? ()=>{
-                  game.send('join', _userName),
-                  Navigator.pushNamed(context, GameModeScreen.id)
+                  isValid =  validate_login(_userName, _password) ,
+                  if(isValid == 4){
+                    game.send('join', _userName),
+                    Navigator.pushNamed(context, GameModeScreen.id),
+                  }
+                  else{
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context)
+                        {
+                          return AlertDialog(
+                            title: new Text(topics[isValid], style: TextStyle(
+                              color: Colors.white,
+                            ),),
+                            content: new Text(msgs[isValid], style: TextStyle(
+                              color: Colors.white,
+                            ),),
+                            backgroundColor: Colors.lightBlue[900],
+                            actions: <Widget>[
+                              new FlatButton(onPressed: () {
+                                Navigator.of(context).pop();
+                              }, child: new Text("ok", style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),))
+                            ],
+                          );
+                        }),
+                  } 
+                 // game.send('join', _userName),
+                 // Navigator.pushNamed(context, GameModeScreen.id)
                 }:null,
               ),
               Text(
