@@ -1,9 +1,23 @@
 import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_chess_board/flutter_chess_board.dart';
+import 'chess_board.dart';
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
+
 
 class PlayGame extends StatefulWidget {
+  PlayGame({
+    Key key,
+    this.opponentName,
+    this.character,
+  }):super(key: key);
+
+  // Name of the opponent
+  final String opponentName;
+  
+  // color to be used by the player for his/her moves ("w" or "b")
+  final String character;
+
   @override
   _PlayGameState createState() => _PlayGameState();
 }
@@ -11,6 +25,8 @@ class PlayGame extends StatefulWidget {
 class _PlayGameState extends State<PlayGame> {
   static ChessBoardController controller;
   static List<String> gameHistory = [];
+  bool isMyMove;
+  
 
   // will call this method exactly once for each [State] object it creates.
   @override
@@ -20,6 +36,59 @@ class _PlayGameState extends State<PlayGame> {
       DeviceOrientation.portraitUp
     ]); // fix the orientation up for this game interface
     controller = ChessBoardController();
+    
+    // Ask to be notified when a message from the server comes in.
+    game.addListener(_onAction);
+
+    isMyMove = _firstStatusMyTurn();
+  }
+
+  @override
+  void dispose(){
+    game.removeListener(_onAction);
+    super.dispose();
+  }
+
+  // method to check first satus of move
+  _firstStatusMyTurn(){
+    if (widget.character == 'w'){
+      return true;
+    } 
+    return false;
+  }
+
+  // ---------------------------------------------------------
+  // The opponent took an action
+  // Handler of these actions
+  // ---------------------------------------------------------
+  _onAction(message){
+    switch(message["action"]){
+      
+      // The opponent resigned, so let's leave this screen
+      case 'resigned':
+        Navigator.of(context).pop();
+        break;
+
+      // The opponent played a move. So record it and rebuild the board
+      case 'onMove':
+        var data = (message["data"] as String).split(';');
+        gameHistory.add(data[0]);
+        controller.makeMove(data[1],  data[2]);
+        isMyMove = true;  // after recieving move the local player has the turn
+        // Force rebuild
+        setState((){});
+        break;
+    }
+  }
+
+  // ---------------------------------------------------------
+  // This player resigns
+  // We need to send this notification to the other player
+  // Then, leave this screen
+  // ---------------------------------------------------------
+  _doResign(){
+    game.send('resign', '');
+    Navigator.of(context).pop();
   }
 
   @override
@@ -79,8 +148,16 @@ class _PlayGameState extends State<PlayGame> {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: ChessBoard(
         size: MediaQuery.of(context).size.width,
-        onMove: (moveNotation) {
+
+        enableUserMoves: isMyMove,
+        whiteSideTowardsUser: isPlayerWhite(),
+
+        onMove: (moveNotation, from, to) {
+          isMyMove = false;
           gameHistory.add(moveNotation);
+          // To send a move, we provide the starting square and end square
+          game.send('onMove', '$moveNotation;$from;$to');
+          // Force rebuild
           setState(() {});
         },
         onCheckMate: (winColor) {
@@ -94,6 +171,14 @@ class _PlayGameState extends State<PlayGame> {
       ),
     );
   }
+
+  // method to flip the board side (white side or black side)
+  bool isPlayerWhite(){
+    if (widget.character == 'b'){
+      return false;
+    }
+    return true;
+  } 
 
   // method to return the widget containing option buttons
   Widget _buildOptionButtons() {

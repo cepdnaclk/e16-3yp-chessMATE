@@ -3,9 +3,13 @@ import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_button
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_input_field.dart';
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_password_field.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
+import 'package:chessMATE_app/signIn/sign_in_validate.dart';
 import 'package:flutter/material.dart';
 
 class BodySignIn extends StatelessWidget {
+  static String email, username, password_1, password_2, dateofbirth;
+  static List msgs = [" Invalid Username","Invalid Email", "Invalid Date", "Invalid Password", "Re-Enter the Password"];
+  static int isValid ;
   const BodySignIn({
     Key key,
   }) : super(key: key);
@@ -41,34 +45,64 @@ class BodySignIn extends StatelessWidget {
               ),
               RoudedInputField(
                 hintText: "Username",
-                onChanged: (value) {},
+                onChanged: (value) {
+                  username = value;
+                },
                 icon: Icons.person,
               ),
               RoudedInputField(
                 hintText: "Email",
-                onChanged: (value) {},
+                onChanged: (value) {
+                  email = value;
+                },
                 icon: Icons.email,
               ),
+              RoudedInputField(
+                hintText: "Date of Birth (dd-mm-yyyy)",
+                onChanged: (value) {
+                  dateofbirth = value ;
+                },
+                icon: Icons.calendar_today,
+              ),
               RoundedPasswordField(
-                onChanged: (value) {},
+                onChanged: (value) {
+                  password_1 = value ;
+                },
                 text: "Password",
               ),
               ConfirmPasswordField(
-                onChanged: (value) {},
+                onChanged: (value) {
+                  password_2 = value ;
+                },
                 text: "Confirm Password",
-              ),
-              RoudedInputField(
-                hintText: "Date of Birth",
-                onChanged: (value) {},
-                icon: Icons.calendar_today,
               ),
               RoundedButton(
                 text: "Create Account",
                 press: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GameModeScreen()));
+                  isValid = validate_sign_in(username,email,dateofbirth, password_1,password_2);
+                  if(isValid == 100)
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => GameModeScreen()));
+                  else {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context)
+                        {
+                          return AlertDialog(
+                            title: new Text(msgs[isValid], style: TextStyle(
+                              color: Colors.white,
+                            ),),
+                            backgroundColor: Colors.lightBlue[900],
+                            actions: <Widget>[
+                              new FlatButton(onPressed: () {
+                                Navigator.of(context).pop();
+                              }, child: new Text("ok", style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),))
+                            ],
+                          );
+                        });
+                  }
                 },
               ),
               SizedBox(
