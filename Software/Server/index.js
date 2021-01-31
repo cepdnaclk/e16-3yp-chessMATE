@@ -116,9 +116,46 @@ wsServer.on('request', function(request) {
             // Let's record it and as the player has a name,
             //
             case 'join':
-                player.name = message.data;
-                console.log(player.name);
-                break;
+                //fetch the username which matches the email address
+                var emailAndPassword = message.data.split(':');
+
+
+                let sqlValidity =  `SELECT Username FROM user WHERE EmailAddress = ? AND Password = ?`;
+                pool.query(sqlValidity,emailAndPassword,(err0, results, fields)=>{
+                    if(err0){
+                        return console.log(err0);
+                    }
+                    else if(results.length == 0){
+                        player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:false}));
+                    }
+                    else{
+                        player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
+                        let sqlGetUsername = `SELECT Username FROM user WHERE EmailAddress = ?`;
+                        var usernameFetched;
+                        pool.query(sqlGetUsername,emailAndPassword[0],(err1, resultsGetUsername, fields)=>{
+                            if(err1){
+                                return console.log(err1);
+                            }
+                            //Username fetched
+                            usernameFetched = JSON.stringify(resultsGetUsername[0].Username);
+                            player.name = usernameFetched;
+                            console.log(player.name);
+                            // BroadcastPlayersList();
+                            //update player status to online
+                            let sqlLogin = `UPDATE user SET Status = ? WHERE Username = ?`;
+                            let dataLogin = [1, player.name];
+                            pool.query(sqlLogin,dataLogin,(err, resultsLogin, fields)=>{
+                                if(err){
+                                    return console.log(err);
+                                }
+                                return console.log(resultsLogin);
+                            });
+                    
+                        });
+                    }
+                    
+                    
+                });
 
             case 'request_players_list':
                 request_player_id = player.id;
