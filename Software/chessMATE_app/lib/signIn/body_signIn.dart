@@ -25,6 +25,9 @@ class _BodySignInState extends State<BodySignIn> {
     "Re-Enter the Password"
   ];
   static int isValid;
+  String passwordError = "";
+  List<String> dataMsg = <String>[];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -87,17 +90,32 @@ class _BodySignInState extends State<BodySignIn> {
                 },
                 text: "Confirm Password",
               ),
+              Text(
+                passwordError,
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.0,
+                  color: Colors.red,
+                ),
+              ),
               RoundedButton(
                 text: "Create Account",
                 press: () {
                   isValid = validate_sign_in(
                       username, email, dateofbirth, password_1, password_2);
-                  if (isValid == 100)
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GameModeScreen()));
-                  else {
+                  if (isValid == 100) {
+                    if (password_1.compareTo(password_2) != 0) {
+                      changeText();
+                      return;
+                    } else {
+                      dataMsg = [username, email, password_1, dateofbirth];
+                      game.send('sign_in', dataMsg.join(":"));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    }
+                  } else {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -135,5 +153,11 @@ class _BodySignInState extends State<BodySignIn> {
         ),
       ),
     );
+  }
+
+  changeText() {
+    setState(() {
+      passwordError = "Password didn't matched!!!";
+    });
   }
 }
