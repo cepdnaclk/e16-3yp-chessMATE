@@ -108,9 +108,19 @@ wsServer.on('request', function(request) {
                 console.log(player.name);
                 break;
 
-            case 'players_list':
-                request_player_id = message.data;
-                BroadcastPlayersList(player.id);
+            case 'request_players_list':
+                request_player_id = player.id;
+                var playersList = [];
+                Players.forEach(function(player){
+                    if (player.id != request_player_id){
+                        playersList.push(player.getId());
+                    }
+                });
+            
+                player.connection.sendUTF(JSON.stringify({
+                    'action': 'players_list',
+                    'data': playersList
+                }));
                 break;
                 
             case 'resign':
@@ -144,10 +154,10 @@ wsServer.on('request', function(request) {
             //
             // A player sends a move.  Let's forward the move to the other player
             //
-            case 'play':
+            case 'onMove':
                 Players[player.opponentIndex]
                 .connection
-                .sendUTF(JSON.stringify({'action':'play', 'data': message.data}));
+                .sendUTF(JSON.stringify({'action':'onMove', 'data': message.data}));
                 break;
                 
             // 
@@ -173,61 +183,28 @@ wsServer.on('request', function(request) {
             // to get the streaming matches
             // 
             case 'streaming_matches':
-                BroadcastStramingMatches();
+                var matchList = [];
+                Matches.forEach(function(match){
+                    matchList.push(match.getId());
+                    
+                });
+            
+                var send_message = JSON.stringify({
+                    'action': 'match_list',
+                    'data': matchList
+                });
+                player.connection.sendUTF(send_message)
                 break;
-
         }
     });
 
     // user disconnected
     connection.on('close', function(connection) {
         // We need to remove the corresponding player
-        // TODO
+        var index = Players.indexOf(player);
+        if (index > -1) {
+            Players.splice(index, 1);
+        }
     });
 
 });
-
-// ---------------------------------------------------------
-// Routine to broadcast the list of all players to everyone
-// ---------------------------------------------------------
-function BroadcastPlayersList(request_player_id){
-    var playersList = [];
-    Players.forEach(function(player){
-        if (player.id != request_player_id){
-            playersList.push(player.getId());
-        }
-    });
-
-    var message = JSON.stringify({
-        'action': 'b_players_list',
-        'data': playersList
-    });
-
-    Players.forEach(function(player){
-        player.connection.sendUTF(message);
-    });
-}
-
-
-// ------------------------------------------------------------------
-// Routine to broadcast the list of all streaming matches to everyone
-// ------------------------------------------------------------------
-
-function BroadcastStramingMatches(){
-    var stream_matchList = [];
-    Matches.forEach(function(match){
-        if (match.is_Stream == true){
-            stream_matchList.push(match.getId());
-        }
-    })
-
-    var message = JSON.stringify({
-        'action': 'b_match_list',
-        'data': stream_matchList
-    });
-
-    Players.forEach(function(player){
-        player.connection.sendUTF(message);
-    });
-
-}
