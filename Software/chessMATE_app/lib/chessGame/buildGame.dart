@@ -57,6 +57,22 @@ class _PlayGameState extends State<PlayGame> {
     return false;
   }
 
+  // method to return white name
+  String returnWhiteName(){
+    if (widget.character == 'w'){
+      return ('You');
+    }
+    return (widget.opponentName);
+  }
+
+  // method to return white name
+  String returnBlackName(){
+    if (widget.character == 'b'){
+      return ('You');
+    }
+    return (widget.opponentName);
+  }
+
   // ---------------------------------------------------------
   // The opponent took an action
   // Handler of these actions
@@ -108,11 +124,11 @@ class _PlayGameState extends State<PlayGame> {
                     height: size.height * 0.12,
                   ),
                 ),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "White : " + "Player_1",
+                      "White :  " + returnWhiteName(),
                       style: TextStyle(
                           color: Colors.white,
                           height: 5,
@@ -121,7 +137,7 @@ class _PlayGameState extends State<PlayGame> {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Black : " + "Player_2",
+                      "Black :  " + returnBlackName(),
                       style: TextStyle(
                           color: Colors.white,
                           height: 5,
