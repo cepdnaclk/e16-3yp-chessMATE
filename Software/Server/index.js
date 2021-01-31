@@ -109,8 +109,19 @@ wsServer.on('request', function(request) {
                 break;
 
             case 'players_list':
-                request_player_id = message.data;
-                BroadcastPlayersList(player.id);
+                
+                var playersList = [];
+                Players.forEach(function(player){
+                    if (player.id != request_player_id){
+                        playersList.push(player.getId());
+                    }
+                });
+            
+                var send_message = JSON.stringify({
+                    'action': 'b_players_list',
+                    'data': playersList
+                });
+                Players[player.id].connection.sendUTF(send_message)
                 break;
                 
             case 'resign':
@@ -190,7 +201,7 @@ wsServer.on('request', function(request) {
 // ---------------------------------------------------------
 // Routine to broadcast the list of all players to everyone
 // ---------------------------------------------------------
-function BroadcastPlayersList(request_player_id){
+function SendPlayersList(request_player_id){
     var playersList = [];
     Players.forEach(function(player){
         if (player.id != request_player_id){
