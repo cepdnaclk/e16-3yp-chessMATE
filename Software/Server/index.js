@@ -109,7 +109,7 @@ wsServer.on('request', function(request) {
                 break;
 
             case 'request_players_list':
-                
+                request_player_id = player.id;
                 var playersList = [];
                 Players.forEach(function(player){
                     if (player.id != request_player_id){
@@ -117,11 +117,10 @@ wsServer.on('request', function(request) {
                     }
                 });
             
-                var send_message = JSON.stringify({
+                player.connection.sendUTF(JSON.stringify({
                     'action': 'players_list',
                     'data': playersList
-                });
-                Players[player.id].connection.sendUTF(send_message)
+                }));
                 break;
                 
             case 'resign':
@@ -194,7 +193,7 @@ wsServer.on('request', function(request) {
                     'action': 'match_list',
                     'data': matchList
                 });
-                Players[player.id].connection.sendUTF(send_message)
+                player.connection.sendUTF(send_message)
                 break;
         }
     });
