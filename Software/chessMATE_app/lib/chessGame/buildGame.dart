@@ -142,7 +142,7 @@ class _PlayGameState extends State<PlayGame> {
         onMove: (moveNotation, from, to) {
           gameHistory.add(moveNotation);
           // To send a move, we provide the starting square and end square
-          game.send('play', '$moveNotation$from;$to');
+          game.send('play', '$moveNotation;$from;$to');
           // Force rebuild
           setState(() {});
         },
