@@ -49,7 +49,7 @@ class BodyOptions extends StatelessWidget {
               height: size.height * 0.01,
             ),
             OptionButton(
-              text: "STREAM GAMES",
+              text: "VIEW STREAM GAMES",
               press: () {},
               color: Colors.lightBlue[900],
               icon: Icons.video_collection_rounded,
