@@ -6,13 +6,27 @@ import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/signIn/sign_in_validate.dart';
 import 'package:flutter/material.dart';
 
-class BodySignIn extends StatelessWidget {
-  static String email, username, password_1, password_2, dateofbirth;
-  static List msgs = [" Invalid Username","Invalid Email", "Invalid Date", "Invalid Password", "Re-Enter the Password"];
-  static int isValid ;
+class BodySignIn extends StatefulWidget {
   const BodySignIn({
     Key key,
   }) : super(key: key);
+
+  @override
+  _BodySignInState createState() => _BodySignInState();
+}
+
+class _BodySignInState extends State<BodySignIn> {
+  static String email, username, password_1, password_2, dateofbirth;
+  static List msgs = [
+    " Invalid Username",
+    "Invalid Email",
+    "Invalid Date",
+    "Invalid Password",
+    "Re-Enter the Password"
+  ];
+  static int isValid;
+  String passwordError = "";
+  List<String> dataMsg = <String>[];
 
   @override
   Widget build(BuildContext context) {
@@ -60,45 +74,71 @@ class BodySignIn extends StatelessWidget {
               RoudedInputField(
                 hintText: "Date of Birth (dd-mm-yyyy)",
                 onChanged: (value) {
-                  dateofbirth = value ;
+                  dateofbirth = value;
                 },
                 icon: Icons.calendar_today,
               ),
               RoundedPasswordField(
                 onChanged: (value) {
-                  password_1 = value ;
+                  password_1 = value;
                 },
                 text: "Password",
               ),
               ConfirmPasswordField(
                 onChanged: (value) {
-                  password_2 = value ;
+                  password_2 = value;
                 },
                 text: "Confirm Password",
+              ),
+              Text(
+                passwordError,
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.0,
+                  color: Colors.red,
+                ),
               ),
               RoundedButton(
                 text: "Create Account",
                 press: () {
-                  isValid = validate_sign_in(username,email,dateofbirth, password_1,password_2);
-                  if(isValid == 100)
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => GameModeScreen()));
-                  else {
+                  isValid = validate_sign_in(
+                      username, email, dateofbirth, password_1, password_2);
+                  if (isValid == 100) {
+                    if (password_1.compareTo(password_2) != 0) {
+                      changeText();
+                      return;
+                    } else {
+                      dataMsg = [username, email, password_1, dateofbirth];
+                      game.send('sign_in', dataMsg.join(":"));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    }
+                  } else {
                     showDialog(
                         context: context,
-                        builder: (BuildContext context)
-                        {
+                        builder: (BuildContext context) {
                           return AlertDialog(
-                            title: new Text(msgs[isValid], style: TextStyle(
-                              color: Colors.white,
-                            ),),
+                            title: new Text(
+                              msgs[isValid],
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                             backgroundColor: Colors.lightBlue[900],
                             actions: <Widget>[
-                              new FlatButton(onPressed: () {
-                                Navigator.of(context).pop();
-                              }, child: new Text("ok", style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),))
+                              new FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: new Text(
+                                    "ok",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
+                                  ))
                             ],
                           );
                         });
@@ -113,5 +153,11 @@ class BodySignIn extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  changeText() {
+    setState(() {
+      passwordError = "Password didn't matched!!!";
+    });
   }
 }
