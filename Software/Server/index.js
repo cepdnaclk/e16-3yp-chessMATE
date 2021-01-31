@@ -128,15 +128,16 @@ wsServer.on('request', function(request) {
             // Let's create a relationship between the 2 players and
             // notify the other player that a new game starts
             // 
+            // then add the match to the matches
             case 'new_game':
                 player.setOpponent(message.data);
                 Players[player.opponentIndex]
                 .connection
                 .sendUTF(JSON.stringify({'action':'new_game', 'data': player.name}));
-                
+
                 match_id = (player.id).concat(";").concat(message.data);
-                var match = new Match(player.id);
-                Matches.push
+                var match = new Match(player.id, message.data, match_id);
+                Matches.push(match);
                 break;
 
             //
@@ -151,7 +152,7 @@ wsServer.on('request', function(request) {
             case  'request_to_view':
                 viewer_id = player;
                 match_id = message.data;
-                Matches[]
+                Matches[match_id].viewList.push(player);
         }
     });
 
