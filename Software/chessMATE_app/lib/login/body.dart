@@ -11,36 +11,71 @@ import 'package:chessMATE_app/backEnd_conn/websockets.dart';
 
 import 'login_validate.dart';
 
-class LoginPage extends StatefulWidget{
+class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
-
 }
 
-
-class _LoginPageState extends State<LoginPage>{
-  
-  List topics = ["Invalid email","Invalid password", "Invalid email & password"];
-  List msgs = ["Enter a valid email","Enter a valid password", "Enter valid email & password"];
+class _LoginPageState extends State<LoginPage> {
+  List topics = [
+    "Invalid email",
+    "Invalid password",
+    "Invalid email & password"
+  ];
+  List msgs = [
+    "Enter a valid email",
+    "Enter a valid password",
+    "Enter valid email & password"
+  ];
   static int isValid;
   // static final TextEditingController _name = new TextEditingController();
   static String _userName;
   static String _password;
   String playerName;
   List<dynamic> playersList = <dynamic>[];
-
+  bool userCorrect;
+  String userError = "";
+  List<String> dataMsgLogin = <String>[];
 
   @override
   void initState() {
     super.initState();
     // Ask to be notified when messages related to the game are sent by the server
-    // game.addListener();
+    game.addListener(_onGameDataReceived);
   }
 
   @override
   void dispose() {
-    // game.removeListener(_onGameDataReceived);
+    game.removeListener(_onGameDataReceived);
     super.dispose();
+  }
+
+  _onGameDataReceived(message) {
+    switch (message["action"]) {
+
+      // Each time a new player joins, we need to
+      //   * record the new list of players
+      //   * rebuild the list of all the players
+
+      case 'userValidity':
+        userCorrect = message["data"];
+        if (userCorrect == false) {
+          // force rebuild
+          setState(() {
+            userError = 'Username or Password is incorrect!!';
+          });
+        } else {
+          Navigator.pushNamed(context, GameModeScreen.id);
+        }
+
+        break;
+
+      ///
+      /// When a game is launched by another player, we accept the new game and automatically redirect to the game board.
+      /// As we are not the new game initiator, we will be playing "black" (temp)
+      ///
+
+    }
   }
 
   @override
@@ -70,19 +105,30 @@ class _LoginPageState extends State<LoginPage>{
                 ),
               ),
               Container(
-                child: sockets.socketStatus()?null:Text("Server not connected",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10,
-                    color: Colors.red
-                  ),
-                )
-              ),
+                  child: sockets.socketStatus()
+                      ? null
+                      : Text(
+                          "Server not connected",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                              color: Colors.red),
+                        )),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.01,
+              ),
+              Text(
+                userError,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  fontFamily: "Acme",
+                  letterSpacing: 5,
+                  color: Colors.red,
+                ),
               ),
               RoudedInputField(
-                hintText: "Username",
+                hintText: "Email Address",
                 onChanged: (value) {
                   _userName = value;
                 },
@@ -116,39 +162,53 @@ class _LoginPageState extends State<LoginPage>{
               ),
               RoundedButton(
                 text: "LOGIN",
-                press: sockets.socketStatus()? ()=>{
-                  isValid =  validate_login(_userName, _password) ,
-                  if(isValid == 4){
-                    game.send('join', _userName),
-                    Navigator.pushNamed(context, GameModeScreen.id),
-                  }
-                  else{
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context)
-                        {
-                          return AlertDialog(
-                            title: new Text(topics[isValid], style: TextStyle(
-                              color: Colors.white,
-                            ),),
-                            content: new Text(msgs[isValid], style: TextStyle(
-                              color: Colors.white,
-                            ),),
-                            backgroundColor: Colors.lightBlue[900],
-                            actions: <Widget>[
-                              new FlatButton(onPressed: () {
-                                Navigator.of(context).pop();
-                              }, child: new Text("ok", style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),))
-                            ],
-                          );
-                        }),
-                  } 
-                 // game.send('join', _userName),
-                 // Navigator.pushNamed(context, GameModeScreen.id)
-                }:null,
+                press: sockets.socketStatus()
+                    ? () => {
+                          isValid = validate_login(_userName, _password),
+                          if (isValid == 4)
+                            {
+                              dataMsgLogin = [_userName, _password],
+                              game.send('join', dataMsgLogin.join(':')),
+                            }
+                          else
+                            {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: new Text(
+                                        topics[isValid],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      content: new Text(
+                                        msgs[isValid],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      backgroundColor: Colors.lightBlue[900],
+                                      actions: <Widget>[
+                                        new FlatButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: new Text(
+                                              "ok",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                              ),
+                                            ))
+                                      ],
+                                    );
+                                  }),
+                            }
+                          // game.send('join', _userName),
+                          // Navigator.pushNamed(context, GameModeScreen.id)
+                        }
+                    : null,
               ),
               Text(
                 'Or',

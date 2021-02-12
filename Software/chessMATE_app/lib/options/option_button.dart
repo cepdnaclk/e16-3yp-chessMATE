@@ -33,11 +33,14 @@ class OptionButton extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 17,
                   color: textColor,
                 ),
               ),
-              Icon(icon,color: Colors.white,),
+              Icon(
+                icon,
+                color: Colors.white,
+              ),
             ],
           ),
         ),
