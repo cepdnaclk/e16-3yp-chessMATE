@@ -106,6 +106,24 @@ These are our currently implemented user interface designs.
 
 ![Get all online users testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_request_players_list.jpg)
 
+**Check multiple games between multiple pairs of players**
+
+Client 1 and Client 2
+  -Client 1 initiates a new game with Client 2
+
+![New game client1 client2 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_new_game_client1_client2.jpg)
+
+![Moves client1 client2 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_send_receive_moves_client1_client2.jpg)
+
+Client 3 and Client 4
+  -Client 3 initiates a new game with Client 4
+
+![New game client3 client4 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_new_game_client3_client4.jpg)
+
+![Moves client3 client4 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_send_receive_moves_client3_client4.jpg)
+
+
+
 **Check database access and queries**
 
 When a new player sign-in into the platform a new record will be created in the database
