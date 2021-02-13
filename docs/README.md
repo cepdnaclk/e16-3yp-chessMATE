@@ -20,8 +20,8 @@
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
   - [Test Summary](#test-summary)
   - [Test Results](#test-results)
-    - [Mobile App Testing](#mobile-app-test)
-    - [Server & Database Testing](#server-&-database-testing)
+    - [Mobile App Testing](##mobile-app-test)
+    - [Server & Database Testing](##server-&-database-testing)
   - [Budget of the Product](#budget-of-the-product)
   - [Advising Lecturers](#advising-lecturers)
   - [Links](#links)
@@ -86,12 +86,12 @@ These are our currently implemented user interface designs.
 ![Test_Summary](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/testSummary.png)
 
 ## Test Results
-  
-  ### Mobile App Testing
+
+### Mobile App Testing
   
   ![Mobile_App_Test_Results](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/login_test.png)
   
-  ### Server & Database Testing
+### Server & Database Testing
 
 
 
