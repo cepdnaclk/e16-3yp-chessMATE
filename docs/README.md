@@ -93,11 +93,13 @@ These are our currently implemented user interface designs.
   
 ### Server and Database Testing
 
+Client Connection Establishments
 
+![Client connection establishment testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_client_connections.jpg)
 
 ## Budget of the Product
 
-![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
+![Budget of the Product](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
