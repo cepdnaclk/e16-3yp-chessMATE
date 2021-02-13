@@ -18,6 +18,7 @@
     - [High-Level Architecture](#high-level-architecture)
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
+  - [Cloud Architecture](#cloude-architecture)
   - [Test Summary](#test-summary)
   - [Test Results](#test-results)
     - [Mobile App Testing](#mobile-app-testing)
@@ -80,6 +81,10 @@ These are our currently implemented user interface designs.
 ![UI_Design 2](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_2.jpg)
 
 ![UI_Design 3](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_3.jpg) 
+
+## Cloud Architecture
+![cloud architecture image](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/cloud_deployment.png) 
+
 
 ## Test Summary
 
