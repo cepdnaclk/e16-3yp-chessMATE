@@ -102,6 +102,16 @@ Client Connection Establishments
 
 ![Client connection establishment testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_client_connections.jpg)
 
+Get all available online users
+
+![Get all online users testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_request_players_list.jpg)
+
+Check database access and queries
+
+![Database access and queries sign in testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_sign_in.jpg)
+
+![Database access and queries login testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_login.jpg)
+
 ## Budget of the Product
 
 ![Budget of the Product](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
