@@ -18,7 +18,7 @@
     - [High-Level Architecture](#high-level-architecture)
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
-  - [Cloud Architecture](#cloude-architecture)
+  - [Cloud Architecture](#cloud-architecture)
   - [Test Summary](#test-summary)
   - [Test Results](#test-results)
     - [Mobile App Testing](#mobile-app-testing)
