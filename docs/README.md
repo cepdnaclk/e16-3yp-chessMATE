@@ -108,6 +108,8 @@ Get all available online users
 
 Check database access and queries
 
+When a new player sign-in into the platform a new record will be created in the database
+
 ![Database access and queries sign in testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_sign_in.jpg)
 
 ![Database access and queries login testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_login.jpg)
