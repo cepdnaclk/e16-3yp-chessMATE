@@ -98,19 +98,21 @@ These are our currently implemented user interface designs.
   
 ### Server and Database Testing
 
-Client Connection Establishments
+**Client Connection Establishments**
 
 ![Client connection establishment testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_client_connections.jpg)
 
-Get all available online users
+**Get all available online users**
 
 ![Get all online users testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_request_players_list.jpg)
 
-Check database access and queries
+**Check database access and queries**
 
 When a new player sign-in into the platform a new record will be created in the database
 
 ![Database access and queries sign in testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_sign_in.jpg)
+
+When a player log into the platform his login information will be checked in the database
 
 ![Database access and queries login testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_login.jpg)
 
