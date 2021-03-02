@@ -18,6 +18,11 @@
     - [High-Level Architecture](#high-level-architecture)
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
+  - [Cloud Architecture](#cloud-architecture)
+  - [Test Summary](#test-summary)
+  - [Test Results](#test-results)
+    - [Mobile App Testing](#mobile-app-testing)
+    - [Server & Database Testing](#server-and-database-testing)
   - [Budget of the Product](#budget-of-the-product)
   - [Advising Lecturers](#advising-lecturers)
   - [Links](#links)
@@ -77,10 +82,65 @@ These are our currently implemented user interface designs.
 
 ![UI_Design 3](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_3.jpg) 
 
+## Cloud Architecture
+![cloud architecture image](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/cloud_architecture.png) 
+
+
+## Test Summary
+
+![Test_Summary](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/testSummary.png)
+
+## Test Results
+
+### Mobile App Testing
+  
+  ![Mobile_App_Test_Results](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/login_test.png)
+  
+### Server and Database Testing
+
+**Client Connection Establishments**
+
+![Client connection establishment testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_client_connections.jpg)
+
+**Get all available online users**
+
+![Get all online users testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_request_players_list.jpg)
+
+**Check multiple games between multiple pairs of players**
+
+* Client 1 initiates a new game with Client 2
+
+![New game client1 client2 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_new_game_client1_client2.jpg)
+
+* Client 3 initiates a new game with Client 4 
+
+![New game client3 client4 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_new_game_client3_client4.jpg)
+
+* Moves are sent and received by the respective clients in the parallely conducted games without resulting any conflicts.
+
+*Client 1 and Client 2*
+
+![Moves client1 client2 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_send_receive_moves_client1_client2.jpg)
+
+*Client 3 and Client 4*
+
+![Moves client3 client4 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_send_receive_moves_client3_client4.jpg)
+
+
+
+**Check database access and queries**
+
+When a new player sign-in into the platform a new record will be created in the database
+
+![Database access and queries sign in testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_sign_in.jpg)
+
+When a player log into the platform his login information will be checked in the database
+
+![Database access and queries login testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_login.jpg)
 
 ## Budget of the Product
 
-![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
+![Budget of the Product](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
