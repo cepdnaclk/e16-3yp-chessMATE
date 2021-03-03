@@ -18,10 +18,6 @@
     - [High-Level Architecture](#high-level-architecture)
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
-  - [Test Summary](#test-summary)
-  - [Test Results](#test-results)
-    - [Mobile App Testing](#mobile-app-test)
-    - [Server & Database Testing](#server-&-database-testing)
   - [Budget of the Product](#budget-of-the-product)
   - [Advising Lecturers](#advising-lecturers)
   - [Links](#links)
@@ -80,19 +76,6 @@ These are our currently implemented user interface designs.
 ![UI_Design 2](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_2.jpg)
 
 ![UI_Design 3](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_3.jpg) 
-
-## Test Summary
-
-![Test_Summary](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/testSummary.png)
-
-## Test Results
-
-### Mobile App Testing
-  
-  ![Mobile_App_Test_Results](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/login_test.png)
-  
-### Server & Database Testing
-
 
 
 ## Budget of the Product
