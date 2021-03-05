@@ -57,9 +57,9 @@ void setup() {
   writeRegisters();
 
   // dummy data to check functionality
-  moveNotation = "Nb1";  
-  moveEnd = "b1"; 
-  moveStart = "d2" ;
+  moveNotation = "Bf4";  
+  moveEnd = "f4"; 
+  moveStart = "c1" ;
   decodeMove(moveNotation, moveEnd, moveStart);
 }
 
@@ -210,19 +210,54 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
   }
   // 2. Knight
   else if((moveNotation.length() == 3) && (String(moveNotation[0]).equals("N"))){
-    // knight moved up / down
+    // knight moved up 
     if (endRow > startRow){
       cells[startRow+1][startCol] = 3;
-    }else{
+    }
+    // knight moved down
+    else{
       cells[startRow-1][startCol] = 3;
     }
-
-    // knight moved left / right
+    // knight moved right
     if (endCol > startCol){
       cells[endRow][endCol-1] = 3;
-    }else{
+    }
+    // knight moved left 
+    else{
       cells[endRow][endCol+1] = 3;
     }
   }
-
+  // 3. Bishop 
+  else if((moveNotation.length() == 3) && (String(moveNotation[0]).equals("B"))){
+    // Bishop moved up
+    if (endRow > startRow){
+      // Bishop moved right
+      if (endCol > startCol){
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow+i][startCol+i] = 3;
+        }
+      }
+      // Bishop moved left
+      else{
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow+i][startCol-i] = 3;
+        }
+      }
+    }
+    // Bishop moved down
+    else{
+      // Bishop moved right
+      if (endCol > startCol){
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow-i][startCol+i] = 3;
+        }
+      }
+      // Bishop moved left
+      else{
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow-i][startCol-i] = 3;
+        }
+      }
+    }
+  }
 }
