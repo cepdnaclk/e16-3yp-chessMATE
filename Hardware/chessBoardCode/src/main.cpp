@@ -57,9 +57,9 @@ void setup() {
   writeRegisters();
 
   // dummy data to check functionality
-  moveNotation = "Bf4";  
-  moveEnd = "f4"; 
-  moveStart = "c1" ;
+  moveNotation = "Ra1";  
+  moveEnd = "a1"; 
+  moveStart = "a2" ;
   decodeMove(moveNotation, moveEnd, moveStart);
 }
 
@@ -257,6 +257,33 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
         for (int i = 1; i < (abs(endRow-startRow)); i++){
           cells[startRow-i][startCol-i] = 3;
         }
+      }
+    }
+  }
+  // 4. Rook
+  else if((moveNotation.length() == 3) && (String(moveNotation[0]).equals("R"))){
+    // Rook moved up
+    if (endRow > startRow){
+      for (int i = 1; i < (abs(endRow-startRow)); i++){
+        cells[startRow + i][startCol] = 3;
+      }
+    }
+    // Rook moved down
+    else if (endRow < startRow){
+      for (int i = 1; i < (abs(endRow-startRow)); i++){
+        cells[startRow - i][startCol] = 3;
+      }
+    }
+    // Rook moved right
+    else if (endCol > startCol){
+      for (int i = 1; i < (abs(endCol-startCol)); i++){
+        cells[startRow][startCol+i] = 3;
+      }
+    }
+    // Rook moved left
+    else if (endCol < startCol){
+      for (int i = 1; i < (abs(endCol-startCol)); i++){
+        cells[startRow][startCol-i] = 3;
       }
     }
   }
