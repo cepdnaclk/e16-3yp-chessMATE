@@ -23,6 +23,7 @@ int startRow, startCol;
 int endRow, endCol;
 
 // cells to be lightup in the matrix
+// 1 - start square (Red), 2 - end square (green), 3 - Path of the movement (blue) 
 int cells[8][8] = {
   {0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0},
@@ -138,4 +139,26 @@ void displayPanel(){
 
   writeRegisters();
   clearRegisters();
+}
+
+// function to decode the move Notations and store in cells[][]
+void decodeMove(String moveNotation, String moveEnd, String moveStart){
+  
+  char boardCols[] = {'a', 'b', 'c', 'e', 'f', 'g', 'h'};
+
+  // ----- Decoding the start and end squares -----
+  for (int i = 0; i < 8; i++){
+    // Set the start square in the cells[][]
+    if(moveStart[0] == boardCols[i]){
+      startRow = moveStart[1] - '0'- 1;
+      startCol = i;
+      cells[startRow][startCol] = 1;
+    }
+    // set the end square in the cells 2D array
+    if(moveEnd[0] == boardCols[i]){
+      endRow = moveEnd[1] - '0' - 1;
+      endCol = i;
+      cells[endRow][endCol] = 2;
+    }
+  }
 }
