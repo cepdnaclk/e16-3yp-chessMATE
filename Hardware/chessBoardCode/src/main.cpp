@@ -43,7 +43,7 @@ void setRegisterPin(char regType, int index, boolean value);
 void decodeMove(String moveNotation, String moveEnd, String moveStart);
 
 void setup() {
-  // put your setup code here, to run once:
+  // LedPanel
   pinMode(dataPin, OUTPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
@@ -51,4 +51,13 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+}
+
+// function that set all the values of cell 2d array to zero 
+void clearCells(){
+  for (int i = 0; i < 8; i++){
+    for (int j = 0; j < 8; j++){
+      cells[i][j] = 0;
+    }
+  }
 }
