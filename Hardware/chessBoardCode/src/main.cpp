@@ -191,4 +191,20 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
       cells[endRow][endCol] = 2;
     }
   }
+
+  // ------------ Set Path of the Movement -------------
+  // 1. Pawn
+  if (moveNotation.length() == 2){
+    // additional square is going to add only if it the first move of the pawn
+    if (abs(endRow - startCol) == 2){
+      // white move
+      if (endRow > startRow){
+        cells[startRow+1][startCol] = 3;
+      }
+      // black move
+      else{
+        cells[startRow-1][startCol] = 3;
+      }
+    }
+  }
 }
