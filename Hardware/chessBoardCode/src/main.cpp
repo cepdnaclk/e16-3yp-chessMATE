@@ -207,4 +207,20 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
       }
     }
   }
+  // 2. Knight
+  else if((moveNotation.length() == 3) && (String(moveNotation[0]).equals("N"))){
+    // knight moved up / down
+    if (endRow > startRow){
+      cells[startRow + 1][startCol] = 3;
+    }else{
+      cells[startRow-1][startCol] = 3;
+    }
+
+    // knight moved left / right
+    if (endCol > startCol){
+      cells[endRow][endCol-1] = 3;
+    }else{
+      cells[endRow][endCol+1] = 3;
+    }
+  }
 }
