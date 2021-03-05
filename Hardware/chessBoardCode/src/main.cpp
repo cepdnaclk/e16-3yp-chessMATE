@@ -57,9 +57,9 @@ void setup() {
   writeRegisters();
 
   // dummy data to check functionality
-  moveNotation = "Nf3";  
-  moveEnd = "f3"; 
-  moveStart = "g1" ;
+  moveNotation = "Nb1";  
+  moveEnd = "b1"; 
+  moveStart = "d2" ;
   decodeMove(moveNotation, moveEnd, moveStart);
 }
 
@@ -86,6 +86,7 @@ void clearRegisters(){
     green_values[i] = HIGH;
     blue_values[i] = HIGH;
   }
+  
 }
 
 // function to assign HIGH/LOW to required register index
@@ -157,10 +158,10 @@ void displayPanel(){
   for (int row = 0; row < 8; row++){
     if(cells[row][col_position] == 3){
       // display end point of the movement in Blue
-      setRegisterPin('A', endRow, HIGH);
-      setRegisterPin('R', endCol, HIGH);
-      setRegisterPin('G', endCol, HIGH);
-      setRegisterPin('B', endCol, LOW);
+      setRegisterPin('A', row, HIGH);
+      setRegisterPin('R', col_position, HIGH);
+      setRegisterPin('G', col_position, HIGH);
+      setRegisterPin('B', col_position, LOW);
     }
   }
   writeRegisters();
@@ -196,7 +197,7 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
   // 1. Pawn
   if (moveNotation.length() == 2){
     // additional square is going to add only if it the first move of the pawn
-    if (abs(endRow - startCol) == 2){
+    if (abs(endRow - startRow) == 2){
       // white move
       if (endRow > startRow){
         cells[startRow+1][startCol] = 3;
@@ -211,7 +212,7 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
   else if((moveNotation.length() == 3) && (String(moveNotation[0]).equals("N"))){
     // knight moved up / down
     if (endRow > startRow){
-      cells[startRow + 1][startCol] = 3;
+      cells[startRow+1][startCol] = 3;
     }else{
       cells[startRow-1][startCol] = 3;
     }
@@ -223,4 +224,5 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
       cells[endRow][endCol+1] = 3;
     }
   }
+
 }
