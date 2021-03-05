@@ -61,3 +61,15 @@ void clearCells(){
     }
   }
 }
+
+// function that clear all register values in order to off the ledPanel 
+void clearRegisters(){
+  for(int i = 0; i < 8; i++){
+    // Since the led Panel is common anode: 
+    // in order to off a led - anode should be LOW and cathodes shoul be HIGH  
+    anode_values[i] = LOW;
+    red_values[i] = HIGH;
+    green_values[i] = HIGH;
+    blue_values[i] = HIGH;
+  }
+}
