@@ -48,6 +48,10 @@ void setup() {
   pinMode(dataPin, OUTPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
+
+  // Reset all the register pins
+  clearRegisters();
+  writeRegisters();
 }
 
 void loop() {
