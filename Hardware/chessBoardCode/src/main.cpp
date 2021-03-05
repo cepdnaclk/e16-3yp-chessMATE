@@ -73,3 +73,16 @@ void clearRegisters(){
     blue_values[i] = HIGH;
   }
 }
+
+// function to assign HIGH/LOW to required register index
+void setRegisterPin(char regType, int index, boolean value){
+  if (regType == 'R'){
+    red_values[index] = value;
+  }else if (regType == 'G'){
+    green_values[index] = value;
+  }else if(regType == 'B'){
+    blue_values[index] =value;
+  }else if(regType == 'A'){
+    anode_values[index] = value;
+  }
+}
