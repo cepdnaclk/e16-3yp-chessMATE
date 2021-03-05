@@ -86,3 +86,32 @@ void setRegisterPin(char regType, int index, boolean value){
     anode_values[index] = value;
   }
 }
+
+void writeRegisters(){
+  // Store the bit values by order to send to the shift registers
+  for (int i = 0; i < 32; i++){
+    if (i < 8){
+      register_values[i] = blue_values[7 - i];
+    }else if (i < 16){
+      register_values[i] = green_values[7 - (i - 8)];
+    }else if (i < 24){
+      register_values[i] = red_values[7 - (i - 16)];
+    }else{
+      register_values[i] = anode_values[7 - (i - 24)];
+    }
+  }
+
+  // Set latchPin to LOW inorder to start data writing to shift registers
+  digitalWrite(latchPin, LOW);
+
+  // write the register_values to datapin
+  for(int i = 0; i < 32; i++){
+    // Procedure : set clock to low -> write a bit -> set clock to high
+    digitalWrite(clockPin, LOW);
+    digitalWrite(dataPin, register_values[i]);
+    digitalWrite(clockPin, HIGH);  
+  }
+
+  // set the latchPin to HIGH after sending to registers
+  digitalWrite(latchPin, HIGH);
+}
