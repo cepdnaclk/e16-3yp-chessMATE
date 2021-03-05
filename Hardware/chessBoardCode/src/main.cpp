@@ -2,9 +2,9 @@
 
 // Define Pin Numbers for the Esp32 Dev Board
 // connections to shift Registers of LedPanel
-int dataPin = 2;
-int latchPin = 4;
-int clockPin = 5;
+int dataPin = 2;    // Pin connected to SER
+int latchPin = 4;   // Pin connected to RCLK
+int clockPin = 5;   // Pin connected to SRCLK
 
 // Arrays to hold values to be send to shift registers
 int anode_values[8];
@@ -141,11 +141,11 @@ void displayPanel(){
   writeRegisters();
   clearRegisters();
 
-  // display starting point of the movement in Green
-  setRegisterPin('A', startRow, HIGH);
-  setRegisterPin('R', startCol, HIGH);
-  setRegisterPin('G', startCol, LOW);
-  setRegisterPin('B', startCol, HIGH);
+  // display end point of the movement in Green
+  setRegisterPin('A', endRow, HIGH);
+  setRegisterPin('R', endCol, HIGH);
+  setRegisterPin('G', endCol, LOW);
+  setRegisterPin('B', endCol, HIGH);
 
   writeRegisters();
   clearRegisters();
@@ -154,7 +154,7 @@ void displayPanel(){
 // function to decode the move Notations and store in cells[][]
 void decodeMove(String moveNotation, String moveEnd, String moveStart){
   
-  char boardCols[] = {'a', 'b', 'c', 'e', 'f', 'g', 'h'};
+  char boardCols[] = {'a', 'b', 'c','d', 'e', 'f', 'g', 'h'};
 
   // ----- Decoding the start and end squares -----
   for (int i = 0; i < 8; i++){
@@ -163,12 +163,24 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
       startRow = moveStart[1] - '0'- 1;
       startCol = i;
       cells[startRow][startCol] = 1;
+      // break;
     }
+
     // set the end square in the cells 2D array
     if(moveEnd[0] == boardCols[i]){
       endRow = moveEnd[1] - '0' - 1;
       endCol = i;
       cells[endRow][endCol] = 2;
+      // break;
     }
   }
+  // for (int i = 0; i < 8; i++){
+  //   // set the end square in the cells 2D array
+  //   if(moveEnd[0] == boardCols[i]){
+  //     endRow = moveEnd[1] - '0' - 1;
+  //     endCol = i;
+  //     cells[endRow][endCol] = 2;
+  //     break;
+  //   }
+  // }
 }
