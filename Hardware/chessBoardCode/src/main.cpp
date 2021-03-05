@@ -52,10 +52,16 @@ void setup() {
   // Reset all the register pins
   clearRegisters();
   writeRegisters();
+
+  // dummy data to check functionality
+  moveNotation = "Nf3";  
+  moveEnd = "f3"; 
+  moveStart = "g1" ;
+  decodeMove(moveNotation, moveEnd, moveStart);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  displayPanel();
 }
 
 // function that set all the values of cell 2d array to zero 
