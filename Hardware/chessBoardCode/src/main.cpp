@@ -347,4 +347,9 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
       }
     }
   }
+  // King
+  else if((moveNotation.length() == 3) && (String(moveNotation[0]).equals("K"))){
+    // -> no path for kings normal movements
+    // todo: Path exists only for castling
+  }
 }
