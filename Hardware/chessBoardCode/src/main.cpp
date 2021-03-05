@@ -22,8 +22,31 @@ String moveNotation, moveEnd, moveStart;
 int startRow, startCol;
 int endRow, endCol;
 
+// cells to be lightup in the matrix
+int cells[8][8] = {
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0}
+};
+
+// set of functions need
+void clearCells();
+void displayPanel();
+void clearRegisters();
+void writeRegisters();
+void setRegisterPin(char regType, int index, boolean value);
+void decodeMove(String moveNotation, String moveEnd, String moveStart);
+
 void setup() {
   // put your setup code here, to run once:
+  pinMode(dataPin, OUTPUT);
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
 }
 
 void loop() {
