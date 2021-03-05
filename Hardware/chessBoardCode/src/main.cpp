@@ -57,9 +57,9 @@ void setup() {
   writeRegisters();
 
   // dummy data to check functionality
-  moveNotation = "Ra1";  
-  moveEnd = "a1"; 
-  moveStart = "a2" ;
+  moveNotation = "Qg7";  
+  moveEnd = "g7"; 
+  moveStart = "d4" ;
   decodeMove(moveNotation, moveEnd, moveStart);
 }
 
@@ -284,6 +284,66 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
     else if (endCol < startCol){
       for (int i = 1; i < (abs(endCol-startCol)); i++){
         cells[startRow][startCol-i] = 3;
+      }
+    }
+  }
+  // 5. Queen
+  else if((moveNotation.length() == 3) && (String(moveNotation[0]).equals("Q"))){
+    // Queen moved up
+    if (endRow > startRow){
+      // and Queen moved right
+      if (endCol > startCol){
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow+i][startCol+i] = 3;
+        }
+      }
+      // and Queen moved left
+      else if(endCol < startCol){
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow+i][startCol-i] = 3;
+        }
+      }
+      // only up
+      else{
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow+i][startCol] = 3;
+        }
+      }
+    }
+    // Queen moved down
+    else if(endRow < startRow){
+      // and Queen moved right
+      if (endCol > startCol){
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow-i][startCol+i] = 3;
+        }
+      }
+      // and Queen moved left
+      else if(endCol < startCol){
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow-i][startCol-i] = 3;
+        }
+      }
+      // only down
+      else{
+        for (int i = 1; i < (abs(endRow-startRow)); i++){
+          cells[startRow-i][startCol] = 3;
+        }
+      }
+    }
+    // queen moved only horizontally
+    else{
+      // and Queen moved right
+      if (endCol > startCol){
+        for (int i = 1; i < (abs(endCol-startCol)); i++){
+          cells[startRow][startCol+i] = 3;
+        }
+      }
+      // and Queen moved left
+      else if(endCol < startCol){
+        for (int i = 1; i < (abs(endCol-startCol)); i++){
+          cells[startRow][startCol-i] = 3;
+        }
       }
     }
   }
