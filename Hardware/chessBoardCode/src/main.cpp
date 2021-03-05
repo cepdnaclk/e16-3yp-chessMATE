@@ -115,3 +115,27 @@ void writeRegisters(){
   // set the latchPin to HIGH after sending to registers
   digitalWrite(latchPin, HIGH);
 }
+
+// function to display movement details on the matrix
+void displayPanel(){
+  // clear all LEDs
+  clearRegisters();
+
+  // display starting point of the movement in Red
+  setRegisterPin('A', startRow, HIGH);
+  setRegisterPin('R', startCol, LOW);
+  setRegisterPin('G', startCol, HIGH);
+  setRegisterPin('B', startCol, HIGH);
+
+  writeRegisters();
+  clearRegisters();
+
+  // display starting point of the movement in Green
+  setRegisterPin('A', startRow, HIGH);
+  setRegisterPin('R', startCol, HIGH);
+  setRegisterPin('G', startCol, LOW);
+  setRegisterPin('B', startCol, HIGH);
+
+  writeRegisters();
+  clearRegisters();
+}
