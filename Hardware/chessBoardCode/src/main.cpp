@@ -73,22 +73,38 @@ void setup() {
   clearRegisters();
   writeRegisters();
 
-  // // dummy data to check functionality
-  // moveNotation = "Qg7";  
-  // moveEnd = "g7"; 
-  // moveStart = "d4" ;
-  // decodeMove(moveNotation, moveEnd, moveStart);
+  moveNotation = "";
+  moveEnd = "";
+  moveStart = "";
 }
 
 void loop() {
 
   // when recieving data via bluetooth
   if (ESP_BT.available()){
+
+    // Reset all the register pins and clear the cell inorder to procede with new movement
+    clearRegisters();
+    writeRegisters();
+    clearCells();
+    
     // reads BT message --> format : moveNotation;moveStart;moveEnd
-    bt_message = ESP_BT.readString();
-    Serial.println(bt_message);
+    moveNotation = ESP_BT.readStringUntil(';');
+    moveStart = ESP_BT.readStringUntil(';');
+    moveEnd = ESP_BT.readStringUntil('\0');
+    
+    // serial print the data recieved
+    Serial.println(moveNotation);
+    Serial.println(moveStart);
+    Serial.println(moveEnd);
   }
-  // displayPanel();
+
+  // decode and display only when data is present
+  if (moveNotation != "" && moveStart != "" && moveEnd != ""){
+    // decode the movedata and display on the panel
+    decodeMove(moveNotation, moveEnd, moveStart);
+    displayPanel();
+  }
 }
 
 // function that set all the values of cell 2d array to zero 
