@@ -73,19 +73,22 @@ void setup() {
   clearRegisters();
   writeRegisters();
 
-  // dummy data to check functionality
-  moveNotation = "Qg7";  
-  moveEnd = "g7"; 
-  moveStart = "d4" ;
-  decodeMove(moveNotation, moveEnd, moveStart);
+  // // dummy data to check functionality
+  // moveNotation = "Qg7";  
+  // moveEnd = "g7"; 
+  // moveStart = "d4" ;
+  // decodeMove(moveNotation, moveEnd, moveStart);
 }
 
 void loop() {
 
+  // when recieving data via bluetooth
   if (ESP_BT.available()){
-
+    // reads BT message --> format : moveNotation;moveStart;moveEnd
+    bt_message = ESP_BT.readString();
+    Serial.println(bt_message);
   }
-  displayPanel();
+  // displayPanel();
 }
 
 // function that set all the values of cell 2d array to zero 
