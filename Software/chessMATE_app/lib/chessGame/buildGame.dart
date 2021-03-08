@@ -1,3 +1,4 @@
+import 'package:chessMATE_app/results/body_results.dart';
 import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ class PlayGame extends StatefulWidget {
     Key key,
     this.opponentName,
     this.character,
+    this.opponentId,
   }) : super(key: key);
 
   // Name of the opponent
@@ -16,6 +18,9 @@ class PlayGame extends StatefulWidget {
 
   // color to be used by the player for his/her moves ("w" or "b")
   final String character;
+
+  // id of the opponent
+  final String opponentId;
 
   @override
   _PlayGameState createState() => _PlayGameState();
@@ -92,6 +97,12 @@ class _PlayGameState extends State<PlayGame> {
         // Force rebuild
         setState(() {});
         break;
+
+      // opponent resigned. leve the screen
+      case 'exit_game' :
+        Navigator.of(context).pop();
+        break;
+
     }
   }
 
@@ -105,52 +116,87 @@ class _PlayGameState extends State<PlayGame> {
     Navigator.of(context).pop();
   }
 
+
+  // method to handdle press back button
+  Future<bool> _onBackPressed() {
+  return showDialog(
+    context: context,
+    builder: (context) => new AlertDialog(
+      title: new Text('Are you sure?',
+      style: TextStyle(color: Colors.white),
+      ),
+      content: new Text('Do you want to exit Game',
+      style: TextStyle(color: Colors.white),),
+      backgroundColor: Colors.lightBlue[900],
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text("NO", style: TextStyle(color: Colors.white),),
+        ),
+        SizedBox(height: 16),
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop(true);
+            // send a message to the server with the opponent Id
+            game.send('exit_game', widget.opponentId);
+            },
+          child: Text("YES", style: TextStyle(color: Colors.white),),
+        ),
+      ],
+    ),
+  ) ??
+      false;
+}
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Color.fromRGBO(4, 7, 40, 3),
-        body: SafeArea(
-          child: ListView(children: <Widget>[
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Image.asset(
-                    "assets/logo.png",
-                    height: size.height * 0.12,
+    return WillPopScope(
+          onWillPop: _onBackPressed,
+          child: MaterialApp(
+        home: Scaffold(
+          backgroundColor: Color.fromRGBO(4, 7, 40, 3),
+          body: SafeArea(
+            child: ListView(children: <Widget>[
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Image.asset(
+                      "assets/logo.png",
+                      height: size.height * 0.12,
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "White :  " + returnWhiteName(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          height: 5,
-                          fontFamily: "Acme",
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Black :  " + returnBlackName(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          height: 5,
-                          fontFamily: "Acme",
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            _buildChessBoard(),
-            _buildGameHistory(),
-            _buildOptionButtons(),
-          ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "White :  " + returnWhiteName(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            height: 5,
+                            fontFamily: "Acme",
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Black :  " + returnBlackName(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            height: 5,
+                            fontFamily: "Acme",
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              _buildChessBoard(),
+              _buildGameHistory(),
+              _buildOptionButtons(),
+            ]),
+          ),
         ),
       ),
     );
@@ -174,10 +220,26 @@ class _PlayGameState extends State<PlayGame> {
         },
         onCheckMate: (winColor) {
           // --> todo : pass the winning deatils to results screen
-          Navigator.pushNamed(context, ResultsScreen.id);
+          var winner, loser;
+          if(winColor == "Black"){
+            winner = returnBlackName();
+            loser = returnWhiteName();
+          }  
+          if(winColor == "White"){
+            winner = returnWhiteName();
+            loser = returnBlackName();
+          }  
+          // --> todo : pass the winning deatils to results screen
+          Navigator.push(context, new MaterialPageRoute(
+            builder: (BuildContext context) =>
+            new ResultsBody(winner: winner,loser: loser,draw: false)
+            ));
         },
         onDraw: () {
-          Navigator.pushNamed(context, ResultsScreen.id);
+          Navigator.push(context, new MaterialPageRoute(
+            builder: (BuildContext context) =>
+            new ResultsBody(winner: returnBlackName(),loser: returnWhiteName(),draw: true)
+            ));
         },
         chessBoardController: controller,
       ),
