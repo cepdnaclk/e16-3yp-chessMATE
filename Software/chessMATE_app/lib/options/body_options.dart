@@ -1,4 +1,5 @@
 import 'package:chessMATE_app/options/option_button.dart';
+import 'package:chessMATE_app/screens/game_data_screen.dart';
 import 'package:chessMATE_app/screens/learn_screen.dart';
 import 'package:chessMATE_app/screens/playerDetails_screen.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,10 @@ class BodyOptions extends StatelessWidget {
             ),
             OptionButton(
               text: "VIEW STREAM GAMES",
-              press: () {},
+              press: () {
+                game.send('streaming_matches', '');
+                Navigator.pushNamed(context, GameDataScreen.id);
+              },
               color: Colors.lightBlue[900],
               icon: Icons.video_collection_rounded,
             ),

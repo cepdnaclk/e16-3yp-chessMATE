@@ -1,3 +1,4 @@
+import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 import 'package:chessMATE_app/results/results_buttons.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/welcome_screen.dart';
@@ -6,14 +7,50 @@ import 'package:flutter/material.dart';
 class ResultsBody extends StatefulWidget {
   const ResultsBody({
     Key key,
+    this.winner,
+    this.loser,
+    this.draw,
   }) : super(key: key);
+
+  final String winner;
+  final String loser;
+  final bool draw;
 
   @override
   _ResultsBodyState createState() => _ResultsBodyState();
 }
 
 class _ResultsBodyState extends State<ResultsBody> {
-  int won = 0;
+  List<String> results = [];
+    @override
+  void initState() {
+    super.initState();
+    // Ask to be notified when messages related to the game are sent by the server
+    game.addListener(_onGameDataReceived);
+  }
+
+  @override
+  void dispose() {
+    game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
+
+  _onGameDataReceived(message){
+    
+  }
+
+  String _getResults(int index){
+    if(widget.draw == false){
+      results.add("1");
+      results.add("0");
+    }
+
+    if(widget.draw == true){
+      results.add("D");
+      results.add("D");
+    }
+    return results[index];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +75,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                 fontSize: 40,
                 fontFamily: "Acme",
                 letterSpacing: 5,
+                decoration: TextDecoration.none,
                 color: Colors.white,
               ),
             ),
@@ -57,9 +95,10 @@ class _ResultsBodyState extends State<ResultsBody> {
                     ),
                   ),
                   child: Text(
-                    "1",
+                    _getResults(0),
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                      decoration: TextDecoration.none,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
                       color: Colors.white,
@@ -75,9 +114,10 @@ class _ResultsBodyState extends State<ResultsBody> {
                     ),
                   ),
                   child: Text(
-                    "$won",
+                    _getResults(1),
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                      decoration: TextDecoration.none,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
                       color: Colors.white,
@@ -94,8 +134,9 @@ class _ResultsBodyState extends State<ResultsBody> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "PLAYER 1",
+                  widget.winner,
                   style: TextStyle(
+                    decoration: TextDecoration.none,
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
                     fontFamily: "Acme",
@@ -103,8 +144,9 @@ class _ResultsBodyState extends State<ResultsBody> {
                   ),
                 ),
                 Text(
-                  "PLAYER 2",
+                  widget.loser,
                   style: TextStyle(
+                    decoration: TextDecoration.none,
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
                     fontFamily: "Acme",
@@ -124,6 +166,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                 ResultButton(
                   text: "New Game",
                   press: () {
+                    game.send('back_to_new_game', "");
                     Navigator.pushNamed(context, GameModeScreen.id);
                   },
                   color: Colors.lightBlue[700],
@@ -131,7 +174,8 @@ class _ResultsBodyState extends State<ResultsBody> {
                 ResultButton(
                   text: "Exit",
                   press: () {
-                    Navigator.pushNamed(context, WelcomeScreen.id);
+                   game.send('log_out', "");
+                  Navigator.pushNamed(context, WelcomeScreen.id);
                   },
                   color: Colors.lightBlue[700],
                 ),

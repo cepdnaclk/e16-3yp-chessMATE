@@ -6,6 +6,7 @@ import 'package:chessMATE_app/login/already_have_an_account_check.dart';
 import 'package:chessMATE_app/screens/forgotPass_screen.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
+import 'package:chessMATE_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chessMATE_app/backEnd_conn/websockets.dart';
 
@@ -78,193 +79,230 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+
+  // method to handdle press back button
+  Future<bool> _onBackPressed() {
+  return showDialog(
+    context: context,
+    builder: (context) => new AlertDialog(
+      title: new Text('Are you sure?',
+      style: TextStyle(color: Colors.white),
+      ),
+      content: new Text('Do you want to log out?',
+      style: TextStyle(color: Colors.white),),
+      backgroundColor: Colors.lightBlue[900],
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text("NO", style: TextStyle(color: Colors.white),),
+        ),
+        SizedBox(height: 16),
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop(true);
+            // send a message to the server 
+            game.send('log_out', "");
+            // direct to the welcomscreen
+            Navigator.pushNamed(context, WelcomeScreen.id);
+            },
+          child: Text("YES", style: TextStyle(color: Colors.white),),
+        ),
+      ],
+    ),
+  ) ??
+      false;
+}
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                "assets/logo.png",
-                height: size.height * 0.2,
-              ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-              Text(
-                "LOGIN",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40,
-                  color: Colors.white,
-                  fontFamily: "Acme",
-                  letterSpacing: 7,
+    return WillPopScope(
+          onWillPop: _onBackPressed,
+          child: Container(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  "assets/logo.png",
+                  height: size.height * 0.2,
                 ),
-              ),
-              Container(
-                  child: sockets.socketStatus()
-                      ? null
-                      : Text(
-                          "Server not connected",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                              color: Colors.red),
-                        )),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              Text(
-                userError,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                  fontFamily: "Acme",
-                  letterSpacing: 5,
-                  color: Colors.red,
+                SizedBox(
+                  height: size.height * 0.05,
                 ),
-              ),
-              RoudedInputField(
-                hintText: "Email Address",
-                onChanged: (value) {
-                  _userName = value;
-                },
-                icon: Icons.email,
-              ),
-              RoundedPasswordField(
-                onChanged: (value) {
-                  _password = value;
-                },
-                text: "Password",
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, ForgotPassScreen.id);
-                    },
-                    child: Text(
-                      'Forgot Password ? ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17.0,
-                        color: Colors.lightBlue,
-                        decoration: TextDecoration.underline,
+                Text(
+                  "LOGIN",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                    color: Colors.white,
+                    fontFamily: "Acme",
+                    letterSpacing: 7,
+                  ),
+                ),
+                Container(
+                    child: sockets.socketStatus()
+                        ? null
+                        : Text(
+                            "Server not connected",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                                color: Colors.red),
+                          )),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Text(
+                  userError,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    fontFamily: "Acme",
+                    letterSpacing: 5,
+                    color: Colors.red,
+                  ),
+                ),
+                RoudedInputField(
+                  hintText: "Email Address",
+                  onChanged: (value) {
+                    _userName = value;
+                  },
+                  icon: Icons.email,
+                ),
+                RoundedPasswordField(
+                  onChanged: (value) {
+                    _password = value;
+                  },
+                  text: "Password",
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, ForgotPassScreen.id);
+                      },
+                      child: Text(
+                        'Forgot Password ? ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17.0,
+                          color: Colors.lightBlue,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              RoundedButton(
-                text: "LOGIN",
-                press: sockets.socketStatus()
-                    ? () => {
-                          isValid = validate_login(_userName, _password),
-                          if (isValid == 4)
-                            {
-                              dataMsgLogin = [_userName, _password],
-                              game.send('join', dataMsgLogin.join(':')),
-                            }
-                          else
-                            {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: new Text(
-                                        topics[isValid],
-                                        style: TextStyle(
-                                          color: Colors.white,
+                  ],
+                ),
+                RoundedButton(
+                  text: "LOGIN",
+                  press: sockets.socketStatus()
+                      ? () => {
+                            isValid = validate_login(_userName, _password),
+                            if (isValid == 4)
+                              {
+                                dataMsgLogin = [_userName, _password],
+                                game.send('join', dataMsgLogin.join(':')),
+                              }
+                            else
+                              {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: new Text(
+                                          topics[isValid],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      ),
-                                      content: new Text(
-                                        msgs[isValid],
-                                        style: TextStyle(
-                                          color: Colors.white,
+                                        content: new Text(
+                                          msgs[isValid],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      ),
-                                      backgroundColor: Colors.lightBlue[900],
-                                      actions: <Widget>[
-                                        new FlatButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: new Text(
-                                              "ok",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                              ),
-                                            ))
-                                      ],
-                                    );
-                                  }),
-                            }
-                          // game.send('join', _userName),
-                          // Navigator.pushNamed(context, GameModeScreen.id)
-                        }
-                    : null,
-              ),
-              Text(
-                'Or',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  color: Colors.blue[900],
+                                        backgroundColor: Colors.lightBlue[900],
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: new Text(
+                                                "ok",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                ),
+                                              ))
+                                        ],
+                                      );
+                                    }),
+                              }
+                            // game.send('join', _userName),
+                            // Navigator.pushNamed(context, GameModeScreen.id)
+                          }
+                      : null,
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                        color: Colors.lightBlue,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.asset(
-                      'assets/google.png',
-                      height: size.height * 0.1,
-                      width: size.width * 0.08,
-                    ),
+                Text(
+                  'Or',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.blue[900],
                   ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                        color: Colors.lightBlue,
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                          color: Colors.lightBlue,
+                        ),
+                        shape: BoxShape.circle,
                       ),
-                      shape: BoxShape.circle,
+                      child: Image.asset(
+                        'assets/google.png',
+                        height: size.height * 0.1,
+                        width: size.width * 0.08,
+                      ),
                     ),
-                    child: Image.asset(
-                      'assets/facebook.png',
-                      height: size.height * 0.1,
-                      width: size.width * 0.08,
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                          color: Colors.lightBlue,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        'assets/facebook.png',
+                        height: size.height * 0.1,
+                        width: size.width * 0.08,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AlreadyHaveAnAccountCheck(
-                press: () {
-                  Navigator.pushNamed(context, SignInScreen.id);
-                },
-              ),
-            ],
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                AlreadyHaveAnAccountCheck(
+                  press: () {
+                    Navigator.pushNamed(context, SignInScreen.id);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
