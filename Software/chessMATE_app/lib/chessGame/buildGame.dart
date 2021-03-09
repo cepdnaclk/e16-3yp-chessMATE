@@ -1,9 +1,14 @@
+import 'package:chessMATE_app/bluetooth_conn/bluetoothConn.dart';
 import 'package:chessMATE_app/results/body_results.dart';
-import 'package:chessMATE_app/screens/results_screen.dart';
+// import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'chess_board.dart';
 import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
+
+import 'dart:async';  // For performing some operations asynchronously
+import 'dart:convert';
 
 class PlayGame extends StatefulWidget {
   PlayGame({
@@ -93,6 +98,9 @@ class _PlayGameState extends State<PlayGame> {
         var data = (message["data"] as String).split(';');
         gameHistory.add(data[0]);
         controller.makeMove(data[1], data[2]);
+        if (btConnection != null){
+          _sendMessageToBluetooth(message["data"] as String);
+        }
         isMyMove = true; // after recieving move the local player has the turn
         // Force rebuild
         setState(() {});
@@ -104,6 +112,14 @@ class _PlayGameState extends State<PlayGame> {
         break;
 
     }
+  }
+
+  void _sendMessageToBluetooth(String message) async{
+    btConnection.output.add(utf8.encode(message+"\r\n"));
+    await btConnection.output.allSent;
+    setState(() {
+      
+    });
   }
 
   // ---------------------------------------------------------
