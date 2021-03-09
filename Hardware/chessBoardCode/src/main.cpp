@@ -18,6 +18,10 @@ int dataPin = 2;    // Pin connected to SER
 int latchPin = 4;   // Pin connected to RCLK
 int clockPin = 5;   // Pin connected to SRCLK
 
+// pushbutton to clear cells
+int buttonPin = 18; // pin connected to pushbutton
+bool buttonState;
+
 // Arrays to hold values to be send to shift registers
 int anode_values[8];
 int red_values[8];
@@ -69,6 +73,9 @@ void setup() {
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
 
+  // pushbutton
+  pinMode(buttonPin, INPUT);
+
   // Reset all the register pins
   clearRegisters();
   writeRegisters();
@@ -104,6 +111,22 @@ void loop() {
     // decode the movedata and display on the panel
     decodeMove(moveNotation, moveEnd, moveStart);
     displayPanel();
+  }
+
+  // read the state of the pushbutton value:
+  buttonState = digitalRead(buttonPin);
+
+  // check if the pushbutton is pressed. 
+  // If it is, clearCells()
+  if (buttonState == HIGH) {
+    // Reset all the register pins and clear the cell inorder to procede with new movement
+    clearRegisters();
+    writeRegisters();
+    clearCells();
+    moveNotation = "";
+    moveEnd = "";
+    moveStart = "";
+    Serial.println("......LED Panel Cleared.......");
   }
 }
 
