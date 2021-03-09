@@ -47,11 +47,12 @@ function Player(id, connection){
     this.name = "";
     this.opponentIndex = null;
     this.index = Players.length;
+    this.available = false;
 }
 
 Player.prototype = {
     getId: function(){
-        return {name: this.name, id: this.id};
+        return {name: this.name, id: this.id, availability: this.available};
     },
     setOpponent: function(id){
         var self = this;
@@ -98,7 +99,7 @@ wsServer.on('request', function(request) {
     var player = new Player(request.key, connection);
 
     // Add the player to the list of all players
-    Players.push(player);
+    //Players.push(player);
 
     // We need to return the unique id of that player to the player itself
     connection.sendUTF(JSON.stringify({action: 'connect', data: player.id}));
@@ -129,33 +130,60 @@ wsServer.on('request', function(request) {
                         player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:false}));
                     }
                     else{
-                        player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
-                        let sqlGetUsername = `SELECT Username FROM user WHERE EmailAddress = ?`;
                         var usernameFetched;
-                        pool.query(sqlGetUsername,emailAndPassword[0],(err1, resultsGetUsername, fields)=>{
-                            if(err1){
-                                return console.log(err1);
-                            }
-                            //Username fetched
-                            usernameFetched = JSON.stringify(resultsGetUsername[0].Username);
-                            player.name = usernameFetched;
-                            console.log(player.name);
-                            // BroadcastPlayersList();
-                            //update player status to online
-                            let sqlLogin = `UPDATE user SET Status = ? WHERE Username = ?`;
-                            let dataLogin = [1, player.name];
-                            pool.query(sqlLogin,dataLogin,(err, resultsLogin, fields)=>{
-                                if(err){
-                                    return console.log(err);
+                        usernameFetched = JSON.stringify(results[0].Username);
+                        player.name = usernameFetched;
+                        console.log(player.name);
+
+                        if(Players.length == 0){
+                            console.log("INITIAL");
+                            // first user
+                            player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
+                            // mark as available
+                            player.available = true;
+                            // add the user
+                            Players.push(player);
+                        }else if(Players.length > 0){
+                            console.log("NOT INITIAL");
+                            var logged = 0;
+                            // check whethere user has already logged 
+                            Players.forEach(function(user){ 
+                                if( usernameFetched  == user.name){
+                                    logged = 1; // already logged
                                 }
-                                return console.log(resultsLogin);
                             });
-                    
+
+                            if(logged == 0){
+                                player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
+                                // mark as available
+                                player.available = true;
+                                // add the user
+                                Players.push(player);
+                            } else{
+                                // user has already logged 
+                                player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:false}));
+                            }
+
+                        }
+
+                        /*  this part is not working */
+                        // BroadcastPlayersList();
+                        //update player status to online
+                        let sqlLogin = `UPDATE user SET Status = ? WHERE Username = ?`;
+                        let dataLogin = [1, player.name];
+                        pool.query(sqlLogin,dataLogin,(err, resultsLogin, fields)=>{
+                            if(err){
+                                return console.log(err);
+                            }
+                            return console.log(resultsLogin);
                         });
+                    
+                        
                     }
                     
                     
                 });
+                break;
 
             case 'request_players_list':
                 request_player_id = player.id;
@@ -213,6 +241,10 @@ wsServer.on('request', function(request) {
                 .sendUTF(JSON.stringify({'action':'new_game', 'data': (player.name).concat(";")
                 .concat(player.id).concat(";").
                 concat(data[1])}));
+
+                // mark the both players as not available
+                player.available = false;
+                Players[player.opponentIndex].available = false;
 
                 match_id = (player.id).concat(";").concat(data[0]);
                 var match = new Match(player.id, message.data, match_id);
@@ -327,6 +359,10 @@ wsServer.on('request', function(request) {
                 case 'exit_game':
                     opponent_id = message.data;
 
+                    // mark both players as available
+                    player.available = true;
+                    Players[player.opponentIndex].available = true;
+
                     // there ara two possible game ids
                     id_1 = (player.id).concat(";").concat(Players[player.opponentIndex].id);
                     id_2 = (Players[player.opponentIndex].id).concat(";").concat(player.id);
@@ -375,11 +411,12 @@ wsServer.on('request', function(request) {
                             match.ongoing = false;
                         }
                     });
+
+
+                    // mark both players as availabel
+                    player.available = true;
+                    Players[player.opponentIndex].available = true;
                     break;
-
-                
-
-
         }
     });
 

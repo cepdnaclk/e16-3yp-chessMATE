@@ -68,6 +68,7 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
                             opponentName: data[0], // Name of the opponent
                             opponentId: data[1],
                             willStream: data[2],
+                           // availability: data[3],
                         ),
         ));
         break;
@@ -75,13 +76,50 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
   }
 
 
-  Widget personDetailCard(Player, String id) {
+  // ignore: non_constant_identifier_names
+  Widget personDetailCard(Player, String id, bool availability) {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: InkWell(
         splashColor: Colors.red,
         onTap: () {
-          _onPlayGame(Player.username, id);
+          if(availability == true){
+            _onPlayGame(Player.username, id);
+          }else{
+            print(availability);
+            // player is not available
+            // display a message
+            showDialog(context: context,
+              builder: (BuildContext context){
+              return AlertDialog(
+                title: new Text("Selected Player is currently Unavailable",
+                  style: TextStyle(
+                  color: Colors.white,
+                  )
+                ),
+                content: new Text("Please select another Player",
+                  style: TextStyle(
+                  color: Colors.white
+                  ),
+                ),
+                backgroundColor: Colors.lightBlue[900],
+                actions: <Widget> [
+                  new FlatButton(onPressed: (){
+                    // remove pop up message
+                    Navigator.of(context).pop();
+                    },
+                    child: new Text("OK",
+                      style: TextStyle(color: Colors.white,
+                      fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            });
+
+          }
+          
         },
         child: Card(
           elevation: 20,
@@ -223,8 +261,8 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
               ),
               Column(
                   children: playersList.map((playerInfo) {
-                    Player player = new Player(profileImg: profile_Img,username: playerInfo["name"] );
-                return personDetailCard(player, playerInfo["id"]);
+                    Player player = new Player(profileImg: profile_Img,username: playerInfo["name"]);
+                return personDetailCard(player, playerInfo["id"],playerInfo["availability"]);
               }).toList()),
             ],
           ),
