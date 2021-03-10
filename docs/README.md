@@ -97,6 +97,10 @@ These are our currently implemented user interface designs.
 
 ![SignIn_Login_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/SignIn_Login_demo.gif) 
 
+- The following demonstration shows how a new game is started between two players and how the movements are being sent and received by the players successfully.
+
+![Game_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/app-vs-app-test.gif)
+
 ## PCB Designs
 
 - PCB design for Main Unit
