@@ -25,6 +25,7 @@
   - [Test Results](#test-results)
     - [Mobile App Testing](#mobile-app-testing)
     - [Server & Database Testing](#server-and-database-testing)
+  - [Embedded System Testing](#embedded-system-tests)
   - [Budget of the Product](#budget-of-the-product)
   - [Advising Lecturers](#advising-lecturers)
   - [Links](#links)
@@ -70,11 +71,11 @@ Given below diagram shows the high-level architecture of our solution.
 
 ## 3D Model of our Product
 
-Given below is the 3D overview of our chess board.
+- Given below is the 3D overview of our chess board.
 
 ![3D model](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/chessboard_3D_model.png)
 
-Following shows the 3D overview of the inner section of our chessboard. There are 64 compartments where each compartment being used by a square.
+- Following shows the 3D overview of the inner section of our chessboard. There are 64 compartments where each compartment being used by a square.
 
 ![3D model_compartments](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/compartments_3D_model.png)
 
@@ -90,6 +91,7 @@ These are our currently implemented user interface designs.
 
 ## Cloud Architecture
 ![cloud architecture image](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/cloud_architecture.png) 
+
 
 ## Mobile App Demonstrations
 
@@ -162,6 +164,21 @@ When a new player sign-in into the platform a new record will be created in the 
 When a player log into the platform his login information will be checked in the database
 
 ![Database access and queries login testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_login.jpg)
+
+## Embedded System Testing
+
+- **LED Panel Test**
+
+  - *What is the test?*
+    - Whether the opponent's move is correctly shown on the led panel
+    
+  - *Why is it important?*
+    - Ensures the correctness in indication of opponent's move
+    - Establishment of connection (Bluetooth) between Mobile app and ESP32 
+    
+  - *How was the test done?*
+  
+    ![LED panel test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/LED_Panel_Test.gif)
 
 ## Budget of the Product
 
