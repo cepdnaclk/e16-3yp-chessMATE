@@ -19,7 +19,8 @@
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
   - [Cloud Architecture](#cloud-architecture)
-  - [PCB Designs](#PCB Designs)
+  - [Mobile App Demonstrations](#mobile-app-demo)
+  - [PCB Designs](#pcb-designs)
   - [Test Summary](#test-summary)
   - [Test Results](#test-results)
     - [Mobile App Testing](#mobile-app-testing)
@@ -89,6 +90,12 @@ These are our currently implemented user interface designs.
 
 ## Cloud Architecture
 ![cloud architecture image](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/cloud_architecture.png) 
+
+## Mobile App Demonstrations
+
+- Here we have demonstrated how the Sign-In and Login functionalities work for multiple clients.
+
+![SignIn_Login_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/SignIn_Login_demo.gif) 
 
 ## PCB Designs
 
