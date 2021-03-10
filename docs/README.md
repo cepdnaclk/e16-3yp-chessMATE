@@ -65,7 +65,12 @@ Given below diagram shows the high-level architecture of our solution.
 
 Given below is the 3D overview of our chess board.
 
-![3D model](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/chessboard_3D.png)
+![3D model](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/chessboard_3D_model.png)
+
+Following shows the 3D overview of the inner section of our chessboard. There are 64 compartments where each compartment being used by a square.
+
+![3D model_compartments](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/compartments_3D_model.png)
+
 
 ## User Interfaces for Mobile Application
 
