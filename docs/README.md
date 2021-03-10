@@ -19,6 +19,7 @@
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
   - [Cloud Architecture](#cloud-architecture)
+  - [PCB Designs](#PCB Designs)
   - [Test Summary](#test-summary)
   - [Test Results](#test-results)
     - [Mobile App Testing](#mobile-app-testing)
@@ -89,6 +90,15 @@ These are our currently implemented user interface designs.
 ## Cloud Architecture
 ![cloud architecture image](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/cloud_architecture.png) 
 
+## PCB Designs
+
+- PCB design for Main Unit
+
+![PCB Main unit](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Hardware/PCB%20Designs/PCB_main_unit.png) 
+
+- PCB design for a compartment unit. 
+
+![PCB Compartment unit](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Hardware/PCB%20Designs/PCB_compartment_unit.png) 
 
 ## Test Summary
 
