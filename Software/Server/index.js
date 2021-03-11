@@ -13,7 +13,7 @@ const pool = createPool({
     user:"root",
     password:"",
     database:"chessapp_db",
-    connectionLimit:10
+    connectionLimit:10,
 
 })
 
@@ -23,9 +23,8 @@ const pool = createPool({
 var server = http.createServer(function(request, response) {});
 
 server.listen(webSocketsServerPort, function() {
-    console.log((new Date()) + " Server is listening on port "
-        + webSocketsServerPort);
-  });
+    console.log((new Date()) + " Server is listening on port "+ webSocketsServerPort);
+});
 
 /**
 * WebSocket server
@@ -48,11 +47,12 @@ function Player(id, connection){
     this.name = "";
     this.opponentIndex = null;
     this.index = Players.length;
+    this.available = false;
 }
 
 Player.prototype = {
     getId: function(){
-        return {name: this.name, id: this.id};
+        return {name: this.name, id: this.id, availability: this.available};
     },
     setOpponent: function(id){
         var self = this;
@@ -70,15 +70,16 @@ Player.prototype = {
 // Match detail structure
 function Match(player_1, player_2, id){
     this.id = id;               // player_1_id;player_2_id
-    this.player_1 = player_1;
-    this.player_2 = player_2;
+    this.player_1 = player_1; // player_1 --> white
+    this.player_2 = player_2; // player_2 --> black
     this.is_Stream = false;
     this.viewList = [];
+    this.ongoing = false;
 }
 
 Match.prototype = {
     getId: function(){
-        return {player_1: this.Player_1.name, player_2: this.Player_2.name, id: this.id};
+        return ({player_1: this.Player_1, player_2: this.Player_2, id: this.id});
     },
 
     addViewers: function(viewer_id){
@@ -98,7 +99,7 @@ wsServer.on('request', function(request) {
     var player = new Player(request.key, connection);
 
     // Add the player to the list of all players
-    Players.push(player);
+    //Players.push(player);
 
     // We need to return the unique id of that player to the player itself
     connection.sendUTF(JSON.stringify({action: 'connect', data: player.id}));
@@ -129,39 +130,66 @@ wsServer.on('request', function(request) {
                         player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:false}));
                     }
                     else{
-                        player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
-                        let sqlGetUsername = `SELECT Username FROM user WHERE EmailAddress = ?`;
                         var usernameFetched;
-                        pool.query(sqlGetUsername,emailAndPassword[0],(err1, resultsGetUsername, fields)=>{
-                            if(err1){
-                                return console.log(err1);
-                            }
-                            //Username fetched
-                            usernameFetched = JSON.stringify(resultsGetUsername[0].Username);
-                            player.name = usernameFetched;
-                            console.log(player.name);
-                            // BroadcastPlayersList();
-                            //update player status to online
-                            let sqlLogin = `UPDATE user SET Status = ? WHERE Username = ?`;
-                            let dataLogin = [1, player.name];
-                            pool.query(sqlLogin,dataLogin,(err, resultsLogin, fields)=>{
-                                if(err){
-                                    return console.log(err);
+                        usernameFetched = JSON.stringify(results[0].Username);
+                        player.name = usernameFetched;
+                        console.log(player.name);
+
+                        if(Players.length == 0){
+                            console.log("INITIAL");
+                            // first user
+                            player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
+                            // mark as available
+                            player.available = true;
+                            // add the user
+                            Players.push(player);
+                        }else if(Players.length > 0){
+                            console.log("NOT INITIAL");
+                            var logged = 0;
+                            // check whethere user has already logged 
+                            Players.forEach(function(user){ 
+                                if( usernameFetched  == user.name){
+                                    logged = 1; // already logged
                                 }
-                                return console.log(resultsLogin);
                             });
-                    
+
+                            if(logged == 0){
+                                player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
+                                // mark as available
+                                player.available = true;
+                                // add the user
+                                Players.push(player);
+                            } else{
+                                // user has already logged 
+                                player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:false}));
+                            }
+
+                        }
+
+                        /*  this part is not working */
+                        // BroadcastPlayersList();
+                        //update player status to online
+                        let sqlLogin = `UPDATE user SET Status = ? WHERE Username = ?`;
+                        let dataLogin = [1, player.name];
+                        pool.query(sqlLogin,dataLogin,(err, resultsLogin, fields)=>{
+                            if(err){
+                                return console.log(err);
+                            }
+                            return console.log(resultsLogin);
                         });
+                    
+                        
                     }
                     
                     
                 });
+                break;
 
             case 'request_players_list':
                 request_player_id = player.id;
                 var playersList = [];
                 Players.forEach(function(player){
-                    if (player.id != request_player_id){
+                    if (player.id != request_player_id && player.name != ""){
                         playersList.push(player.getId());
                     }
                 });
@@ -203,23 +231,61 @@ wsServer.on('request', function(request) {
             // 
             // then add the match to the matches
             case 'new_game':
-                player.setOpponent(message.data);
+                data = message.data.split(";");
+                // 0 -> id
+                // 1 -> name
+                // 2 -> stream or not
+                player.setOpponent(data[0]);
                 Players[player.opponentIndex]
                 .connection
-                .sendUTF(JSON.stringify({'action':'new_game', 'data': player.name}));
+                .sendUTF(JSON.stringify({'action':'new_game', 'data': (player.name).concat(";")
+                .concat(player.id).concat(";").
+                concat(data[1])}));
 
-                match_id = (player.id).concat(";").concat(message.data);
+                // mark the both players as not available
+                player.available = false;
+                Players[player.opponentIndex].available = false;
+
+                match_id = (player.id).concat(";").concat(data[0]);
                 var match = new Match(player.id, message.data, match_id);
+                match.ongoing = true;
+                if(data[2] == "Yes") match.is_Stream = true;
                 Matches.push(match);
                 break;
 
             //
-            // A player sends a move.  Let's forward the move to the other player
+            // A player sends a move.  Let's forward the move to the other player 
+            // and to all the viewers
             //
             case 'onMove':
+
+            // send move to opponent
                 Players[player.opponentIndex]
                 .connection
                 .sendUTF(JSON.stringify({'action':'onMove', 'data': message.data}));
+
+            // send move to all viewers
+            // there ara two possible game ids
+            id_1 = (player.id).concat(";").concat( Players[player.opponentIndex].id);
+            id_2 = (Players[player.opponentIndex].id).concat(";").concat(player.id);
+            
+            // find the match id
+            Matches.forEach(function(match){
+                if(match.id == id_1 || match.id == id_2){
+                    match.viewList.forEach(function(viewer){
+                        // find the players in the viewList of match
+                        Players.forEach(function(p){
+                            if(p.id == viewer){
+                                // send moves to the viewers
+                                p.connection.sendUTF(JSON.stringify({'action':'onMove', 'data': message.data}));
+                            }
+                        });
+                        
+                    });
+                }
+
+            });
+
                 break;
                 
             // 
@@ -227,9 +293,14 @@ wsServer.on('request', function(request) {
             // and the player to the correponding viewList
             //  
             case  'request_to_view':
-                viewer_id = player;
                 match_id = message.data;
-                Matches[match_id].viewList.push(player);
+
+                Matches.forEach(function(match){
+                    if(match.id == match_id){
+                        match.viewList.push(player.id);
+                    }
+                }); 
+
                 break;
 
             //
@@ -237,26 +308,115 @@ wsServer.on('request', function(request) {
             // set the is_Stream  to true of the corresponding match
             // 
             case 'request_to_stream':
-                match_id = message.data;
-                Matches[match_id].is_Stream = true;
+                opponent_id = message.data;
+                match_id = (player.id).concat(";").concat(message.data);
+
+                Matches.forEach(function(match){
+                    if (match.id == match_id){
+                        Matches[Matches.indexOf(match)].is_Stream = true;
+                    }
+                })
+                
                 break;
 
             // 
             // to get the streaming matches
             // 
             case 'streaming_matches':
+                //var matchList = [{player_1: "chami", player_2: "isu", id:"1234"}];
                 var matchList = [];
                 Matches.forEach(function(match){
-                    matchList.push(match.getId());
-                    
-                });
-            
+                    var p1_name, p2_name;
+                    if(match.ongoing == true){
+                        Players.forEach(function(player){
+                            if(player.id == match.player_1 ){
+                                p1_name = player.name;
+                            }
+                            if(player.id ==match.player_2 ){
+                                p2_name = player.name;
+                            }
+                        });
+                    }
+                        matchList.push({white_player : p1_name, black_player : p2_name, id: match.id});    
+                }); 
+
                 var send_message = JSON.stringify({
                     'action': 'match_list',
                     'data': matchList
                 });
-                player.connection.sendUTF(send_message)
+                
+                console.log(matchList);
+
+                player.connection.sendUTF(send_message);
                 break;
+
+                //
+                // when a user exit the game while playing
+                // remove that match from the match list
+                // notify the opponent
+                // notify the viewers
+                //
+                case 'exit_game':
+                    opponent_id = message.data;
+
+                    // mark both players as available
+                    player.available = true;
+                    Players[player.opponentIndex].available = true;
+
+                    // there ara two possible game ids
+                    id_1 = (player.id).concat(";").concat(Players[player.opponentIndex].id);
+                    id_2 = (Players[player.opponentIndex].id).concat(";").concat(player.id);
+
+                    Matches.forEach(function(match){
+                        if(match.id == id_1 || match.id == id_2){
+                            match.viewList.forEach(function(viewer){
+                                // notify the viewers
+                                Players.forEach(function(p){
+                                    if(p.id == viewer){
+                                        p.connection.sendUTF(JSON.stringify({'action':'exit_game', 'data': ""}));
+                                    }
+                                });
+
+                            });
+                            // remove the match
+                            Matches.splice(Matches.indexOf(match),1);
+                        }
+                    });
+
+                    // notify the opponent
+                    Players[player.opponentIndex].connection.sendUTF(JSON.stringify({'action':'exit_game', 'data': ''}))
+                    break;
+
+                // 
+                // when a user exit after a game 
+                //
+                case 'log_out':
+                    // remove the user 
+                    var index = Players.indexOf(player);
+                    if (index > -1) {
+                        Players.splice(index, 1);
+                    }
+                    // change the state of match which was played by user
+                    Matches.forEach(function(match){
+                        if(player.id == match.player_1 || player.id == match.player_2){
+                            match.ongoing = false;
+                        }
+                    });
+                    break;
+
+                case 'back_to_new_game':
+                    // change the state of match which was played by user
+                    Matches.forEach(function(match){
+                        if(player.id == match.player_1 || player.id == match.player_2){
+                            match.ongoing = false;
+                        }
+                    });
+
+
+                    // mark both players as availabel
+                    player.available = true;
+                    Players[player.opponentIndex].available = true;
+                    break;
         }
     });
 
@@ -267,6 +427,17 @@ wsServer.on('request', function(request) {
         if (index > -1) {
             Players.splice(index, 1);
         }
+
+
+        // we need to change the state of match which was played by that player
+        Matches.forEach(function(match){
+            if(match.player_1 ==player.id ){
+                match.ongoing = false;
+            }
+            if(match.player_2 ==player.id ){
+                match.ongoing = false;
+            }
+        });
     });
 
 });
