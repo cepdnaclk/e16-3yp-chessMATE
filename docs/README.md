@@ -18,6 +18,14 @@
     - [High-Level Architecture](#high-level-architecture)
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
+  - [Cloud Architecture](#cloud-architecture)
+  - [Mobile App Demonstrations](#mobile-app-demo)
+  - [PCB Designs](#pcb-designs)
+  - [Test Summary](#test-summary)
+  - [Test Results](#test-results)
+    - [Mobile App Testing](#mobile-app-testing)
+    - [Server & Database Testing](#server-and-database-testing)
+  - [Embedded System Testing](#embedded-system-tests)
   - [Budget of the Product](#budget-of-the-product)
   - [Advising Lecturers](#advising-lecturers)
   - [Links](#links)
@@ -63,9 +71,13 @@ Given below diagram shows the high-level architecture of our solution.
 
 ## 3D Model of our Product
 
-Given below is the 3D overview of our chess board.
+- Given below is the 3D overview of our chess board.
 
-![3D model](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/chessboard_3D.png)
+![3D model](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/chessboard_3D_model.png)
+
+- Following shows the 3D overview of the inner section of our chessboard. There are 64 compartments where each compartment being used by a square.
+
+![3D model_compartments](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/compartments_3D_model.png)
 
 ## User Interfaces for Mobile Application
 
@@ -77,10 +89,100 @@ These are our currently implemented user interface designs.
 
 ![UI_Design 3](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/UI_design_3.jpg) 
 
+## Cloud Architecture
+![cloud architecture image](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/cloud_architecture.png) 
+
+
+## Mobile App Demonstrations
+
+- Here we have demonstrated how the Sign-In and Login functionalities work for multiple clients.
+
+![SignIn_Login_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/SignIn_Login_demo.gif) 
+
+- The following demonstration shows how a new game is started between two players and how the movements are being sent and received by the players successfully.
+
+![Game_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/app-vs-app-test.gif)
+
+## PCB Designs
+
+- PCB design for Main Unit
+
+![PCB Main unit](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Hardware/PCB%20Designs/PCB_main_unit.png) 
+
+- PCB design for a compartment unit. 
+
+![PCB Compartment unit](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Hardware/PCB%20Designs/PCB_compartment_unit.png) 
+
+## Test Summary
+
+![Test_Summary](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/testSummary.png)
+
+## Test Results
+
+### Mobile App Testing
+  
+  ![Mobile_App_Test_Results](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/login_test.png)
+  
+### Server and Database Testing
+
+**Client Connection Establishments**
+
+![Client connection establishment testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_client_connections.jpg)
+
+**Get all available online users**
+
+![Get all online users testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_request_players_list.jpg)
+
+**Check multiple games between multiple pairs of players**
+
+* Client 1 initiates a new game with Client 2
+
+![New game client1 client2 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_new_game_client1_client2.jpg)
+
+* Client 3 initiates a new game with Client 4 
+
+![New game client3 client4 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_new_game_client3_client4.jpg)
+
+* Moves are sent and received by the respective clients in the parallely conducted games without resulting any conflicts.
+
+*Client 1 and Client 2*
+
+![Moves client1 client2 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_send_receive_moves_client1_client2.jpg)
+
+*Client 3 and Client 4*
+
+![Moves client3 client4 testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_send_receive_moves_client3_client4.jpg)
+
+
+
+**Check database access and queries**
+
+When a new player sign-in into the platform a new record will be created in the database
+
+![Database access and queries sign in testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_sign_in.jpg)
+
+When a player log into the platform his login information will be checked in the database
+
+![Database access and queries login testing](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/test_login.jpg)
+
+## Embedded System Testing
+
+- **LED Panel Test**
+
+  - *What is the test?*
+    - Whether the opponent's move is correctly shown on the led panel
+    
+  - *Why is it important?*
+    - Ensures the correctness in indication of opponent's move
+    - Establishment of connection (Bluetooth) between Mobile app and ESP32 
+    
+  - *How was the test done?*
+  
+    ![LED panel test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/LED_Panel_Test.gif)
 
 ## Budget of the Product
 
-![solution_architecture](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
+![Budget of the Product](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Images/budget.png)
 
 ### Advising Lecturers
  - Dr. Isuru Nawinne
@@ -91,5 +193,3 @@ These are our currently implemented user interface designs.
 - [Department of Computer Engineering](http://www.ce.pdn.ac.lk/)
 - [Faculty of Engineering](http://eng.pdn.ac.lk/)
 - [University of Peradeniya](https://www.pdn.ac.lk/)
-
-
