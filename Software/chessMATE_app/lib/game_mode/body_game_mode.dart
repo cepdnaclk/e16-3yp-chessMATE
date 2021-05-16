@@ -1,3 +1,4 @@
+import 'package:chessMATE_app/bluetooth_conn/bluetoothConn.dart';
 import 'package:chessMATE_app/game_mode/game_mode_buttons.dart';
 import 'package:chessMATE_app/screens/option_screen.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,10 @@ class GameModeBody extends StatelessWidget {
                 GameModeButton(
                   text: "BOARD",
                   press: () {
-                    Navigator.pushNamed(context, OptionScreen.id);
+                    // Navigator.pushNamed(context, OptionScreen.id);
+                    Navigator.push(context, new MaterialPageRoute(
+                      builder: (BuildContext context) => new BluetoothPage(),
+                    ));
                   },
                   color: Colors.orange[800].withOpacity(0.8),
                 ),
