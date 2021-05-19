@@ -5,12 +5,21 @@ import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_passwo
 import 'package:chessMATE_app/login/already_have_an_account_check.dart';
 import 'package:chessMATE_app/screens/forgotPass_screen.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
+import 'package:chessMATE_app/screens/loginScreen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 import 'package:chessMATE_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chessMATE_app/backEnd_conn/websockets.dart';
-
+import 'handle_google_sign_in.dart';
 import 'login_validate.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes:[
+    'profile',
+    'email'
+  ]
+);
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,12 +46,20 @@ class _LoginPageState extends State<LoginPage> {
   bool userCorrect;
   String userError = "";
   List<String> dataMsgLogin = <String>[];
+  GoogleSignInAccount _currentUser;
+
 
   @override
   void initState() {
     super.initState();
     // Ask to be notified when messages related to the game are sent by the server
     game.addListener(_onGameDataReceived);
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) { 
+      setState(() {
+        _currentUser = account;
+      });
+    });
+    _googleSignIn.signInSilently();
   }
 
   @override
@@ -98,12 +115,20 @@ class _LoginPageState extends State<LoginPage> {
         ),
         SizedBox(height: 16),
         new FlatButton(
-          onPressed: () {
-            Navigator.of(context).pop(true);
+          onPressed: () async {
+            if(_currentUser != null){
+              _googleSignIn.disconnect();
+              Navigator.of(context).pop(true);
+            // send a message to the server 
+            game.send('log_out', "");
+            Navigator.pushNamed(context, LoginScreen.id);
+            } else {
+              Navigator.of(context).pop(true);
             // send a message to the server 
             game.send('log_out', "");
             // direct to the welcomscreen
             Navigator.pushNamed(context, WelcomeScreen.id);
+            }
             },
           child: Text("YES", style: TextStyle(color: Colors.white),),
         ),
@@ -113,12 +138,24 @@ class _LoginPageState extends State<LoginPage> {
       false;
 }
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
+    
+    if( _currentUser != null){ // user has selected an account, then get the pasword
+      set_signIn(_googleSignIn);
+      set_currentUser(_currentUser);
+      return getPassword(context);
+    } else {  // user does not have selected an account, then wait at the login
+      return getUser(context);
+    }                                                  
+  }
+                  
+  Widget getUser(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
-          onWillPop: _onBackPressed,
-          child: Container(
+      onWillPop: _onBackPressed,
+      child: Container(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -262,7 +299,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 2,
@@ -270,14 +307,21 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         shape: BoxShape.circle,
                       ),
-                      child: Image.asset(
-                        'assets/google.png',
-                        height: size.height * 0.1,
-                        width: size.width * 0.08,
+                      child: MaterialButton(onPressed:() async{
+                        try{
+                          _googleSignIn.signIn();
+                        } catch (error){
+                          print(error);
+                        }  
+                      },
+                      color: Color.fromRGBO(4, 7, 40, 90),
+                      textColor: Colors.white,
+                      child: Text("G", style: TextStyle(fontSize: 50, color: Colors.indigo[200] ), ),
+                      shape: CircleBorder( )
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 2,
@@ -285,10 +329,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         shape: BoxShape.circle,
                       ),
-                      child: Image.asset(
-                        'assets/facebook.png',
-                        height: size.height * 0.1,
-                        width: size.width * 0.08,
+                      child: MaterialButton(onPressed:(){},
+                      color: Color.fromRGBO(4, 7, 40, 90),
+                      textColor: Colors.white,
+                      child: Text("f", style: TextStyle(fontSize: 50, color: Colors.indigo[200] ), ),
+                      shape: CircleBorder( )
                       ),
                     ),
                   ],
@@ -308,4 +353,92 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+      
+   Widget getPassword(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return WillPopScope(
+       onWillPop: _onBackPressed,
+       child: Container(
+         child: Center(
+           child : SingleChildScrollView(
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: <Widget>[
+                 Image.asset("assets/logo.png",height: size.height * 0.2,
+                 ),
+                 SizedBox( height: size.height * 0.05,),
+                 Text("LOGIN AS", style: TextStyle(color: Colors.white, fontSize: 30, fontFamily: "Acme", letterSpacing: 3),),
+                 SizedBox( height: size.height * 0.03,),
+                 Text(_currentUser.displayName, style: TextStyle(color: Colors.blue[200], fontSize: 25, fontFamily: "Acme"),),
+                 Text(_currentUser.email, style: TextStyle(color: Colors.blue[100], fontSize: 20, fontFamily: "Acme"),),
+                 Text(userError,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12,fontFamily: "Acme",letterSpacing: 5,color: Colors.red,),),
+                 SizedBox( height: size.height * 0.05,),
+                 RoundedPasswordField(
+                  onChanged: (value) {
+                    _password = value;
+                  },
+                  text: "Password",
+                  ),
+                  SizedBox( height: size.height * 0.05,),
+                  RoundedButton(
+                  text: "LOGIN",
+                  press: sockets.socketStatus()
+                      ? () => {
+                            isValid = validate_login(_currentUser.email, _password),
+                            if (isValid == 4)
+                              {
+                                dataMsgLogin = [_currentUser.email, _password],
+                                game.send('join', dataMsgLogin.join(':')),
+                                
+                              }
+                            else
+                              {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: new Text(
+                                          topics[isValid],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        content: new Text(
+                                          msgs[isValid],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        backgroundColor: Colors.lightBlue[900],
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: new Text(
+                                                "ok",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                ),
+                                              ))
+                                        ],
+                                      );
+                                    }),
+                              }
+                            // game.send('join', _userName),
+                            // Navigator.pushNamed(context, GameModeScreen.id)
+                          }
+                      : null,
+                ),
+                ],
+             ),
+           ),
+         ),
+       ),
+    );
+  }
+                  
 }
+            
+           
