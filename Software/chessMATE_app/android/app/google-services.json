@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "96243466720",
+    "project_id": "chessmate-8a1a1",
+    "storage_bucket": "chessmate-8a1a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96243466720:android:a3dbddcdbd13f3282aeb85",
+        "android_client_info": {
+          "package_name": "com.example.chessMATE_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96243466720-b9589rrujge24pn9tgb4mh5u07at25pg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chessMATE_app",
+            "certificate_hash": "ee269a68f1aa8305259fe373293b56dd74a5a950"
+          }
+        },
+        {
+          "client_id": "96243466720-vo2rk8t2agjcr883ti2dhil7p1eo5ri4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFwq0k0kexOLFxyXQJq2QwaNz1WKevX0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96243466720-vo2rk8t2agjcr883ti2dhil7p1eo5ri4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
