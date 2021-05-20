@@ -1,4 +1,5 @@
 import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
+import 'package:chessMATE_app/login/handle_google_sign_in.dart';
 import 'package:chessMATE_app/results/results_buttons.dart';
 import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/welcome_screen.dart';
@@ -176,6 +177,7 @@ class _ResultsBodyState extends State<ResultsBody> {
                   press: () {
                    game.send('log_out', "");
                   Navigator.pushNamed(context, WelcomeScreen.id);
+                  disconnect_currentUser();
                   },
                   color: Colors.lightBlue[700],
                 ),
