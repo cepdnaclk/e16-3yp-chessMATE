@@ -201,6 +201,7 @@ void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][1
 void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color);
 void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color,byte x1, byte y1);
 void printPaths(int x, int y);
+void myDebug(int x, int y, String mess);
 
 void setup() {
   // put your setup code here, to run once:
@@ -442,4 +443,53 @@ void printPaths(int x, int y)
     Serial.println();
   }
   Serial.println("***********");
+}
+
+// ************************************************************************************************************************
+// myDebug, print two numbers and a string to the Serial monitor for debugging
+void myDebug(int x, int y, String mess)
+{
+  Serial.print(mess);
+  Serial.print("   ");
+  Serial.print(x);
+  Serial.print("   ");
+  Serial.print(y);
+  Serial.println("   ");
+  
+}
+
+// *************************************************************************************************************************
+// the name of the piece for LCD readout and debugging
+String namePiece(int x, int y)
+{
+  switch (piecesValCur[y + 2][x + 2])
+  {
+    case 0: return "Empty ";
+            break;
+    case 1: return "Black Pawn ";
+            break;
+    case 3: return "Black Knight ";
+            break;
+    case 4: return "Black Bishop ";
+            break;
+    case 5: return "Black Rook ";
+            break;
+    case 9: return "Black Queen ";
+            break;
+    case 16: return "Black King ";
+            break;
+    case 129: return "White Pawn ";
+            break;
+    case 131: return "White Knight ";
+            break;
+    case 132: return "White Bishop ";
+            break;
+    case 133: return "White Rook ";
+            break;
+    case 137: return "White Queen ";
+            break;
+    case 144: return "White King ";
+            break;
+  }
+  return "ERROR";
 }
