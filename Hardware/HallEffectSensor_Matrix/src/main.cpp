@@ -13,14 +13,6 @@ BluetoothSerial ESP_BT;
 
 // color definitions
 #define BLACK 0
-#define RED 1
-#define ORANGE 2
-#define YELLOW 3
-#define GREEN 4
-#define CYAN 5
-#define BLUE 6
-#define VIOLET 7
-#define MAGENTA 8
 #define WHITE 128
 
 void setup() {
