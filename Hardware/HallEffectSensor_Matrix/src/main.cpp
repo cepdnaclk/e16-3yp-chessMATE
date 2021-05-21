@@ -208,6 +208,7 @@ void printPiecesVal(byte pieces[][12]);
 bool onPath(int xx, int yy);
 int nextTurn(int turn);
 bool kingInCheck(int turn);
+bool checkMate(int turn);
 
 void setup() {
   // put your setup code here, to run once:
@@ -626,4 +627,80 @@ bool kingInCheck(int turn)
     }
   }
   return false;
+}
+
+// ***************************************************************************************************************************
+// are we in checkmate ? return true if in checkmate
+bool checkMate(int turn)
+{
+  // Function kingInCheck has stored king position in xKingCheck, yKingCheck, and also stored 
+  // xAttackPos and yAttackPos of attacking piece.
+  // pathToKingInCheck(xKingCheck, yKingCheck, xAttackPos, yAttackPos) stores the path between
+  // the two in int variables xPathtoKing[6], yPathtoKing[6], and pathtoKingCount
+
+  // can the king move to get out of check
+  // get the paths for the king which is in check
+  getPaths(piecesValCur[yKingCheck + 2][xKingCheck + 2], xKingCheck, yKingCheck, turn);
+  printPaths(xKingCheck, yKingCheck);
+  // pathtoKingCount needs to be zeroed before returning this function
+  for (int i = 0; i < pathCount; i++)        // paths king can move to
+  {
+    for (int j = 0; j < pathtoKingCount; j++)  // attack path to king
+    {
+      if (!((pathX[i] == xPathtoKing[j]) && (pathY[i] == yPathtoKing[j])))
+      {
+        // There is a square the king can move to that is not on the path
+        // from the attacking piece to the king, but will king move into check from another piece?
+        myDebug(pathX[i], pathY[i], "Path king can move to");
+        if (squareInOpponentPath(pathX[i], pathY[i], turn))
+        {
+          // this square will have king in check if king moves there 
+          continue;
+        }
+        else
+        {
+          // square is open - no checkmate
+         
+          pathtoKingCount = 0;
+          pathCount = 0;
+          return false;
+        }
+      }
+    }
+  }
+
+  // now we check to see if we can move a piece to block attacking piece
+
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (((turn == BLACK) && (piecesValCur[y + 2][x + 2] >= BLACK_PAWN) && (piecesValCur[y + 2][x + 2] <= BLACK_QUEEN)) ||
+          ((turn == WHITE) && (piecesValCur[y + 2][x + 2] >= WHITE_PAWN) && (piecesValCur[y + 2][x + 2] <= WHITE_QUEEN)))
+      {
+        pathCount = 0;
+        getPaths(piecesValCur[y + 2][x + 2], x, y, turn);
+        // printPaths(x, y);
+        for (int i = 0; i < pathCount; i++)
+        {
+          for (int j = 0; j < pathtoKingCount; j++)
+          {
+            if (((pathX[i] == xPathtoKing[j]) && (pathY[i] == yPathtoKing[j])) ||   // piece can move to attacking path
+                ((pathX[i] == xAttackPos) && (pathY[i] == yAttackPos)))             // or can capture the attacking piece
+            {
+              // we can block attacking piece
+              myDebug(pathX[i], pathY[i], "Blocking piece for king");
+              pathtoKingCount = 0;
+              pathCount = 0;
+              return false;
+            }
+          }
+        }
+      }
+    }
+  }
+  pathtoKingCount = 0;
+  // if we get here, checkmate
+  Serial.println("    CHECKMATE!      ");
+  return true;
 }
