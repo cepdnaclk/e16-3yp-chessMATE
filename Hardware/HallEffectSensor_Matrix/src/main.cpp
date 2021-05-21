@@ -167,6 +167,13 @@ byte piecesError[8][8] =   {{1, 1, 1, 1, 1, 1, 1, 1},
                             {1, 1, 1, 1, 1, 1, 1, 1},
                             {1, 1, 1, 1, 1, 1, 1, 1}};
 
+// characters to produce standard chess notation
+// x = columns, files, a in LL, a b c d e f g h
+// y = rows, ranks, 1 in LL, 1 2 3 4 5 6 7 8
+
+// the String rankFile(int x, int y) function will use these
+String files[8] = {"a","b","c","d","e","f","g","h"};
+String ranks[8] = {"8","7","6","5","4","3","2","1"};
 
 void setup() {
   // put your setup code here, to run once:
