@@ -49,6 +49,20 @@ byte piecesVal[12][12] =  {{BORDER, BORDER, BORDER,     BORDER,       BORDER,   
                            {BORDER, BORDER, BORDER,     BORDER,       BORDER,       BORDER,      BORDER,     BORDER,       BORDER,       BORDER,     BORDER, BORDER},
                            {BORDER, BORDER, BORDER,     BORDER,       BORDER,       BORDER,      BORDER,     BORDER,       BORDER,       BORDER,     BORDER, BORDER}};
   
+// current piece values
+byte piecesValCur[12][12] = {{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255},  
+                             {255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255},
+                             {255, 255,   5,   3,   4,   9,  16,   4,   3,   5, 255, 255},
+                             {255, 255,   1,   1,   1,   1,   1,   1,   1,   1, 255, 255},
+                             {255, 255,   0,   0,   0,   0,   0,   0,   0,   0, 255, 255},
+                             {255, 255,   0,   0,   0,   0,   0,   0,   0,   0, 255, 255},
+                             {255, 255,   0,   0,   0,   0,   0,   0,   0,   0, 255, 255},
+                             {255, 255,   0,   0,   0,   0,   0,   0,   0,   0, 255, 255},
+                             {255, 255, 129, 129, 129, 129, 129, 129, 129, 129, 255, 255},
+                             {255, 255, 133, 131, 132, 137, 144, 132, 131, 133, 255, 255},
+                             {255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255},
+                             {255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}};
+
 
 void setup() {
   // put your setup code here, to run once:
