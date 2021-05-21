@@ -195,6 +195,7 @@ int start_nt_file, start_nt_rank, end_nt_file, end_nt_rank; // store the splitte
 // set of functions need
 int scanBoardStart(byte piecesTemp[][8]);
 int scanBoard(byte piecesTemp[][8], byte piece_color);
+bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8]);
 
 void setup() {
   // put your setup code here, to run once:
@@ -225,13 +226,12 @@ int scanBoardStart(byte piecesTemp[][8])
 }
 
 //*************************************************************************************************************************
-//scan the board except at begining
+// scan the board except at begining
 int scanBoard(byte piecesTemp[][8], byte piece_color)
 {
-
   if(Serial.available()>0)
   {
-    //get the chess notations as strings
+    // get the chess notations as strings
     String y1 = Serial.readStringUntil(';');
     String x1 = Serial.readStringUntil(';');
     String ch = Serial.readStringUntil('\n');
@@ -240,8 +240,7 @@ int scanBoard(byte piecesTemp[][8], byte piece_color)
     Serial.println("rank : "+x1);
     Serial.println("action : "+ch);
     
-
-    //find the coordinates in the matrix corresponding to the chess notations
+    // find the coordinates in the matrix corresponding to the chess notations
     int x = searchIndex(files, y1); //column
     int y = searchIndex(ranks, x1); //row
 
@@ -257,16 +256,13 @@ int scanBoard(byte piecesTemp[][8], byte piece_color)
 
     if(ch.equals("remove"))
     {
-      scanPieces1[y][x] = 0;
-      
+      scanPieces1[y][x] = 0;    
     }
     else if(ch.equals("return"))
     {
       scanPieces1[y][x] = 1;
       endPos = y1 + x1;
-
-    }
-    
+    }    
   }
     int count = 0;
     for (int y = 0; y < 8; y++)
@@ -280,6 +276,25 @@ int scanBoard(byte piecesTemp[][8], byte piece_color)
         }
       }
     }
-    return count; 
-  
+    return count;   
+}
+
+// *************************************************************************************************************************
+// compare piece arrays
+bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8])
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (piecesTemp1[y][x] != piecesCurrent[y][x])
+      {
+        // First piece that doesn't match previous,
+        // Write to xx, yy and return
+        xx = x; yy = y;
+        return false;         // arrays are different
+      }
+    }
+  }
+  return true;                // arrays are the same
 }
