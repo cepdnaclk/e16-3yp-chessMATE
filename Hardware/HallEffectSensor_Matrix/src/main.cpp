@@ -175,6 +175,23 @@ byte piecesError[8][8] =   {{1, 1, 1, 1, 1, 1, 1, 1},
 String files[8] = {"a","b","c","d","e","f","g","h"};
 String ranks[8] = {"8","7","6","5","4","3","2","1"};
 
+int c;                                                      // for returned count
+bool same, flag;                                            // to compare arrays and flag end of loops
+byte turn = WHITE;                                          // White's turn first
+byte bdCount = 32, bdCountHist;                             // 32 pieces to start, number of pieces currently in play
+int pathX[30], pathY[30], pathVal[30], pathCount = 0;       // path values and total paths
+int xx1, xx2, xx3, yy1, yy2, yy3;                           // active piece locations
+int xKingCheck, yKingCheck, xAttackPos, yAttackPos;         // stored positions for king in check and its attacking piece
+int xPathtoKing[6], yPathtoKing[6], pathtoKingCount;        // path between king and attacking piece
+String message;                                             // for serial monitor output
+String startPos, endPos;                                    // start and end of a move
+String my_turn;                                             // store the received turn from app
+byte my_piece_color, opp_piece_color;                       // store the piece colors of two players
+String start_notation, end_notation;                        // for opponent's move notation
+String turnFlag;                                            // store turn before changing
+int fileInt, rankInt;                                       // to store position input
+int start_nt_file, start_nt_rank, end_nt_file, end_nt_rank; // store the splitted opponent move notation received
+
 void setup() {
   // put your setup code here, to run once:
 }
