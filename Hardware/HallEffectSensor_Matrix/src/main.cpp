@@ -15,6 +15,10 @@ BluetoothSerial ESP_BT;
 #define BLACK 0
 #define WHITE 128
 
+// misc defines
+#define RETRIEVE 0
+#define STORE 1
+
 void setup() {
   // put your setup code here, to run once:
 }
