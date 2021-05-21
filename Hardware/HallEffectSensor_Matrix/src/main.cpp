@@ -395,3 +395,33 @@ void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color)
   } while (flag == false);
   Serial.println("Error is over!! Re-enter the correct move!!");
 }
+
+// *************************************************************************************************************************
+// Show an error state and wait for correction, ie. all pieces replaced to positions before the error
+void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color,byte x1, byte y1)
+{
+  bool flag;
+  int total;
+
+  do
+  {
+    flag = true;
+    total = scanBoard(piecesError, piece_color);
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        if (piecesError[y][x] != piecesCurrent[y][x])
+        {
+          Serial.println("Error!! Return the piece back!!");
+          //myDebug(x1, y1, "Error here");
+          delay(1000);
+          flag = false;
+          break;
+        }
+        if (flag == false) break;   // needed for double loop
+      }
+    }
+  } while (flag == false);
+  Serial.println("Error is over!! Re-enter the correct move!!");
+}
