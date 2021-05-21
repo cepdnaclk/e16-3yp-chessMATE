@@ -206,6 +206,7 @@ String namePiece(int x, int y);
 void printPiecesLoc(byte pieces[][8]);
 void printPiecesVal(byte pieces[][12]);
 bool onPath(int xx, int yy);
+int nextTurn(int turn);
 
 void setup() {
   // put your setup code here, to run once:
@@ -552,4 +553,21 @@ bool onPath(int xx, int yy)
     }
   }
   return false;       // Position not on path
+}
+
+// *************************************************************************************************************************
+// Toggles turn for certain use of getPaths
+int nextTurn(int turn)
+{
+  // This just return the opposite of turn, ie. the next turn
+  int t;
+  if (turn == BLACK)
+  {
+    t = WHITE;
+  }
+  else
+  {
+    t = BLACK;
+  }
+  return t;
 }
