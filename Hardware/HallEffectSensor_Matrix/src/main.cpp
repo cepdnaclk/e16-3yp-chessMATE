@@ -199,6 +199,8 @@ bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTe
 bool comparePieceArraysStart();
 void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][12], byte piecesCurrent[][8], byte piecesHist[][8], byte bdCount, byte bdCountHist);
 void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color);
+void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color,byte x1, byte y1);
+
 
 void setup() {
   // put your setup code here, to run once:
