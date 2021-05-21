@@ -204,6 +204,7 @@ void printPaths(int x, int y);
 void myDebug(int x, int y, String mess);
 String namePiece(int x, int y);
 void printPiecesLoc(byte pieces[][8]);
+void printPiecesVal(byte pieces[][12]);
 
 void setup() {
   // put your setup code here, to run once:
@@ -503,6 +504,27 @@ void printPiecesLoc(byte pieces[][8])
   for (int y = 0; y < 8; y++)
   {
     for (int x = 0; x < 8; x++)
+    {
+      // The if statements space things nicely
+      if (pieces[y][x] < 10) Serial.print("  ");
+      if ((pieces[y][x] >= 10) && (pieces[y][x] < 100)) Serial.print(" ");
+      Serial.print(pieces[y][x]);
+      Serial.print("  ");
+    }
+    Serial.println();
+    Serial.println();
+  }
+  Serial.println();
+  Serial.println();
+}
+
+// *************************************************************************************************************************
+// print the piece values to the Serial monitor for debugging
+void printPiecesVal(byte pieces[][12])
+{
+  for (int y = 2; y < 10; y++)
+  {
+    for (int x = 2; x < 10; x++)
     {
       // The if statements space things nicely
       if (pieces[y][x] < 10) Serial.print("  ");
