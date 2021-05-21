@@ -202,6 +202,8 @@ void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color)
 void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color,byte x1, byte y1);
 void printPaths(int x, int y);
 void myDebug(int x, int y, String mess);
+String namePiece(int x, int y);
+void printPiecesLoc(byte pieces[][8]);
 
 void setup() {
   // put your setup code here, to run once:
@@ -492,4 +494,25 @@ String namePiece(int x, int y)
             break;
   }
   return "ERROR";
+}
+
+// *************************************************************************************************************************
+// print the piece locations to the Serial monitor for debugging
+void printPiecesLoc(byte pieces[][8])
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      // The if statements space things nicely
+      if (pieces[y][x] < 10) Serial.print("  ");
+      if ((pieces[y][x] >= 10) && (pieces[y][x] < 100)) Serial.print(" ");
+      Serial.print(pieces[y][x]);
+      Serial.print("  ");
+    }
+    Serial.println();
+    Serial.println();
+  }
+  Serial.println();
+  Serial.println();
 }
