@@ -192,10 +192,33 @@ String turnFlag;                                            // store turn before
 int fileInt, rankInt;                                       // to store position input
 int start_nt_file, start_nt_rank, end_nt_file, end_nt_rank; // store the splitted opponent move notation received
 
+// set of functions need
+int scanBoardStart(byte piecesTemp[][8]);
+
 void setup() {
   // put your setup code here, to run once:
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+}
+
+//*************************************************************************************************************************
+// scan the board at begining
+int scanBoardStart(byte piecesTemp[][8])
+{
+  
+    int count = 0;
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        piecesTemp[y][x] = scanPieces1[y][x];
+        if (scanPieces1[y][x] == 0x01)
+        {
+          count++;        
+        }
+      }
+    }
+    return count; 
 }
