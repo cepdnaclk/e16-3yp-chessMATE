@@ -205,6 +205,7 @@ void myDebug(int x, int y, String mess);
 String namePiece(int x, int y);
 void printPiecesLoc(byte pieces[][8]);
 void printPiecesVal(byte pieces[][12]);
+bool onPath(int xx, int yy);
 
 void setup() {
   // put your setup code here, to run once:
@@ -537,4 +538,18 @@ void printPiecesVal(byte pieces[][12])
   }
   Serial.println();
   Serial.println();
+}
+
+// *************************************************************************************************************************
+// is position on a path?
+bool onPath(int xx, int yy)
+{
+  for (int i = 0; i < pathCount; i++)
+  {
+    if ((xx == pathX[i]) && (yy == pathY[i]))
+    {
+      return true;    // When we find position on path return
+    }
+  }
+  return false;       // Position not on path
 }
