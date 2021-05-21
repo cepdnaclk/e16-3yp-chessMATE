@@ -207,6 +207,7 @@ void printPiecesLoc(byte pieces[][8]);
 void printPiecesVal(byte pieces[][12]);
 bool onPath(int xx, int yy);
 int nextTurn(int turn);
+bool kingInCheck(int turn);
 
 void setup() {
   // put your setup code here, to run once:
@@ -570,4 +571,59 @@ int nextTurn(int turn)
     t = BLACK;
   }
   return t;
+}
+
+// *************************************************************************************************************************
+// is the King in check ?
+bool kingInCheck(int turn)
+{
+  // This one is tricky, we go though entire array looking for the next turn's pieces
+  // Then we find the paths for the next turn's pieces and if the turn's king
+  // is on one of these paths then that king will be in check. We color the square
+  // with the piece that puts the king in check violet.
+  pathCount = 0;
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (((turn == WHITE) && (piecesValCur[y + 2][x + 2] >= BLACK_PAWN) && (piecesValCur[y + 2][x + 2] <= BLACK_KING)) ||
+          ((turn == BLACK) && (piecesValCur[y + 2][x + 2] >= WHITE_PAWN) && (piecesValCur[y + 2][x + 2] <= WHITE_KING)))
+      {
+       // Serial.println(piecesValCur[y + 2][x + 2]);
+       // myDebug(x, y, "Square");
+        getPaths(piecesValCur[y + 2][x + 2], x, y, nextTurn(turn));
+        // printPaths(x, y);
+        for (int i = 0; i < pathCount; i++)
+        {
+           if (((pathVal[i] == BLACK_KING) && (turn == BLACK)) || ((pathVal[i] == WHITE_KING) && (turn == WHITE)))
+           {
+              
+              if (turn == BLACK)
+              {
+                Serial.println("Black King in Check");
+               
+              }
+              else 
+              {
+                Serial.println("White King in Check");
+                
+              }
+              myDebug(pathX[i], pathY[i], namePiece(pathX[i], pathY[i]));
+              // Save the position of the king in check
+              xKingCheck = pathX[i]; yKingCheck = pathY[i];
+              // Save the position of the attacking piece
+              myDebug(x, y, "Attacking piece");
+              xAttackPos = x; yAttackPos = y;
+              pathToKingInCheck(xKingCheck, yKingCheck, xAttackPos, yAttackPos);
+//              colorSquare(xAttackPos, yAttackPos, colors[VIOLET], true);
+//              colorSquare(xKingCheck, yKingCheck, colors[VIOLET], true);
+              pathCount = 0;
+              return true;
+           }
+        }
+        pathCount = 0;
+      }
+    }
+  }
+  return false;
 }
