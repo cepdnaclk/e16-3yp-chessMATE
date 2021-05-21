@@ -198,6 +198,7 @@ int scanBoard(byte piecesTemp[][8], byte piece_color);
 bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8]);
 bool comparePieceArraysStart();
 void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][12], byte piecesCurrent[][8], byte piecesHist[][8], byte bdCount, byte bdCountHist);
+void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color);
 
 void setup() {
   // put your setup code here, to run once:
@@ -362,4 +363,33 @@ void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][1
     {
       bdCount = bdCountHist;
     }
+}
+
+// *************************************************************************************************************************
+// show an error state and wait for correction, ie. all pieces replaced to positions before the error
+void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color)
+{
+  bool flag;
+  int total;
+
+  do
+  {
+    flag = true;
+    total = scanBoard(piecesError, piece_color);
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        if (piecesError[y][x] != piecesCurrent[y][x])
+        {
+          myDebug(x, y, "Error here");
+          delay(1000);
+          flag = false;
+          break;
+        }
+        if (flag == false) break;   // needed for double loop
+      }
+    }
+  } while (flag == false);
+  Serial.println("Error is over!! Re-enter the correct move!!");
 }
