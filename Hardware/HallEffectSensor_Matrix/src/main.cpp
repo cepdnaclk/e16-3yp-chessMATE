@@ -196,6 +196,7 @@ int start_nt_file, start_nt_rank, end_nt_file, end_nt_rank; // store the splitte
 int scanBoardStart(byte piecesTemp[][8]);
 int scanBoard(byte piecesTemp[][8], byte piece_color);
 bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8]);
+bool comparePieceArraysStart();
 
 void setup() {
   // put your setup code here, to run once:
@@ -292,6 +293,23 @@ bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTe
         // First piece that doesn't match previous,
         // Write to xx, yy and return
         xx = x; yy = y;
+        return false;         // arrays are different
+      }
+    }
+  }
+  return true;                // arrays are the same
+}
+
+// *************************************************************************************************************************
+// compare piece arrays at the begining
+bool comparePieceArraysStart()
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (piecesTemp1[y][x] != pieces[y][x])
+      {
         return false;         // arrays are different
       }
     }
