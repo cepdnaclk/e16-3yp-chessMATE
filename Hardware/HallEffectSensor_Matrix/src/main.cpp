@@ -197,6 +197,7 @@ int scanBoardStart(byte piecesTemp[][8]);
 int scanBoard(byte piecesTemp[][8], byte piece_color);
 bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8]);
 bool comparePieceArraysStart();
+void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][12], byte piecesCurrent[][8], byte piecesHist[][8], byte bdCount, byte bdCountHist);
 
 void setup() {
   // put your setup code here, to run once:
@@ -315,4 +316,50 @@ bool comparePieceArraysStart()
     }
   }
   return true;                // arrays are the same
+}
+
+// ************************************************************************************************************************
+// store or retrieve prievous board settings to be able to undo a move
+void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][12], byte piecesCurrent[][8], byte piecesHist[][8], byte bdCount, byte bdCountHist)
+{
+  // This is just a brute force store or retrieve of all the piece positions and values on the board.
+  // The borders could have been eliminated.
+  for (int y = 0; y < 12; y++)
+    {
+      for (int x = 0; x < 12; x++)
+      {
+        if (dir == STORE)
+        {
+          piecesValHist[y][x] = piecesValCur[y][x];
+        }
+        else if (dir == RETRIEVE)
+        {
+          piecesValCur[y][x] = piecesValHist[y][x];
+        }
+      }
+    }
+
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        if (dir == STORE)
+        {
+          piecesHist[y][x] = piecesCurrent[y][x];
+        }
+        else if (dir == RETRIEVE)
+        {
+          piecesCurrent[y][x] = piecesHist[y][x];
+        }
+      }
+    }
+
+    if (dir == STORE)
+    {
+      bdCountHist = bdCount;
+    }
+    else if (dir == RETRIEVE)
+    {
+      bdCount = bdCountHist;
+    }
 }
