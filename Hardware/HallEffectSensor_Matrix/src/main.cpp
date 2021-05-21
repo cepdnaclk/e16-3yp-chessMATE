@@ -200,7 +200,7 @@ bool comparePieceArraysStart();
 void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][12], byte piecesCurrent[][8], byte piecesHist[][8], byte bdCount, byte bdCountHist);
 void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color);
 void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color,byte x1, byte y1);
-
+void printPaths(int x, int y);
 
 void setup() {
   // put your setup code here, to run once:
@@ -424,4 +424,22 @@ void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_col
     }
   } while (flag == false);
   Serial.println("Error is over!! Re-enter the correct move!!");
+}
+
+// ************************************************************************************************************************
+// print the paths to the Serial monitor for debugging
+void printPaths(int x, int y)
+{
+  Serial.print("Paths for ");
+  Serial.println(namePiece(x, y));
+  for (int i = 0; i < pathCount; i++)
+  {
+    Serial.print(pathX[i]);
+    Serial.print("   ");
+    Serial.print(pathY[i]);
+    Serial.print("   ");
+    Serial.print(pathVal[i]);
+    Serial.println();
+  }
+  Serial.println("***********");
 }
