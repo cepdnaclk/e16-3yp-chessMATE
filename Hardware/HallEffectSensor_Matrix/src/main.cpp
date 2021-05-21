@@ -209,6 +209,7 @@ bool onPath(int xx, int yy);
 int nextTurn(int turn);
 bool kingInCheck(int turn);
 bool checkMate(int turn);
+bool squareInOpponentPath(int xx, int yy, int turn);
 
 void setup() {
   // put your setup code here, to run once:
@@ -703,4 +704,29 @@ bool checkMate(int turn)
   // if we get here, checkmate
   Serial.println("    CHECKMATE!      ");
   return true;
+}
+
+// ***************************************************************************************************************************
+// if king moves to this path will it be in check, ie. moves into path of opponent
+bool squareInOpponentPath(int xx, int yy, int turn)
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (((turn == WHITE) && (piecesValCur[y + 2][x + 2] >= BLACK_PAWN) && (piecesValCur[y + 2][x + 2] <= BLACK_QUEEN)) ||
+          ((turn == BLACK) && (piecesValCur[y + 2][x + 2] >= WHITE_PAWN) && (piecesValCur[y + 2][x + 2] <= WHITE_QUEEN)))
+      {
+        getPaths(piecesValCur[y + 2][x + 2], x, y, nextTurn(turn));
+        for (int i = 0; i < pathCount; i++)
+        {
+          if ((pathX[i] == xx) && (pathY[i] == yy))
+          {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
 }
