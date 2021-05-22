@@ -291,7 +291,38 @@ void loop() {
     }
     Serial.println();
     delay(1000);
+
+  if(turn == opp_piece_color)
+  {
+    //receive opponent's move through bluetooth
+    while(!ESP_BT.available())
+    {
+      ESP_BT.println("Enter opponent's move notation - start;end;op !!!");
+      ESP_BT.println("Ex -: e7;e6;op");
+      ESP_BT.println();
+      delay(1000);
+    }
+    start_notation = ESP_BT.readStringUntil(';');
+    end_notation = ESP_BT.readStringUntil(';');
+    String opp = ESP_BT.readStringUntil('\n');
+
+    Serial.print("Do the opponent's move : ");
+
+    Serial.print(start_notation);
+    start_nt_file = searchIndex(files, start_notation.substring(0,1));
+    start_nt_rank = searchIndex(ranks, start_notation.substring(1));
+
+    Serial.print(" -> ");
+
+    Serial.print(end_notation);
+    end_nt_file = searchIndex(files, end_notation.substring(0,1));
+    end_nt_rank = searchIndex(ranks, end_notation.substring(1));
+
+    Serial.println();
+  } 
 }
+
+
 
 int mainloop(byte turn)
 {
