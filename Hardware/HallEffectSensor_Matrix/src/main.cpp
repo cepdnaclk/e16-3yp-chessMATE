@@ -212,6 +212,7 @@ bool checkMate(int turn);
 bool squareInOpponentPath(int xx, int yy, int turn);
 void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAttackPos);
 void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int turn);
+int getPaths(byte val, int x, int y, int turn);
 
 void setup() {
   // put your setup code here, to run once:
@@ -812,4 +813,151 @@ void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int tu
   {
     pathY[count] = yy - 2; pathX[count] = xx - 2; pathVal[count] = piecesValCur[yy][xx]; count++;
   }
+}
+
+// *************************************************************************************************************************
+// get the legal positions a piece can move to
+int getPaths(byte val, int x, int y, int turn)
+{
+  // This function starts with a position, and the piece (val) in that position, and gets the legal paths (the squares 
+  // where that piece can legally move) for that piece. The path is stored in arrays  pathX[30], pathY[30], pathVal[30], 
+  // and pathCount contains number of squares stored in the arrays. Two different methods are used. For the pawns, knights 
+  // and kings a brute force method, where the legal moves are stored in arrays, or scanned in the case of the king. For the 
+  // bishops, rooks and queens we use the function getSinglePathinPaths() to follow each line of squares where the piece can 
+  // legally move. For the bishops, rooks and queens, each legal direction is placed in the calls to getSinglePathinPaths().
+  
+  int xx, yy;
+  // Pawn ************************************************************************************ Pawn Pawn Pawn Pawn Pawn 
+  if ((val == BLACK_PAWN) || (val == WHITE_PAWN))
+  {
+    // First 2 are straight ahead moves
+    int wPawnX[4] = { 0, 0,-1, 1};
+    int wPawnY[4] = {-1,-2,-1,-1};
+    int bPawnX[4] = { 0, 0,-1, 1};
+    int bPawnY[4] = { 1, 2, 1, 1};
+    
+    for (int i = 0; i < 4; i++)
+    {
+      if (i == 1) continue;           // The test for the second square is in the i = 0 block
+      if (i == 0)
+      {
+        if (((turn == WHITE) && (piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]] == EMPTY)) ||
+            ((turn == BLACK) && (piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]] == EMPTY)))
+        {
+          if (turn == WHITE)
+          {
+            pathY[pathCount] = y + wPawnY[i]; pathX[pathCount] = x + wPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]]; pathCount++;
+          }
+          else
+          {
+            pathY[pathCount] = y + bPawnY[i]; pathX[pathCount] = x + bPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]]; pathCount++;
+          }
+          if (((piecesValCur[y + 2 + wPawnY[i + 1]][x + 2 + wPawnX[i + 1]] == EMPTY) && (y == 6)) ||    // pawn in rank 2, starting position
+              ((piecesValCur[y + 2 + bPawnY[i + 1]][x + 2 + bPawnX[i + 1]] == EMPTY) && (y == 1)))      // pawn in rank 7, starting position
+          {
+              if (turn == WHITE)
+              {
+                pathY[pathCount] = y + wPawnY[i + 1]; pathX[pathCount] = x + wPawnX[i + 1]; pathVal[pathCount] = piecesValCur[y + 2 + wPawnY[i + 1]][x + 2 + wPawnX[i + 1]]; pathCount++;
+              }
+              else
+              {
+                pathY[pathCount] = y + bPawnY[i + 1]; pathX[pathCount] = x + bPawnX[i + 1]; pathVal[pathCount] = piecesValCur[y + 2 + bPawnY[i + 1]][x + 2 + bPawnX[i + 1]]; pathCount++;
+              }
+          }
+        }
+      }
+      else // i = 2 or 3, can pawn take a piece ?
+      {
+        if (((turn == WHITE) && (piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]] >= BLACK_PAWN) && (piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]] <= BLACK_KING)) ||
+            ((turn == BLACK) && (piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]] >= WHITE_PAWN)))
+        {
+          if (turn == WHITE)
+          {
+            pathY[pathCount] = y + wPawnY[i]; pathX[pathCount] = x + wPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]]; pathCount++;
+          }
+          else
+          {
+            pathY[pathCount] = y + bPawnY[i]; pathX[pathCount] = x + bPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]]; pathCount++;
+          }
+        }
+      }
+    }
+  }
+
+  // Knight *************************************************************************** Knight Knight Knight Knight 
+  if ((val == BLACK_KNIGHT) || (val == WHITE_KNIGHT))
+  {
+    // x and y are the starting positions
+    int i[8] = {1, 2, -1, -2, -1, -2, 1, 2};
+    int j[8] = {2, 1, -2, -1,  2,  1,-2,-1};
+    // myDebug(x, y, "  x and y coming in");
+    // Check all eight possible moves
+    for (int k = 0; k < 8; k++)
+    {
+      xx = x + 2 + i[k]; yy = y + 2 + j[k];
+      if (((turn == WHITE) && (piecesValCur[yy][xx] >= BLACK_PAWN) && (piecesValCur[yy][xx] <= BLACK_KING)) ||
+          ((turn == BLACK) && (piecesValCur[yy][xx] >= WHITE_PAWN) && (piecesValCur[yy][xx] <= WHITE_KING)) ||
+           (piecesValCur[yy][xx] == EMPTY))
+      {
+        pathY[pathCount] = yy - 2; pathX[pathCount] = xx - 2; pathVal[pathCount] = piecesValCur[yy][xx]; pathCount++;
+      }
+    }
+  }
+
+  // Bishop *************************************************************************** Bishop Bishop Bishop Bishop 
+  if ((val == BLACK_BISHOP) || (val == WHITE_BISHOP))
+  {
+    getSinglePathinPaths(x + 2, y + 2, 1, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 1, pathCount, turn);
+  }
+
+  // Rook ******************************************************************************* Rook Rook Rook Rook Rook 
+  if ((val == BLACK_ROOK) || (val == WHITE_ROOK))
+  {
+    getSinglePathinPaths(x + 2, y + 2, 1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0,-1, pathCount, turn);
+  }
+
+  // Queen ******************************************************************************* Queen Queen Queen Queen 
+  if ((val == BLACK_QUEEN) || (val == WHITE_QUEEN))
+  {
+    // x and y are the starting positions
+    getSinglePathinPaths(x + 2, y + 2, 1, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0,-1, pathCount, turn);
+  }
+
+  // King ********************************************************************************* King King King King King 
+  if ((val == BLACK_KING) || (val == WHITE_KING))
+  {
+    //myDebug(x, y, "  x and y coming in");
+    for (int i = -1; i < 2; i++)
+    {
+       xx = x + 2 + i;
+      for (int j = -1; j < 2; j++)
+      {
+        yy = y + 2 + j;
+        if (!((i == 0) && (j == 0)))
+        {
+         // myDebug(xx - 2, yy - 2, "Square for King path");
+          if (((turn == WHITE) && (piecesValCur[yy][xx] >= BLACK_PAWN) && (piecesValCur[yy][xx] <= BLACK_KING)) ||
+              ((turn == BLACK) && (piecesValCur[yy][xx] >= WHITE_PAWN) && (piecesValCur[yy][xx] <= WHITE_KING)) ||
+               (piecesValCur[yy][xx] == EMPTY))
+          {
+            pathY[pathCount] = yy - 2; pathX[pathCount] = xx - 2; pathVal[pathCount] = piecesValCur[yy][xx]; pathCount++;
+          }
+        }
+      }
+    }
+  }
+  return pathCount;
 }
