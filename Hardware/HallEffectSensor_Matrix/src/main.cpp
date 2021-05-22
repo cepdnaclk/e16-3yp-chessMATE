@@ -248,6 +248,22 @@ void setup() {
 
   Serial.println(" White moves first");
   delay(1000);
+
+  // check to make sure all chess pieces are in starting positions
+  do   
+   {
+     c = scanBoardStart(piecesTemp1);         // read the Hall Effect sensors
+     Serial.print(" Pieces count : ");
+     Serial.println(c);
+     Serial.println();
+     same = comparePieceArraysStart();
+     printPiecesLoc(piecesTemp1);
+   }while ((c != bdCount)|| !same );  // wait until all pieces in correct places 
+   
+  Serial.println("Lets Begin!!!!!");
+  Serial.println();
+  Serial.println("****************************************************************************");
+  Serial.println();
 }
 
 void loop() {
