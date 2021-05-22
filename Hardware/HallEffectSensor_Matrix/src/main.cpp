@@ -320,6 +320,17 @@ void loop() {
 
     Serial.println();
   } 
+
+  mainloop(turn);
+  flag = true;
+
+  if (kingInCheck(turn)) 
+  {
+    // if player moved a piece so their king is in check, retrieve previous values and throw and error
+    store_retrieveHist(RETRIEVE, piecesValCur, piecesValHist, piecesCurrent, piecesHist, bdCount, bdCountHist);
+    showError(piecesCurrent, piecesError,turn);                        // moved into check
+    flag = false;
+    }
 }
 
 
