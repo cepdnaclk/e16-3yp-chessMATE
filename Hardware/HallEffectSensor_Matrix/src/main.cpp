@@ -267,7 +267,30 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  Serial.println("Current position matrix ");
+  for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        Serial.print(piecesCurrent[y][x]);
+
+        Serial.print("  ");
+      }
+      Serial.println();
+    }
+    Serial.println();
+    Serial.println();
+
+    if(turn == WHITE)
+    {
+      Serial.println("--------------------- Turn : WHITE ---------------------");
+    }
+    else if(turn == BLACK)
+    {
+      Serial.println("--------------------- Turn : BLACK ---------------------");
+    }
+    Serial.println();
+    delay(1000);
 }
 
 int mainloop(byte turn)
