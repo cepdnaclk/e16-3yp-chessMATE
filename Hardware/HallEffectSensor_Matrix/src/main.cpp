@@ -218,7 +218,36 @@ String rankFile(int x, int y);
 int searchIndex(String arr[], String val);
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(115200);  // Set the baud rate to 115200
+
+  ESP_BT.begin("chessMATE"); // Bluetooth device name
+  Serial.println("The device started, now you can pair it with bluetooth!");
+  delay(1000);
+
+  Serial.println();
+
+  //receive piece color through bluetooth
+  while(!ESP_BT.available())
+  {
+    ESP_BT.println("Enter your turn!!!");
+    ESP_BT.println();
+    delay(1000);
+  }
+  my_turn = ESP_BT.readStringUntil('\n');
+  Serial.println("My Piece color : " + my_turn);
+  if(my_turn[0] == 'W')
+  {
+    my_piece_color = WHITE;
+    opp_piece_color = BLACK;
+  }
+  else if(my_turn[0] == 'B')
+  {
+    my_piece_color = BLACK;
+    opp_piece_color = WHITE;
+  }
+
+  Serial.println(" White moves first");
+  delay(1000);
 }
 
 void loop() {
