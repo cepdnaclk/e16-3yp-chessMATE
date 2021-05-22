@@ -214,6 +214,7 @@ void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAtta
 void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int turn);
 int getPaths(byte val, int x, int y, int turn);
 String rankFile(int x, int y);
+int searchIndex(String arr[], String val);
 
 void setup() {
   // put your setup code here, to run once:
@@ -973,4 +974,17 @@ String rankFile(int x, int y)
   // y = rows, ranks, 1 in LL, 1 2 3 4 5 6 7 8 
   String message = files[x] + ranks[y];
   return message;
+}
+
+//***************************************************************************************************************************
+//search for index of a given string value in a string array
+int searchIndex(String arr[], String val)
+{
+  int index = 0;
+  while(index < 8 && !arr[index].equals(val))
+  {
+    ++index;
+  }
+
+  return index;
 }
