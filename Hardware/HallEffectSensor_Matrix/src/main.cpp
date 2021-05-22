@@ -211,6 +211,7 @@ bool kingInCheck(int turn);
 bool checkMate(int turn);
 bool squareInOpponentPath(int xx, int yy, int turn);
 void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAttackPos);
+void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int turn);
 
 void setup() {
   // put your setup code here, to run once:
@@ -788,4 +789,27 @@ void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAtta
     yPath += yMove;
   }
   pathtoKingCount = count;
+}
+
+// *************************************************************************************************************************
+// follow a single path to its end
+void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int turn)
+{
+  // This function starts with the xx, yy position of a square and xdir and ydir directions to add to the square's
+  // position with every loop. The loop continues as long as the squares are EMPTY. When it hits a square occupied
+  // it checks to be sure it is an opponent's piece and then will add this to the path.
+  xx = xx + xdir;
+  yy = yy + ydir;
+  while (piecesValCur[yy][xx] == EMPTY)
+  {
+    pathY[count] = yy - 2; pathX[count] = xx - 2; pathVal[count] = piecesValCur[yy][xx];
+    count++;
+    xx = xx + xdir;
+    yy = yy + ydir;
+  }
+  if (((turn == WHITE) && (piecesValCur[yy][xx] >= BLACK_PAWN) && (piecesValCur[yy][xx] <= BLACK_KING)) ||
+      ((turn == BLACK) && (piecesValCur[yy][xx] >= WHITE_PAWN) && (piecesValCur[yy][xx] <= WHITE_KING)))
+  {
+    pathY[count] = yy - 2; pathX[count] = xx - 2; pathVal[count] = piecesValCur[yy][xx]; count++;
+  }
 }
