@@ -213,6 +213,7 @@ bool squareInOpponentPath(int xx, int yy, int turn);
 void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAttackPos);
 void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int turn);
 int getPaths(byte val, int x, int y, int turn);
+String rankFile(int x, int y);
 
 void setup() {
   // put your setup code here, to run once:
@@ -960,4 +961,16 @@ int getPaths(byte val, int x, int y, int turn)
     }
   }
   return pathCount;
+}
+
+// ************************************************************************************************************************
+// return the traditional rank and file notation denoting the position of a square, so position 3,4 equals d5
+// this is used for output to the LCD display
+String rankFile(int x, int y)
+{
+  // this turns an x,y position into standard chess rank file notation and returns a string
+  // x = columns, files, a in LL, a b c d e f g h
+  // y = rows, ranks, 1 in LL, 1 2 3 4 5 6 7 8 
+  String message = files[x] + ranks[y];
+  return message;
 }
