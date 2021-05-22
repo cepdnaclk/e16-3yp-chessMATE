@@ -330,7 +330,38 @@ void loop() {
     store_retrieveHist(RETRIEVE, piecesValCur, piecesValHist, piecesCurrent, piecesHist, bdCount, bdCountHist);
     showError(piecesCurrent, piecesError,turn);                        // moved into check
     flag = false;
+  }
+
+  if (flag)                                  // King not in check, so next turn
+  {
+    if (turn == WHITE)                      
+    {
+      turn = BLACK;
     }
+    else
+    {
+      turn = WHITE;
+    }
+    if (kingInCheck(turn))                   // This test for king in check reveals a move placing oponents king in check
+    {
+      // Check now for checkmate
+      if (checkMate(turn))
+      {
+        Serial.println("checkmate");
+        while(true) {}                      // loop forever
+      }
+    }
+  }
+  Serial.println();
+  Serial.println("Move done : "+ startPos + " -> " + endPos);
+
+  //send my move to app through bluetooth
+  if(turn != my_piece_color)
+  {
+     ESP_BT.println("Move done : "+startPos+";"+endPos);
+  }
+
+
 }
 
 
