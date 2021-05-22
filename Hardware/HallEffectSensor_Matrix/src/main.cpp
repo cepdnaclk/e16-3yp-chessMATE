@@ -210,6 +210,7 @@ int nextTurn(int turn);
 bool kingInCheck(int turn);
 bool checkMate(int turn);
 bool squareInOpponentPath(int xx, int yy, int turn);
+void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAttackPos);
 
 void setup() {
   // put your setup code here, to run once:
@@ -729,4 +730,62 @@ bool squareInOpponentPath(int xx, int yy, int turn)
     }
   }
   return false;
+}
+
+// ***************************************************************************************************************************
+// get path from king to attacking piece
+void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAttackPos)
+{
+  int xPath, yPath, xMove, yMove, count = 0;
+  switch(piecesValCur[yAttackPos + 2][xAttackPos + 2])
+  {
+    // make sure it's the right find of piece to create a path to king
+    case BLACK_BISHOP: break;
+    case BLACK_ROOK:   break;
+    case BLACK_QUEEN:  break;
+    case WHITE_BISHOP: break;
+    case WHITE_ROOK:   break;
+    case WHITE_QUEEN:  break;
+    default:  pathtoKingCount = 0;
+              return;
+              break;
+  }
+  if (xKingCheck == xAttackPos)
+  {
+    xMove = 0;
+  }
+  else if (xKingCheck < xAttackPos)
+  {
+    xMove = 1;
+  }
+  else
+  {
+    xMove = -1;
+  }
+
+  if (yKingCheck == yAttackPos)
+  {
+    yMove = 0;
+  }
+  else if (yKingCheck < yAttackPos)
+  {
+    yMove = 1;
+  }
+  else
+  {
+    yMove = -1;
+  }
+  
+  xPath = xKingCheck + xMove;
+  yPath = yKingCheck + yMove;
+  while ((xPath != xAttackPos) && (yPath != yAttackPos))
+  {
+    xPathtoKing[count] = xPath;
+    yPathtoKing[count] = yPath;
+    myDebug(xPathtoKing[count], yPathtoKing[count], "Along the path to King");
+    count++;
+    xPath += xMove;
+    yPath += yMove;
+  }
+  pathtoKingCount = count;
 }
