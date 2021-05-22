@@ -193,6 +193,7 @@ int fileInt, rankInt;                                       // to store position
 int start_nt_file, start_nt_rank, end_nt_file, end_nt_rank; // store the splitted opponent move notation received
 
 // set of functions need
+int mainloop(byte turn);
 int scanBoardStart(byte piecesTemp[][8]);
 int scanBoard(byte piecesTemp[][8], byte piece_color);
 bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8]);
@@ -222,6 +223,182 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+}
+
+int mainloop(byte turn)
+{
+  bool flag;                                // Used for ending the do loop
+  int total1 = 0, total2 = 0, total3 = 0;   // For different reads of total number of pieces on the board
+
+  do
+  {
+    flag = false;
+    do
+    {
+      
+      total1 = scanBoard(piecesTemp1,turn);       // Read the Hall Effect sensors
+    }while (total1 == bdCount);    
+
+    comparePieceArrays(xx1, yy1, piecesCurrent, piecesTemp1);     //xx1, yy1 is the space with piece removed
+    if (((turn == WHITE) && (piecesValCur[yy1 + 2][xx1 + 2] < WHITE_PAWN)) ||  // Make sure right color takes turn
+        ((turn == BLACK) && (piecesValCur[yy1 + 2][xx1 + 2] > BLACK_KING)))
+    {
+      showError(piecesCurrent, piecesError,turn);   // Throw error is not right colorn
+      flag = true;
+      continue;
+    }
+
+    
+    myDebug(xx1, yy1, "Piece removed at");
+
+    if(turn == opp_piece_color)
+      {
+        if((start_nt_file != fileInt) || (start_nt_rank != rankInt))
+        {
+          Serial.println();
+          Serial.println("Wrong start position!!!!!!");
+          Serial.println();
+          showErrorOpp(piecesCurrent, piecesError,turn,xx1,yy1);
+          flag = true;
+          continue;
+        }
+      }
+
+    message = namePiece(xx1, yy1) + rankFile(xx1, yy1);
+    startPos = rankFile(xx1, yy1);
+    Serial.println(message);
+    pathCount = 0;
+    int paths = getPaths(piecesValCur[yy1 + 2][xx1 + 2], xx1, yy1, turn); // Get all legal paths (squares) 
+                                                                          // If no paths, no green or yellow squares
+    do
+    {
+      total2 = scanBoard(piecesTemp2,turn);            // Read the Hall Effect sensors
+    }while (total2 == total1);                   // Wait for a change
+
+    
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+    if (bdCount - total2 == 2)                   // Second piece removed - so this should be a capture
+    {
+       
+      comparePieceArrays(xx2, yy2, piecesTemp2, piecesTemp1);     // xx2, yy2 will be position of 2nd piece removed
+      for (int i=0; i < pathCount; i++)
+      {
+        if ((pathX[i] == xx2) && (pathY[i] == yy2))               // found the 2nd piece
+        {
+          
+          myDebug(xx2, yy2, "Second piece removed at");           // More debugging output
+
+          if(turn == opp_piece_color)
+          {
+            if((end_nt_file != fileInt) || (end_nt_rank != rankInt))
+            {
+              Serial.println();
+              Serial.println("Wrong capture position!!!!!!");
+              Serial.println();
+              showErrorOpp(piecesCurrent, piecesError,turn,xx2,yy2);
+              flag = true;
+              continue;
+            }
+          }
+          Serial.println(namePiece(xx2, yy2));
+          do
+          {
+            total3 = scanBoard(piecesTemp3,turn);                       // Read the Hall Effect sensors
+          }while (total2 == total3);                                    // Wait for a change, the piece show be                            
+          
+                                                                  // replaced on the captured piece's square
+          comparePieceArrays(xx3, yy3, piecesTemp3, piecesTemp2);
+          if ((xx2 == xx3) && (yy2 == yy3))                       // Captured piece and replaced piece
+          {                                                       // square should be the same
+            // save previous board positions and values
+            store_retrieveHist(STORE, piecesValCur, piecesValHist, piecesCurrent, piecesHist, bdCount, bdCountHist);
+            message = rankFile(xx2, yy2);
+            Serial.println(message);
+          
+            message = namePiece(xx2, yy2) + rankFile(xx2, yy2);
+            
+         
+            Serial.println();
+            Serial.println("Captured!!!!!");
+            Serial.println();
+            piecesCurrent[yy1][xx1] = 0;
+            piecesCurrent[yy2][xx2] = 1;                          // actually piece already there
+            piecesValCur[yy2 + 2][xx2 + 2] = piecesValCur[yy1 + 2][xx1 + 2];    
+            piecesValCur[yy1 + 2][xx1 + 2] = 0;
+            bdCount = bdCount - 1;
+            flag = true;
+            continue;
+          }
+        }
+      }
+      if (flag)             // 2nd piece was captured and removed
+      {
+        flag = false;       // this will end our do loop
+        continue;
+      }
+      else
+      {
+        // Flag wasn't set to true above so captured piece and replaced piece 
+        // in different locations, an error
+        showError(piecesCurrent, piecesError,turn);
+      }
+    }
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    if (comparePieceArrays(xx2, yy2, piecesCurrent, piecesTemp2) == true) // arrays are the same
+    {
+      flag = true;          // Continue the do loop
+
+      Serial.println(" Piece returned");
+      continue;
+    }
+
+    // This section processes a simple move with no capture
+     comparePieceArrays(xx2, yy2, piecesTemp1, piecesTemp2);
+     
+     
+     myDebug(xx2, yy2, "Piece down at");
+     if(turn == opp_piece_color)
+      {
+        if((end_nt_file != fileInt) || (end_nt_rank != rankInt))
+        {
+          Serial.println();
+          Serial.println("Wrong end position!!!!!!");
+          Serial.println();
+          showErrorOpp(piecesCurrent, piecesError,turn,xx2,yy2);
+          flag = true;
+          continue;
+          }
+        }
+     if (!onPath(xx2, yy2))                     // Check to make sure piece was place on an allowable square
+     {
+        showError(piecesCurrent, piecesError,turn);
+        flag = true;
+       continue;
+     }
+     
+
+     
+     // Save previous board positions and values, this is for possible king in check detected later 
+     store_retrieveHist(STORE, piecesValCur, piecesValHist, piecesCurrent, piecesHist, bdCount, bdCountHist);
+     // If we get here piece was moved from xx1, yy1 to xx2, yy2
+     // Write the new values into piecesCurrent and piecesValCur arrays
+     piecesCurrent[yy1][xx1] = 0;
+     piecesCurrent[yy2][xx2] = 1;
+     piecesValCur[yy2 + 2][xx2 + 2] = piecesValCur[yy1 + 2][xx1 + 2];
+     piecesValCur[yy1 + 2][xx1 + 2] = 0;
+     message = rankFile(xx2, yy2);
+     Serial.println(message);
+      
+     } while (flag); 
+  pathCount = 0;      // Reset the pathCount
+  Serial.println();
+  Serial.println("Through mainLoop");
+  Serial.println();
+  return 0;
 }
 
 //*************************************************************************************************************************
