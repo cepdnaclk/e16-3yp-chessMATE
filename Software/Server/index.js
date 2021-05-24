@@ -48,7 +48,10 @@ function Player(id, connection){
     this.opponentIndex = null;
     this.index = Players.length;
     this.available = false;
+    this.community = "";
 }
+
+
 
 Player.prototype = {
     getId: function(){
@@ -66,6 +69,18 @@ Player.prototype = {
     }
 };
 
+// community detail structure
+function Community(name, no_of_members){
+    this.name = name;
+    this.no_of_members = no_of_members;
+}
+
+Community.prototype = {
+    getCommunity: function(){
+        return {name:this.name, no_of_members:this.no_of_members}
+    },
+};
+
 
 // Match detail structure
 function Match(player_1, player_2, id){
@@ -75,6 +90,7 @@ function Match(player_1, player_2, id){
     this.is_Stream = false;
     this.viewList = [];
     this.ongoing = false;
+    this.community = " ";
 }
 
 Match.prototype = {
@@ -88,6 +104,8 @@ Match.prototype = {
         return false;
     }
 };
+
+
 
 
 // This callback function is called every time someone tries to connect to the WebSocket server
@@ -109,6 +127,8 @@ wsServer.on('request', function(request) {
 
         // Process the requested action
         var message = JSON.parse(data.utf8Data);
+        let sqlAddMember = `UPDATE community SET No_Of_Members = No_Of_Members+1 WHERE Community_ID = ?`;
+        let sqlRemoveMember = `UPDATE community SET No_Of_Members = No_Of_Members-1 WHERE Community_ID = ?`;
 
         switch(message.action){
 
@@ -121,7 +141,7 @@ wsServer.on('request', function(request) {
                 var emailAndPassword = message.data.split(':');
 
 
-                let sqlValidity =  `SELECT Username FROM user WHERE EmailAddress = ? AND Password = ?`;
+                let sqlValidity =  `SELECT Username, Community FROM user WHERE EmailAddress = ? AND Password = ?`;
                 pool.query(sqlValidity,emailAndPassword,(err0, results, fields)=>{
                     if(err0){
                         return console.log(err0);
@@ -130,15 +150,20 @@ wsServer.on('request', function(request) {
                         player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:false}));
                     }
                     else{
-                        var usernameFetched;
+                        var usernameFetched, community;
                         usernameFetched = JSON.stringify(results[0].Username);
                         player.name = usernameFetched;
                         console.log(player.name);
+
+                        community = JSON.stringify(results[0].Community);
+                        player.community = community;
 
                         if(Players.length == 0){
                             console.log("INITIAL");
                             // first user
                             player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
+                            player.connection.sendUTF(JSON.stringify({'action':'userCommunity', data:player.community}));
+                            
                             // mark as available
                             player.available = true;
                             // add the user
@@ -155,6 +180,7 @@ wsServer.on('request', function(request) {
 
                             if(logged == 0){
                                 player.connection.sendUTF(JSON.stringify({'action':'userValidity', data:true}));
+                                player.connection.sendUTF(JSON.stringify({'action':'userCommunity', data:player.community}));
                                 // mark as available
                                 player.available = true;
                                 // add the user
@@ -187,9 +213,11 @@ wsServer.on('request', function(request) {
 
             case 'request_players_list':
                 request_player_id = player.id;
+                request_player_community = player.community;
+
                 var playersList = [];
                 Players.forEach(function(player){
-                    if (player.id != request_player_id && player.name != ""){
+                    if (player.id != request_player_id && player.name != "" && ( player.community.split('"')[1] == request_player_community || player.community == request_player_community ) ){
                         playersList.push(player.getId());
                     }
                 });
@@ -203,13 +231,19 @@ wsServer.on('request', function(request) {
             case 'sign_in':
                 var dataSignIn = message.data.split(':');
     
-                let sqlSignIn = `INSERT INTO user(Username,EmailAddress,Password,DateOfBirth) VALUES(?,?,?,?)`;
-                let dataInsert = [dataSignIn[0], dataSignIn[1], dataSignIn[2], dataSignIn[3]];
+                let sqlSignIn = `INSERT INTO user(Username,EmailAddress,Password,DateOfBirth,community) VALUES(?,?,?,?,?)`;
+                let dataInsert = [dataSignIn[0], dataSignIn[1], dataSignIn[2], dataSignIn[3],'**'];
                 pool.query(sqlSignIn,dataInsert,(err, results, fields)=>{
                     if(err){
                         return console.log(err);
                     }
                     return console.log(results);
+                });
+
+                // add amember to the default community
+                pool.query(sqlAddMember,'**',(err,results, fields)=>{
+                    if(err) return console.log(err);
+                    console.log(results);
                 });
                 break;
 
@@ -247,8 +281,9 @@ wsServer.on('request', function(request) {
                 Players[player.opponentIndex].available = false;
 
                 match_id = (player.id).concat(";").concat(data[0]);
-                var match = new Match(player.id, message.data, match_id);
+                var match = new Match(player.id, message.data.split(";")[0], match_id);
                 match.ongoing = true;
+                match.community = player.community;
                 if(data[2] == "Yes") match.is_Stream = true;
                 Matches.push(match);
                 break;
@@ -299,8 +334,16 @@ wsServer.on('request', function(request) {
                     if(match.id == match_id){
                         match.viewList.push(player.id);
                     }
+                    console.log(match.viewList);
                 }); 
 
+                var send_message = JSON.stringify({
+                    'action': 'view_confirmed',
+                    'data': true
+                });
+
+                player.connection.sendUTF(send_message);
+                
                 break;
 
             //
@@ -315,7 +358,9 @@ wsServer.on('request', function(request) {
                     if (match.id == match_id){
                         Matches[Matches.indexOf(match)].is_Stream = true;
                     }
-                })
+                });
+
+                
                 
                 break;
 
@@ -323,11 +368,11 @@ wsServer.on('request', function(request) {
             // to get the streaming matches
             // 
             case 'streaming_matches':
-                //var matchList = [{player_1: "chami", player_2: "isu", id:"1234"}];
+                
                 var matchList = [];
                 Matches.forEach(function(match){
                     var p1_name, p2_name;
-                    if(match.ongoing == true){
+                    if(match.ongoing){
                         Players.forEach(function(player){
                             if(player.id == match.player_1 ){
                                 p1_name = player.name;
@@ -337,17 +382,17 @@ wsServer.on('request', function(request) {
                             }
                         });
                     }
+                    if(match.community == player.community)
+                        console.log(match.community +" "+ player.community);
                         matchList.push({white_player : p1_name, black_player : p2_name, id: match.id});    
                 }); 
 
-                var send_message = JSON.stringify({
+                var sendmessage = JSON.stringify({
                     'action': 'match_list',
                     'data': matchList
                 });
-                
-                console.log(matchList);
 
-                player.connection.sendUTF(send_message);
+                player.connection.sendUTF(sendmessage);
                 break;
 
                 //
@@ -416,7 +461,170 @@ wsServer.on('request', function(request) {
                     // mark both players as availabel
                     player.available = true;
                     Players[player.opponentIndex].available = true;
+
+                    
                     break;
+
+
+                case 'request_community_list' :
+                    console.log(message.data);
+                    current_community = message.data;
+                    // send the list of communities
+                    // get names and number of members in the community
+                    let communityList =  `SELECT Community_ID, No_Of_Members FROM community`;
+                    pool.query(communityList,current_community,(err0, results, fields)=>{
+                        if(err0){
+                            return console.log(err0);
+                        }
+                        else if(results.length == 0){
+                            return console.log("NOT FETCHED");
+                        }
+                        else{
+                            var Communities = [];
+                            results.forEach(function(result){
+                                var com;   
+                                if(result.Community_ID != current_community &  result.Community_ID != '**'){ // remove default community
+                                    com = new Community(result.Community_ID, result.No_Of_Members);
+                                    Communities.push(com);
+                                }
+
+                            });
+
+                            var communitiesList = [];
+                            Communities.forEach(function(com){
+                                if(com.name != current_community){
+                                    communitiesList.push(com.getCommunity());
+                                }
+                                
+                                
+                            });
+
+                            player.connection.sendUTF(JSON.stringify({
+                                'action': 'communities_list',
+                                'data': communitiesList
+                            }));
+
+                            console.log(communitiesList);
+
+
+                        }
+                            
+    
+                        
+                    });
+                    break;
+
+                case 'change_community':
+                    var community_names = message.data.split(':');
+                    username = player.name.split('"')[1];
+                    // update the user table
+                    let sqlNewCommunity = `UPDATE user SET community = ? WHERE Username = ?`;
+                    let dataCommunity = [community_names[0],username];
+                    pool.query(sqlNewCommunity,dataCommunity,(err, results, fields)=>{
+                        if(err){
+                            return console.log(err);
+                        }
+                        return console.log(results);
+                    });
+
+                    // update the community table
+                    
+                    pool.query(sqlAddMember,community_names[0],(err,results, fields)=>{
+                        if(err) return console.log(err);
+                        console.log(results);
+                    });
+
+                    
+                    pool.query(sqlRemoveMember,community_names[1],(err,results, fields)=>{
+                        if(err) return console.log(err);
+                        console.log(results);
+                    });
+
+                    player.community = community_names[0];
+                    break;
+
+                case 'leave_community':
+                    user = player.name.split('"')[1];
+                    prev_community = message.data;
+                    let sqlLeaveCom = `UPDATE user SET community = '**' WHERE Username = ?`
+                    pool.query(sqlLeaveCom,user,(err,results, fields)=>{
+                        if(err) return console.log(err);
+                        console.log(results);
+                    });
+
+                    // update the community table
+                    pool.query(sqlAddMember,'**',(err,results, fields)=>{
+                        if(err) return console.log(err);
+                        console.log(results);
+                    });
+
+                    pool.query(sqlRemoveMember,prev_community,(err,results, fields)=>{
+                        if(err) return console.log(err);
+                        console.log(results);
+                    });
+                    player.community = "**";
+                    
+                    break;
+
+                case 'create_community':
+                    new_community_name = message.data.split(':')[0];
+                    let sqlGetCommunities = `SELECT Community_ID FROM community`;
+                    pool.query(sqlGetCommunities,(err,results, fields)=>{
+                        if(err) return console.log(err);
+                        else{
+                            var found_simmilar = false;
+                            results.forEach(function(result){
+                                if(new_community_name == result.Community_ID){
+                                    found_simmilar = true; 
+                                }  
+                            });
+                            // given name is alredy used
+                            if(found_simmilar){
+                                player.connection.sendUTF(JSON.stringify({'action':'community_name_validity', data:false}));
+                            } else{ // new valid name has been given
+                                player.connection.sendUTF(JSON.stringify({'action':'community_name_validity', data:true}));
+                                // add new community 
+                                let sqlAddCommunity = `INSERT INTO community(Community_ID, No_Of_Members) VALUES(?,?)`;
+                                var dataNewCommunity = [new_community_name,1];
+                                pool.query(sqlAddCommunity,dataNewCommunity,(err,results, fields)=>{
+                                    if(err) return console.log(err);
+                                    console.log(results);
+                                });
+
+                                // change the community of user
+                                let sqlChangeCommunity = `UPDATE user SET community= ? WHERE Username = ?`;
+                                var dataChangeCommunity = [new_community_name,player.name.split('"')[1]];
+                                pool.query(sqlChangeCommunity,dataChangeCommunity,(err,results, fields)=>{
+                                    if(err) return console.log(err);
+                                    console.log(results);
+                                });
+                                // remove a member from previouse community of the user
+                                pool.query(sqlRemoveMember,message.data.split(':')[1],(err,results, fields)=>{
+                                    if(err) return console.log(err);
+                                    console.log(results);
+                                });
+
+                            }
+                        }
+                    });
+
+                    player.community = new_community_name;
+                    break;
+
+                case 'game_won':
+                    winner = message.data.split(":")[0];
+                    looser = message.data.split(":")[1];
+
+                    // find match id and notify the all viewrs
+
+                    break;
+
+                case 'game_draw':
+                    // find the match id and notify all the viewrs of that match
+
+                    break;
+
+
         }
     });
 

@@ -2,9 +2,10 @@ import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_button.dart';
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_input_field.dart';
 import 'package:chessMATE_app/buttons_login-signIn-forgotPassword/rounded_password_field.dart';
+import 'package:chessMATE_app/community/community_data.dart';
 import 'package:chessMATE_app/login/already_have_an_account_check.dart';
+import 'package:chessMATE_app/screens/community_screen.dart';
 import 'package:chessMATE_app/screens/forgotPass_screen.dart';
-import 'package:chessMATE_app/screens/game_mode_screen.dart';
 import 'package:chessMATE_app/screens/loginScreen.dart';
 import 'package:chessMATE_app/screens/signInScreen.dart';
 import 'package:chessMATE_app/screens/welcome_screen.dart';
@@ -13,6 +14,7 @@ import 'package:chessMATE_app/backEnd_conn/websockets.dart';
 import 'handle_google_sign_in.dart';
 import 'login_validate.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes:[
@@ -83,9 +85,13 @@ class _LoginPageState extends State<LoginPage> {
             userError = 'Username or Password is incorrect!!';
           });
         } else {
-          Navigator.pushNamed(context, GameModeScreen.id);
+          Navigator.pushNamed(context, CommunityScreen.id);
         }
+        break;
 
+        case 'userCommunity':
+          set_Community(message["data"].split('"')[1]);
+          
         break;
 
       ///
