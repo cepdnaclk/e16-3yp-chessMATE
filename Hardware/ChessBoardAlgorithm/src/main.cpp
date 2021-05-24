@@ -224,6 +224,40 @@ int cells[8][8] = {
   {0,0,0,0,0,0,0,0}
 };
 
+// set of functions need
+//LED matrix
+void clearCells();
+void displayPanel();
+void clearRegisters();
+void writeRegisters();
+void setRegisterPin(char regType, int index, boolean value);
+void decodeMove(String moveNotation, String moveEnd, String moveStart);
+
+//HallEffectSensor matrix
+bool mainloop(byte turn);
+int scanBoardStart(byte piecesTemp[][8]);
+int scanBoard(byte piecesTemp[][8], byte piece_color);
+bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8]);
+bool comparePieceArraysStart();
+void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][12], byte piecesCurrent[][8], byte piecesHist[][8], byte bdCount, byte bdCountHist);
+void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color);
+void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color,byte x1, byte y1);
+void printPaths(int x, int y);
+void myDebug(int x, int y, String mess);
+String namePiece(int x, int y);
+void printPiecesLoc(byte pieces[][8]);
+void printPiecesVal(byte pieces[][12]);
+bool onPath(int xx, int yy);
+int nextTurn(int turn);
+bool kingInCheck(int turn);
+bool checkMate(int turn);
+bool squareInOpponentPath(int xx, int yy, int turn);
+void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAttackPos);
+void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int turn);
+int getPaths(byte val, int x, int y, int turn);
+String rankFile(int x, int y);
+int searchIndex(String arr[], String val);
+
 void setup() {
   // put your setup code here, to run once:
 }
