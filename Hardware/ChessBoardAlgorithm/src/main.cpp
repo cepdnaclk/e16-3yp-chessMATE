@@ -728,3 +728,723 @@ void decodeMove(String moveNotation, String moveEnd, String moveStart){
     // todo: Path exists only for castling
   }
 }
+
+//*************************************************************************************************************************
+// scan the board at begining
+int scanBoardStart(byte piecesTemp[][8])
+{
+  
+    int count = 0;
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        piecesTemp[y][x] = scanPieces1[y][x];
+        if (scanPieces1[y][x] == 0x01)
+        {
+          count++;        
+        }
+      }
+    }
+    return count; 
+}
+
+// *************************************************************************************************************************
+// compare piece arrays
+bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8])
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (piecesTemp1[y][x] != piecesCurrent[y][x])
+      {
+        // First piece that doesn't match previous,
+        // Write to xx, yy and return
+        xx = x; yy = y;
+        return false;         // arrays are different
+      }
+    }
+  }
+  return true;                // arrays are the same
+}
+
+// *************************************************************************************************************************
+// compare piece arrays at the begining
+bool comparePieceArraysStart()
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (piecesTemp1[y][x] != pieces[y][x])
+      {
+        return false;         // arrays are different
+      }
+    }
+  }
+  return true;                // arrays are the same
+}
+
+// ************************************************************************************************************************
+// store or retrieve prievous board settings to be able to undo a move
+void store_retrieveHist(int dir, byte piecesValCur[][12], byte piecesValHist[][12], byte piecesCurrent[][8], byte piecesHist[][8], byte bdCount, byte bdCountHist)
+{
+  // This is just a brute force store or retrieve of all the piece positions and values on the board.
+  // The borders could have been eliminated.
+  for (int y = 0; y < 12; y++)
+    {
+      for (int x = 0; x < 12; x++)
+      {
+        if (dir == STORE)
+        {
+          piecesValHist[y][x] = piecesValCur[y][x];
+        }
+        else if (dir == RETRIEVE)
+        {
+          piecesValCur[y][x] = piecesValHist[y][x];
+        }
+      }
+    }
+
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        if (dir == STORE)
+        {
+          piecesHist[y][x] = piecesCurrent[y][x];
+        }
+        else if (dir == RETRIEVE)
+        {
+          piecesCurrent[y][x] = piecesHist[y][x];
+        }
+      }
+    }
+
+    if (dir == STORE)
+    {
+      bdCountHist = bdCount;
+    }
+    else if (dir == RETRIEVE)
+    {
+      bdCount = bdCountHist;
+    }
+}
+
+// *************************************************************************************************************************
+// show an error state and wait for correction, ie. all pieces replaced to positions before the error
+void showError(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color)
+{
+  bool flag;
+  int total;
+
+  do
+  {
+    flag = true;
+    total = scanBoard(piecesError, piece_color);
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        if (piecesError[y][x] != piecesCurrent[y][x])
+        {
+          myDebug(x, y, "Error here");
+          delay(1000);
+          flag = false;
+          break;
+        }
+        if (flag == false) break;   // needed for double loop
+      }
+    }
+  } while (flag == false);
+  Serial.println("Error is over!! Re-enter the correct move!!");
+}
+
+// *************************************************************************************************************************
+// Show an error state and wait for correction, ie. all pieces replaced to positions before the error
+void showErrorOpp(byte piecesCurrent[][8], byte piecesError[][8], byte piece_color,byte x1, byte y1)
+{
+  bool flag;
+  int total;
+
+  do
+  {
+    
+    flag = true;
+    total = scanBoard(piecesError, piece_color);
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        // decode and display only when data is present
+          if (moveNotation != "" && moveStart != "" && moveEnd != ""){
+            // decode the movedata and display on the panel
+            for(unsigned char i = 0; i< 200;i++){
+            decodeMove(moveNotation, moveEnd, moveStart);
+            displayPanel();}
+          }
+        if (piecesError[y][x] != piecesCurrent[y][x])
+        {
+          Serial.println("Error!! Return the piece back!!");
+          
+          //myDebug(x1, y1, "Error here");
+          delay(1000);
+          flag = false;
+          break;
+        }
+        if (flag == false) break;   // needed for double loop
+      }
+    }
+  } while (flag == false);
+  Serial.println("Error is over!! Re-enter the correct move!!");
+}
+
+// ************************************************************************************************************************
+// print the paths to the Serial monitor for debugging
+void printPaths(int x, int y)
+{
+  Serial.print("Paths for ");
+  Serial.println(namePiece(x, y));
+  for (int i = 0; i < pathCount; i++)
+  {
+    Serial.print(pathX[i]);
+    Serial.print("   ");
+    Serial.print(pathY[i]);
+    Serial.print("   ");
+    Serial.print(pathVal[i]);
+    Serial.println();
+  }
+  Serial.println("***********");
+}
+
+// ************************************************************************************************************************
+// myDebug, print two numbers and a string to the Serial monitor for debugging
+void myDebug(int x, int y, String mess)
+{
+  Serial.print(mess);
+  Serial.print("   ");
+  Serial.print(x);
+  Serial.print("   ");
+  Serial.print(y);
+  Serial.println("   ");
+  
+}
+
+// *************************************************************************************************************************
+// the name of the piece for LCD readout and debugging
+String namePiece(int x, int y)
+{
+  switch (piecesValCur[y + 2][x + 2])
+  {
+    case 0: return "Empty ";
+            break;
+    case 1: return "Black Pawn ";
+            break;
+    case 3: return "Black Knight ";
+            break;
+    case 4: return "Black Bishop ";
+            break;
+    case 5: return "Black Rook ";
+            break;
+    case 9: return "Black Queen ";
+            break;
+    case 16: return "Black King ";
+            break;
+    case 129: return "White Pawn ";
+            break;
+    case 131: return "White Knight ";
+            break;
+    case 132: return "White Bishop ";
+            break;
+    case 133: return "White Rook ";
+            break;
+    case 137: return "White Queen ";
+            break;
+    case 144: return "White King ";
+            break;
+  }
+  return "ERROR";
+}
+
+// *************************************************************************************************************************
+// print the piece locations to the Serial monitor for debugging
+void printPiecesLoc(byte pieces[][8])
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      // The if statements space things nicely
+      if (pieces[y][x] < 10) Serial.print("  ");
+      if ((pieces[y][x] >= 10) && (pieces[y][x] < 100)) Serial.print(" ");
+      Serial.print(pieces[y][x]);
+      Serial.print("  ");
+    }
+    Serial.println();
+    Serial.println();
+  }
+  Serial.println();
+  Serial.println();
+}
+
+// *************************************************************************************************************************
+// print the piece values to the Serial monitor for debugging
+void printPiecesVal(byte pieces[][12])
+{
+  for (int y = 2; y < 10; y++)
+  {
+    for (int x = 2; x < 10; x++)
+    {
+      // The if statements space things nicely
+      if (pieces[y][x] < 10) Serial.print("  ");
+      if ((pieces[y][x] >= 10) && (pieces[y][x] < 100)) Serial.print(" ");
+      Serial.print(pieces[y][x]);
+      Serial.print("  ");
+    }
+    Serial.println();
+    Serial.println();
+  }
+  Serial.println();
+  Serial.println();
+}
+
+// *************************************************************************************************************************
+// is position on a path?
+bool onPath(int xx, int yy)
+{
+  for (int i = 0; i < pathCount; i++)
+  {
+    if ((xx == pathX[i]) && (yy == pathY[i]))
+    {
+      return true;    // When we find position on path return
+    }
+  }
+  return false;       // Position not on path
+}
+
+// *************************************************************************************************************************
+// Toggles turn for certain use of getPaths
+int nextTurn(int turn)
+{
+  // This just return the opposite of turn, ie. the next turn
+  int t;
+  if (turn == BLACK)
+  {
+    t = WHITE;
+  }
+  else
+  {
+    t = BLACK;
+  }
+  return t;
+}
+
+// *************************************************************************************************************************
+// is the King in check ?
+bool kingInCheck(int turn)
+{
+  // This one is tricky, we go though entire array looking for the next turn's pieces
+  // Then we find the paths for the next turn's pieces and if the turn's king
+  // is on one of these paths then that king will be in check. We color the square
+  // with the piece that puts the king in check violet.
+  pathCount = 0;
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (((turn == WHITE) && (piecesValCur[y + 2][x + 2] >= BLACK_PAWN) && (piecesValCur[y + 2][x + 2] <= BLACK_KING)) ||
+          ((turn == BLACK) && (piecesValCur[y + 2][x + 2] >= WHITE_PAWN) && (piecesValCur[y + 2][x + 2] <= WHITE_KING)))
+      {
+       // Serial.println(piecesValCur[y + 2][x + 2]);
+       // myDebug(x, y, "Square");
+        getPaths(piecesValCur[y + 2][x + 2], x, y, nextTurn(turn));
+        // printPaths(x, y);
+        for (int i = 0; i < pathCount; i++)
+        {
+           if (((pathVal[i] == BLACK_KING) && (turn == BLACK)) || ((pathVal[i] == WHITE_KING) && (turn == WHITE)))
+           {
+              
+              if (turn == BLACK)
+              {
+                Serial.println("Black King in Check");
+               
+              }
+              else 
+              {
+                Serial.println("White King in Check");
+                
+              }
+              myDebug(pathX[i], pathY[i], namePiece(pathX[i], pathY[i]));
+              // Save the position of the king in check
+              xKingCheck = pathX[i]; yKingCheck = pathY[i];
+              // Save the position of the attacking piece
+              myDebug(x, y, "Attacking piece");
+              xAttackPos = x; yAttackPos = y;
+              pathToKingInCheck(xKingCheck, yKingCheck, xAttackPos, yAttackPos);
+//              colorSquare(xAttackPos, yAttackPos, colors[VIOLET], true);
+//              colorSquare(xKingCheck, yKingCheck, colors[VIOLET], true);
+              pathCount = 0;
+              return true;
+           }
+        }
+        pathCount = 0;
+      }
+    }
+  }
+  return false;
+}
+
+// ***************************************************************************************************************************
+// are we in checkmate ? return true if in checkmate
+bool checkMate(int turn)
+{
+  // Function kingInCheck has stored king position in xKingCheck, yKingCheck, and also stored 
+  // xAttackPos and yAttackPos of attacking piece.
+  // pathToKingInCheck(xKingCheck, yKingCheck, xAttackPos, yAttackPos) stores the path between
+  // the two in int variables xPathtoKing[6], yPathtoKing[6], and pathtoKingCount
+
+  // can the king move to get out of check
+  // get the paths for the king which is in check
+  getPaths(piecesValCur[yKingCheck + 2][xKingCheck + 2], xKingCheck, yKingCheck, turn);
+  printPaths(xKingCheck, yKingCheck);
+  // pathtoKingCount needs to be zeroed before returning this function
+  for (int i = 0; i < pathCount; i++)        // paths king can move to
+  {
+    for (int j = 0; j < pathtoKingCount; j++)  // attack path to king
+    {
+      if (!((pathX[i] == xPathtoKing[j]) && (pathY[i] == yPathtoKing[j])))
+      {
+        // There is a square the king can move to that is not on the path
+        // from the attacking piece to the king, but will king move into check from another piece?
+        myDebug(pathX[i], pathY[i], "Path king can move to");
+        if (squareInOpponentPath(pathX[i], pathY[i], turn))
+        {
+          // this square will have king in check if king moves there 
+          continue;
+        }
+        else
+        {
+          // square is open - no checkmate
+         
+          pathtoKingCount = 0;
+          pathCount = 0;
+          return false;
+        }
+      }
+    }
+  }
+
+  // now we check to see if we can move a piece to block attacking piece
+
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (((turn == BLACK) && (piecesValCur[y + 2][x + 2] >= BLACK_PAWN) && (piecesValCur[y + 2][x + 2] <= BLACK_QUEEN)) ||
+          ((turn == WHITE) && (piecesValCur[y + 2][x + 2] >= WHITE_PAWN) && (piecesValCur[y + 2][x + 2] <= WHITE_QUEEN)))
+      {
+        pathCount = 0;
+        getPaths(piecesValCur[y + 2][x + 2], x, y, turn);
+        // printPaths(x, y);
+        for (int i = 0; i < pathCount; i++)
+        {
+          for (int j = 0; j < pathtoKingCount; j++)
+          {
+            if (((pathX[i] == xPathtoKing[j]) && (pathY[i] == yPathtoKing[j])) ||   // piece can move to attacking path
+                ((pathX[i] == xAttackPos) && (pathY[i] == yAttackPos)))             // or can capture the attacking piece
+            {
+              // we can block attacking piece
+              myDebug(pathX[i], pathY[i], "Blocking piece for king");
+              pathtoKingCount = 0;
+              pathCount = 0;
+              return false;
+            }
+          }
+        }
+      }
+    }
+  }
+  pathtoKingCount = 0;
+  // if we get here, checkmate
+  Serial.println("    CHECKMATE!      ");
+  return true;
+}
+
+// ***************************************************************************************************************************
+// if king moves to this path will it be in check, ie. moves into path of opponent
+bool squareInOpponentPath(int xx, int yy, int turn)
+{
+  for (int y = 0; y < 8; y++)
+  {
+    for (int x = 0; x < 8; x++)
+    {
+      if (((turn == WHITE) && (piecesValCur[y + 2][x + 2] >= BLACK_PAWN) && (piecesValCur[y + 2][x + 2] <= BLACK_QUEEN)) ||
+          ((turn == BLACK) && (piecesValCur[y + 2][x + 2] >= WHITE_PAWN) && (piecesValCur[y + 2][x + 2] <= WHITE_QUEEN)))
+      {
+        getPaths(piecesValCur[y + 2][x + 2], x, y, nextTurn(turn));
+        for (int i = 0; i < pathCount; i++)
+        {
+          if ((pathX[i] == xx) && (pathY[i] == yy))
+          {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+// ***************************************************************************************************************************
+// get path from king to attacking piece
+void pathToKingInCheck(int xKingCheck, int yKingCheck, int xAttackPos, int yAttackPos)
+{
+  int xPath, yPath, xMove, yMove, count = 0;
+  switch(piecesValCur[yAttackPos + 2][xAttackPos + 2])
+  {
+    // make sure it's the right find of piece to create a path to king
+    case BLACK_BISHOP: break;
+    case BLACK_ROOK:   break;
+    case BLACK_QUEEN:  break;
+    case WHITE_BISHOP: break;
+    case WHITE_ROOK:   break;
+    case WHITE_QUEEN:  break;
+    default:  pathtoKingCount = 0;
+              return;
+              break;
+  }
+  if (xKingCheck == xAttackPos)
+  {
+    xMove = 0;
+  }
+  else if (xKingCheck < xAttackPos)
+  {
+    xMove = 1;
+  }
+  else
+  {
+    xMove = -1;
+  }
+
+  if (yKingCheck == yAttackPos)
+  {
+    yMove = 0;
+  }
+  else if (yKingCheck < yAttackPos)
+  {
+    yMove = 1;
+  }
+  else
+  {
+    yMove = -1;
+  }
+  
+  xPath = xKingCheck + xMove;
+  yPath = yKingCheck + yMove;
+  while ((xPath != xAttackPos) && (yPath != yAttackPos))
+  {
+    xPathtoKing[count] = xPath;
+    yPathtoKing[count] = yPath;
+    myDebug(xPathtoKing[count], yPathtoKing[count], "Along the path to King");
+    count++;
+    xPath += xMove;
+    yPath += yMove;
+  }
+  pathtoKingCount = count;
+}
+
+// *************************************************************************************************************************
+// follow a single path to its end
+void getSinglePathinPaths(int xx, int yy, int xdir, int ydir, int &count, int turn)
+{
+  // This function starts with the xx, yy position of a square and xdir and ydir directions to add to the square's
+  // position with every loop. The loop continues as long as the squares are EMPTY. When it hits a square occupied
+  // it checks to be sure it is an opponent's piece and then will add this to the path.
+  xx = xx + xdir;
+  yy = yy + ydir;
+  while (piecesValCur[yy][xx] == EMPTY)
+  {
+    pathY[count] = yy - 2; pathX[count] = xx - 2; pathVal[count] = piecesValCur[yy][xx];
+    count++;
+    xx = xx + xdir;
+    yy = yy + ydir;
+  }
+  if (((turn == WHITE) && (piecesValCur[yy][xx] >= BLACK_PAWN) && (piecesValCur[yy][xx] <= BLACK_KING)) ||
+      ((turn == BLACK) && (piecesValCur[yy][xx] >= WHITE_PAWN) && (piecesValCur[yy][xx] <= WHITE_KING)))
+  {
+    pathY[count] = yy - 2; pathX[count] = xx - 2; pathVal[count] = piecesValCur[yy][xx]; count++;
+  }
+}
+
+// *************************************************************************************************************************
+// get the legal positions a piece can move to
+int getPaths(byte val, int x, int y, int turn)
+{
+  // This function starts with a position, and the piece (val) in that position, and gets the legal paths (the squares 
+  // where that piece can legally move) for that piece. The path is stored in arrays  pathX[30], pathY[30], pathVal[30], 
+  // and pathCount contains number of squares stored in the arrays. Two different methods are used. For the pawns, knights 
+  // and kings a brute force method, where the legal moves are stored in arrays, or scanned in the case of the king. For the 
+  // bishops, rooks and queens we use the function getSinglePathinPaths() to follow each line of squares where the piece can 
+  // legally move. For the bishops, rooks and queens, each legal direction is placed in the calls to getSinglePathinPaths().
+  
+  int xx, yy;
+  // Pawn ************************************************************************************ Pawn Pawn Pawn Pawn Pawn 
+  if ((val == BLACK_PAWN) || (val == WHITE_PAWN))
+  {
+    // First 2 are straight ahead moves
+    int wPawnX[4] = { 0, 0,-1, 1};
+    int wPawnY[4] = {-1,-2,-1,-1};
+    int bPawnX[4] = { 0, 0,-1, 1};
+    int bPawnY[4] = { 1, 2, 1, 1};
+    
+    for (int i = 0; i < 4; i++)
+    {
+      if (i == 1) continue;           // The test for the second square is in the i = 0 block
+      if (i == 0)
+      {
+        if (((turn == WHITE) && (piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]] == EMPTY)) ||
+            ((turn == BLACK) && (piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]] == EMPTY)))
+        {
+          if (turn == WHITE)
+          {
+            pathY[pathCount] = y + wPawnY[i]; pathX[pathCount] = x + wPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]]; pathCount++;
+          }
+          else
+          {
+            pathY[pathCount] = y + bPawnY[i]; pathX[pathCount] = x + bPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]]; pathCount++;
+          }
+          if (((piecesValCur[y + 2 + wPawnY[i + 1]][x + 2 + wPawnX[i + 1]] == EMPTY) && (y == 6)) ||    // pawn in rank 2, starting position
+              ((piecesValCur[y + 2 + bPawnY[i + 1]][x + 2 + bPawnX[i + 1]] == EMPTY) && (y == 1)))      // pawn in rank 7, starting position
+          {
+              if (turn == WHITE)
+              {
+                pathY[pathCount] = y + wPawnY[i + 1]; pathX[pathCount] = x + wPawnX[i + 1]; pathVal[pathCount] = piecesValCur[y + 2 + wPawnY[i + 1]][x + 2 + wPawnX[i + 1]]; pathCount++;
+              }
+              else
+              {
+                pathY[pathCount] = y + bPawnY[i + 1]; pathX[pathCount] = x + bPawnX[i + 1]; pathVal[pathCount] = piecesValCur[y + 2 + bPawnY[i + 1]][x + 2 + bPawnX[i + 1]]; pathCount++;
+              }
+          }
+        }
+      }
+      else // i = 2 or 3, can pawn take a piece ?
+      {
+        if (((turn == WHITE) && (piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]] >= BLACK_PAWN) && (piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]] <= BLACK_KING)) ||
+            ((turn == BLACK) && (piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]] >= WHITE_PAWN)))
+        {
+          if (turn == WHITE)
+          {
+            pathY[pathCount] = y + wPawnY[i]; pathX[pathCount] = x + wPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + wPawnY[i]][x + 2 + wPawnX[i]]; pathCount++;
+          }
+          else
+          {
+            pathY[pathCount] = y + bPawnY[i]; pathX[pathCount] = x + bPawnX[i]; pathVal[pathCount] = piecesValCur[y + 2 + bPawnY[i]][x + 2 + bPawnX[i]]; pathCount++;
+          }
+        }
+      }
+    }
+  }
+
+  // Knight *************************************************************************** Knight Knight Knight Knight 
+  if ((val == BLACK_KNIGHT) || (val == WHITE_KNIGHT))
+  {
+    // x and y are the starting positions
+    int i[8] = {1, 2, -1, -2, -1, -2, 1, 2};
+    int j[8] = {2, 1, -2, -1,  2,  1,-2,-1};
+    // myDebug(x, y, "  x and y coming in");
+    // Check all eight possible moves
+    for (int k = 0; k < 8; k++)
+    {
+      xx = x + 2 + i[k]; yy = y + 2 + j[k];
+      if (((turn == WHITE) && (piecesValCur[yy][xx] >= BLACK_PAWN) && (piecesValCur[yy][xx] <= BLACK_KING)) ||
+          ((turn == BLACK) && (piecesValCur[yy][xx] >= WHITE_PAWN) && (piecesValCur[yy][xx] <= WHITE_KING)) ||
+           (piecesValCur[yy][xx] == EMPTY))
+      {
+        pathY[pathCount] = yy - 2; pathX[pathCount] = xx - 2; pathVal[pathCount] = piecesValCur[yy][xx]; pathCount++;
+      }
+    }
+  }
+
+  // Bishop *************************************************************************** Bishop Bishop Bishop Bishop 
+  if ((val == BLACK_BISHOP) || (val == WHITE_BISHOP))
+  {
+    getSinglePathinPaths(x + 2, y + 2, 1, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 1, pathCount, turn);
+  }
+
+  // Rook ******************************************************************************* Rook Rook Rook Rook Rook 
+  if ((val == BLACK_ROOK) || (val == WHITE_ROOK))
+  {
+    getSinglePathinPaths(x + 2, y + 2, 1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0,-1, pathCount, turn);
+  }
+
+  // Queen ******************************************************************************* Queen Queen Queen Queen 
+  if ((val == BLACK_QUEEN) || (val == WHITE_QUEEN))
+  {
+    // x and y are the starting positions
+    getSinglePathinPaths(x + 2, y + 2, 1, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 1,-1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2,-1, 0, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0, 1, pathCount, turn);
+    getSinglePathinPaths(x + 2, y + 2, 0,-1, pathCount, turn);
+  }
+
+  // King ********************************************************************************* King King King King King 
+  if ((val == BLACK_KING) || (val == WHITE_KING))
+  {
+    //myDebug(x, y, "  x and y coming in");
+    for (int i = -1; i < 2; i++)
+    {
+       xx = x + 2 + i;
+      for (int j = -1; j < 2; j++)
+      {
+        yy = y + 2 + j;
+        if (!((i == 0) && (j == 0)))
+        {
+         // myDebug(xx - 2, yy - 2, "Square for King path");
+          if (((turn == WHITE) && (piecesValCur[yy][xx] >= BLACK_PAWN) && (piecesValCur[yy][xx] <= BLACK_KING)) ||
+              ((turn == BLACK) && (piecesValCur[yy][xx] >= WHITE_PAWN) && (piecesValCur[yy][xx] <= WHITE_KING)) ||
+               (piecesValCur[yy][xx] == EMPTY))
+          {
+            pathY[pathCount] = yy - 2; pathX[pathCount] = xx - 2; pathVal[pathCount] = piecesValCur[yy][xx]; pathCount++;
+          }
+        }
+      }
+    }
+  }
+  return pathCount;
+}
+
+// ************************************************************************************************************************
+// return the traditional rank and file notation denoting the position of a square, so position 3,4 equals d5
+// this is used for output to the LCD display
+String rankFile(int x, int y)
+{
+  // this turns an x,y position into standard chess rank file notation and returns a string
+  // x = columns, files, a in LL, a b c d e f g h
+  // y = rows, ranks, 1 in LL, 1 2 3 4 5 6 7 8 
+  String message = files[x] + ranks[y];
+  return message;
+}
+
+//***************************************************************************************************************************
+//search for index of a given string value in a string array
+int searchIndex(String arr[], String val)
+{
+  int index = 0;
+  while(index < 8 && !arr[index].equals(val))
+  {
+    ++index;
+  }
+
+  return index;
+}
