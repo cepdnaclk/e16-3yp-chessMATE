@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+// for Serial Bluetooth
+#include "BluetoothSerial.h" 
+
 void setup() {
   // put your setup code here, to run once:
 }
