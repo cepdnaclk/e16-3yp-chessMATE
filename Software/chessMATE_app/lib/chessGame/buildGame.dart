@@ -250,12 +250,16 @@ class _PlayGameState extends State<PlayGame> {
             builder: (BuildContext context) =>
             new ResultsBody(winner: winner,loser: loser,draw: false)
             ));
+
+          game.send("game_won", winner);
         },
         onDraw: () {
           Navigator.push(context, new MaterialPageRoute(
             builder: (BuildContext context) =>
             new ResultsBody(winner: returnBlackName(),loser: returnWhiteName(),draw: true)
             ));
+          
+          game.send("game_draw", "");
         },
         chessBoardController: controller,
       ),

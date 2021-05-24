@@ -1,5 +1,8 @@
 import 'package:chessMATE_app/learn_chess/opening_page.dart';
 import 'package:chessMATE_app/learn_chess/piece_list.dart';
+import 'package:chessMATE_app/screens/change_community.dart';
+import 'package:chessMATE_app/screens/community_screen.dart';
+import 'package:chessMATE_app/screens/create_community.dart';
 import 'package:chessMATE_app/screens/game_data_screen.dart';
 import 'package:chessMATE_app/screens/learn_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +41,9 @@ class MyApp extends StatelessWidget {
         PiecesPage.id: (context) => PiecesPage(),
         OpeningsPage.id: (context) => OpeningsPage(),
         GameDataScreen.id : (context) => GameDataScreen(),
+        CommunityScreen.id : (context) => CommunityScreen(),
+        ChangeCommunity.id : (context) => ChangeCommunity(),
+        CreateCommunityScreen.id : (context) => CreateCommunityScreen(),
       },
     );
   }
