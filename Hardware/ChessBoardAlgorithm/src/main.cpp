@@ -749,6 +749,69 @@ int scanBoardStart(byte piecesTemp[][8])
     return count; 
 }
 
+//*************************************************************************************************************************
+// scan the board except at begining
+int scanBoard(byte piecesTemp[][8], byte piece_color)
+{
+  if(turn == opp_piece_color)
+  {
+    // decode and display only when data is present
+      if (moveNotation != "" && moveStart != "" && moveEnd != ""){
+        // decode the movedata and display on the panel
+        decodeMove(moveNotation, moveEnd, moveStart);
+        displayPanel();
+      }
+  }
+  if(Serial.available()>0)
+  {
+    // get the chess notations as strings
+    String y1 = Serial.readStringUntil(';');
+    String x1 = Serial.readStringUntil(';');
+    String ch = Serial.readStringUntil('\n');
+    Serial.println();
+    Serial.println("file : "+y1);
+    Serial.println("rank : "+x1);
+    Serial.println("action : "+ch);
+    
+    // find the coordinates in the matrix corresponding to the chess notations
+    int x = searchIndex(files, y1); //column
+    int y = searchIndex(ranks, x1); //row
+
+    fileInt = x;
+    rankInt = y;
+
+    Serial.print("Matrix Coordinates : ( ");
+    Serial.print(y);
+    Serial.print(" , ");
+    Serial.print(x);
+    Serial.print(" ) ");
+    Serial.println();
+
+    if(ch.equals("remove"))
+    {
+      scanPieces1[y][x] = 0;    
+    }
+    else if(ch.equals("return"))
+    {
+      scanPieces1[y][x] = 1;
+      endPos = y1 + x1;
+    }    
+  }
+    int count = 0;
+    for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        piecesTemp[y][x] = scanPieces1[y][x];
+        if (scanPieces1[y][x] == 0x01)
+        {
+          count++;        
+        }
+      }
+    }
+    return count;   
+}
+
 // *************************************************************************************************************************
 // compare piece arrays
 bool comparePieceArrays(int &xx, int &yy, byte piecesCurrent[][8], byte piecesTemp1[][8])
