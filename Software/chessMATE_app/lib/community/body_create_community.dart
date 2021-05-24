@@ -57,116 +57,111 @@ class _CreateCommunityBodyState extends State<CreateCommunityBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return WillPopScope(
-          onWillPop: () async {
-             return true;
-          },
-          child: Container(
+    return Container(
         child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  "assets/logo.png",
-                  height: size.height * 0.2,
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                Text("CREATE A NEW COMMUNITY", 
-                style: TextStyle(
-                  color: Colors.white, 
-                  fontSize: 25, 
-                  fontFamily: "Acme", 
-                  fontWeight: FontWeight.bold
-                ), 
-                ),
-                SizedBox(
-                  height: size.height * 0.04,
-                ),
-                Text("Enter A Name for Community",
-                style: TextStyle(
-                  color: Colors.blue[200], 
-                  fontSize: 20, 
-                  fontFamily: "Acme", 
-                ), 
-                ),
-                Text(
-                  error,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    fontFamily: "Acme",
-                    letterSpacing: 5,
-                    color: Colors.red,
-                  ),
-                ),
-                RoudedInputField(
-                  hintText: "Community Name",
-                  onChanged: (value) {
-                    _communityName = value;
-                  },
-                  icon: Icons.group,
-                ),
-                Text("Community name can have maximum 15 characters",
-                style: TextStyle(
-                  color: Colors.white, 
-                  fontSize: 15, 
-                  fontFamily: "Acme", 
-                ), 
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                RoundedButton(
-                  text: "CREATE",
-                  press: (){
-                    int valid = _validateCommunityName(_communityName);
-                    if (valid == 0)
-                              {
-                                dataCreateCom = [_communityName, get_Community()];
-                                game.send('create_community', dataCreateCom.join(':'));
-                              }
-                            else
-                              {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: new Text(
-                                          messages[valid-1],
+    child: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset(
+            "assets/logo.png",
+            height: size.height * 0.2,
+          ),
+          SizedBox(
+            height: size.height * 0.02,
+          ),
+          Text("CREATE A NEW COMMUNITY", 
+          style: TextStyle(
+            color: Colors.white, 
+            fontSize: 25, 
+            fontFamily: "Acme", 
+            fontWeight: FontWeight.bold
+          ), 
+          ),
+          SizedBox(
+            height: size.height * 0.04,
+          ),
+          Text("Enter A Name for Community",
+          style: TextStyle(
+            color: Colors.blue[200], 
+            fontSize: 20, 
+            fontFamily: "Acme", 
+          ), 
+          ),
+          Text(
+            error,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              fontFamily: "Acme",
+              letterSpacing: 5,
+              color: Colors.red,
+            ),
+          ),
+          RoudedInputField(
+            hintText: "Community Name",
+            onChanged: (value) {
+              _communityName = value;
+            },
+            icon: Icons.group,
+          ),
+          Text("Community name can have maximum 15 characters",
+          style: TextStyle(
+            color: Colors.white, 
+            fontSize: 15, 
+            fontFamily: "Acme", 
+          ), 
+          ),
+          SizedBox(
+            height: size.height * 0.03,
+          ),
+          RoundedButton(
+            text: "CREATE",
+            press: (){
+              int valid = _validateCommunityName(_communityName);
+              if (valid == 0)
+                        {
+                          dataCreateCom = [_communityName, get_Community()];
+                          game.send('create_community', dataCreateCom.join(':'));
+                        }
+                      else
+                        {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: new Text(
+                                    messages[valid-1],
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Acme'
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.lightBlue[900],
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: new Text(
+                                          "ok",
                                           style: TextStyle(
                                             color: Colors.white,
+                                            fontSize: 20,
                                             fontFamily: 'Acme'
                                           ),
-                                        ),
-                                        backgroundColor: Colors.lightBlue[900],
-                                        actions: <Widget>[
-                                          new FlatButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: new Text(
-                                                "ok",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                  fontFamily: 'Acme'
-                                                ),
-                                              ))
-                                        ],
-                                      );
-                                    });
-                              }
-                  },
-                )
-              ],
-            ),
-          ) ,
-          ),
+                                        ))
+                                  ],
+                                );
+                              });
+                        }
+            },
+          )
+        ],
       ),
-    );
+    ) ,
+    ),
+      );
   }
 
   int _validateCommunityName( String name) {

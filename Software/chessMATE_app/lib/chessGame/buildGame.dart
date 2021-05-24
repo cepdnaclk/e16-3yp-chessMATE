@@ -35,7 +35,6 @@ class _PlayGameState extends State<PlayGame> {
   static ChessBoardController controller;
   static List<String> gameHistory = [];
   bool isMyMove;
-  List data = [];
 
   // will call this method exactly once for each [State] object it creates.
   @override
@@ -252,8 +251,7 @@ class _PlayGameState extends State<PlayGame> {
             new ResultsBody(winner: winner,loser: loser,draw: false)
             ));
 
-          data = [winner, loser];
-          game.send("game_won", data.join(':'));
+          game.send("game_won", winner);
         },
         onDraw: () {
           Navigator.push(context, new MaterialPageRoute(

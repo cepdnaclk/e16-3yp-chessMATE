@@ -612,15 +612,50 @@ wsServer.on('request', function(request) {
                     break;
 
                 case 'game_won':
-                    winner = message.data.split(":")[0];
-                    looser = message.data.split(":")[1];
-
                     // find match id and notify the all viewrs
+
+                    // there ara two possible game ids
+                    id_1 = (player.id).concat(";").concat( Players[player.opponentIndex].id);
+                    id_2 = (Players[player.opponentIndex].id).concat(";").concat(player.id);
+                    
+                    // find the match id
+                    Matches.forEach(function (match){
+                        if(match.id == id_1 || match.id == id_2){
+                            match.viewList.forEach(function(viewer){
+                                // find the players in the viewList of match
+                                Players.forEach(function(p){
+                                    if(p.id == viewer){
+                                        // send moves to the viewers
+                                        p.connection.sendUTF(JSON.stringify({'action':'game_won', 'data': message.data}));
+                                    }
+                                });    
+                            });
+                        }
+                    });
 
                     break;
 
                 case 'game_draw':
                     // find the match id and notify all the viewrs of that match
+
+                    // there ara two possible game ids
+                    id_1 = (player.id).concat(";").concat( Players[player.opponentIndex].id);
+                    id_2 = (Players[player.opponentIndex].id).concat(";").concat(player.id);
+                    
+                    // find the match id
+                    Matches.forEach(function (match){
+                        if(match.id == id_1 || match.id == id_2){
+                            match.viewList.forEach(function(viewer){
+                                // find the players in the viewList of match
+                                Players.forEach(function(p){
+                                    if(p.id == viewer){
+                                        // send moves to the viewers
+                                        p.connection.sendUTF(JSON.stringify({'action':'game_draw', 'data': " "}));
+                                    }
+                                });    
+                            });
+                        }
+                    });
 
                     break;
 
