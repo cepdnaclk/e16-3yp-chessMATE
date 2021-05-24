@@ -330,5 +330,114 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  Serial.println("Current position matrix ");
+  for (int y = 0; y < 8; y++)
+    {
+      for (int x = 0; x < 8; x++)
+      {
+        Serial.print(piecesCurrent[y][x]);
+
+        Serial.print("  ");
+      }
+      Serial.println();
+    }
+    Serial.println();
+    Serial.println();
+
+    if(turn == WHITE)
+    {
+      Serial.println("--------------------- Turn : WHITE ---------------------");
+    }
+    else if(turn == BLACK)
+    {
+      Serial.println("--------------------- Turn : BLACK ---------------------");
+    }
+    Serial.println();
+    delay(1000);
+    
+
+  if(turn == opp_piece_color)
+  {
+    //receive opponent's move through bluetooth
+    while(!ESP_BT.available())
+    {
+      ESP_BT.println("Enter opponent's move - notation;start;end;op");
+      ESP_BT.println("Ex -: Nf6;g8;ef6;op");
+      ESP_BT.println();
+      delay(1000);
+    }
+
+    // Reset all the register pins and clear the cell inorder to procede with new movement
+    clearRegisters();
+    writeRegisters();
+    clearCells();
+    
+    // reads BT message --> format : moveNotation;moveStart;moveEnd
+    moveNotation = ESP_BT.readStringUntil(';');
+    moveStart = ESP_BT.readStringUntil(';');
+    moveEnd = ESP_BT.readStringUntil(';');
+    String op = ESP_BT.readStringUntil('\n');
+
+    Serial.println();
+
+    String notation = moveNotation;
+    start_notation = moveStart;
+    end_notation = moveEnd;
+
+    Serial.print("Do the opponent's move : ");
+
+    Serial.print(start_notation);
+    start_nt_file = searchIndex(files, start_notation.substring(0,1));
+    start_nt_rank = searchIndex(ranks, start_notation.substring(1));
+
+    Serial.print(" -> ");
+
+    Serial.print(end_notation);
+    end_nt_file = searchIndex(files, end_notation.substring(0,1));
+    end_nt_rank = searchIndex(ranks, end_notation.substring(1));
+
+    Serial.println();
+    
+  } 
+
+  mainloop(turn); 
+  flag = true;
+
+  if (kingInCheck(turn)) 
+  {
+    // if player moved a piece so their king is in check, retrieve previous values and throw and error
+    store_retrieveHist(RETRIEVE, piecesValCur, piecesValHist, piecesCurrent, piecesHist, bdCount, bdCountHist);
+    showError(piecesCurrent, piecesError,turn);                        // moved into check
+    flag = false;
+  }
+
+  if (flag)                                  // King not in check, so next turn
+  {
+    if (turn == WHITE)                      
+    {
+      turn = BLACK;
+    }
+    else
+    {
+      turn = WHITE;
+    }
+    if (kingInCheck(turn))                   // This test for king in check reveals a move placing oponents king in check
+    {
+      // Check now for checkmate
+      if (checkMate(turn))
+      {
+        Serial.println("checkmate");
+        while(true) {}                      // loop forever
+      }
+    }
+  }
+  Serial.println();
+  Serial.println("Move done : "+ startPos + " -> " + endPos);
+
+  //send my move to app through bluetooth
+  if(turn != my_piece_color)
+  {
+     ESP_BT.println("Move done : "+startPos+";"+endPos);
+  }
+
 }
