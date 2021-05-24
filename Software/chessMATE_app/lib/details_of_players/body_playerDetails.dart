@@ -215,7 +215,7 @@ class _PlayerDataBodyState extends State<PlayerDataBody> {
 
   _onStartGame(String opponentName,String opponentId, String stream){
     // We need to send the opponentId to initiate a new game
-    game.send('new_game', "$opponentId;$stream");
+    game.send('new_game', "$opponentId;$opponentName;$stream");
 	
     Navigator.push(context, new MaterialPageRoute(
       builder: (BuildContext context) 

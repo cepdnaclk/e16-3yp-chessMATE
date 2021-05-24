@@ -20,6 +20,8 @@ class GameDataBody extends StatefulWidget {
 
 class _GameDataBodyState extends State<GameDataBody> {
   List<dynamic> gamesList = <dynamic>[];
+  String white;
+  String black;
 
   @override
   void initState() {
@@ -49,6 +51,18 @@ class _GameDataBodyState extends State<GameDataBody> {
         setState(() {});
         break;
 
+      case 'view_confirmed':
+        if(message["data"]){
+          Navigator.push(context,new MaterialPageRoute(
+            builder: (BuildContext context) => 
+            new ViewGameBody(
+            name : "WHITE:$white  BLACK:$black ",
+            ),
+          )
+          );
+        }
+        break;
+
     }
   
   }
@@ -60,7 +74,9 @@ class _GameDataBodyState extends State<GameDataBody> {
         splashColor: Colors.red,
         onTap: () {
           // go to view the game
-          _onViewGame(gameFromList.gameid, gameFromList.white_player, gameFromList.black_player); 
+          game.send('request_to_view',gameFromList.gameid );
+          white = gameFromList.white_player;
+          black = gameFromList.black_player;
          },
         child: Card(
           elevation: 20,
@@ -97,19 +113,6 @@ class _GameDataBodyState extends State<GameDataBody> {
       ),
     );
   }
-
-// ignore: non_constant_identifier_names
-_onViewGame(String game_id, String white, String black){
-
-  game.send('request_to_view', game_id);
-  Navigator.push(context,new MaterialPageRoute(
-    builder: (BuildContext context) => 
-    new ViewGameBody(
-      name : "WHITE:$white  BLACK:$black ",
-    ),
-  )
-);
-}
 
   @override
   Widget build(BuildContext context) {
