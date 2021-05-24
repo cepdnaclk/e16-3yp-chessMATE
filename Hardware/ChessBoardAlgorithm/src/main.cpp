@@ -183,6 +183,47 @@ int fileInt, rankInt;                                       // to store position
 int start_nt_file, start_nt_rank, end_nt_file, end_nt_rank; // store the splitted opponent move notation received
 bool loopEnd;                                               // mark the end of mainloop() function
 
+// Define Pin Numbers for the Esp32 Dev Board
+// connections to shift Registers of LedPanel
+int dataPin = 2;    // Pin connected to SER
+int latchPin = 4;   // Pin connected to RCLK
+int clockPin = 5;   // Pin connected to SRCLK
+
+// Pushbuttons to select WHITE or Black
+unsigned char whButton = 18, blButton = 19;
+
+// Arrays to hold values to be send to shift registers
+int anode_values[8];
+int red_values[8];
+int green_values[8];
+int blue_values[8];
+
+// Final array to send the shift registers with correct order
+int register_values[32];
+
+// Details of the movement to be displayed (should recieve via bluetooth)
+String moveNotation, moveEnd, moveStart;
+
+// Details should extract from the movement details
+int startRow, startCol;
+int endRow, endCol;
+
+// variable for multiplexing
+int col_position = 0;
+
+// cells to be lightup in the matrix
+// 1 - start square (Red), 2 - end square (green), 3 - Path of the movement (blue) 
+int cells[8][8] = {
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0}
+};
+
 void setup() {
   // put your setup code here, to run once:
 }
