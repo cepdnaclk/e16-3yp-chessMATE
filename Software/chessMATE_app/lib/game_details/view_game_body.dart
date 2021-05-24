@@ -4,6 +4,7 @@ import 'package:chessMATE_app/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:chessMATE_app/backEnd_conn/game_communication.dart';
+import 'display_winner.dart';
 
 class ViewGameBody extends StatefulWidget {
   ViewGameBody({
@@ -62,6 +63,28 @@ class _ViewGameBodyState extends State<ViewGameBody> {
         // Force rebuild
         setState(() {});
         break;
+
+        case 'game_won':
+          Navigator.of(context).pop(true);
+          Navigator.push(context,new MaterialPageRoute(
+            builder: (BuildContext context) => 
+            new DisplayWinner(
+            name : message["data"],
+            ),
+          )
+          );
+          break;
+
+        case 'game_draw':
+          Navigator.of(context).pop(true);
+          Navigator.push(context,new MaterialPageRoute(
+            builder: (BuildContext context) => 
+            new DisplayWinner(
+            name : " ",
+            ),
+          )
+          );
+          break;
     }
   }
 
