@@ -259,7 +259,74 @@ String rankFile(int x, int y);
 int searchIndex(String arr[], String val);
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(115200);  // Set the baud rate to 115200
+
+  ESP_BT.begin("chessMATE"); // Bluetooth device name
+  Serial.println("The device started, now you can pair it with bluetooth!");
+  delay(1000);
+  Serial.println();
+
+  // LedPanel
+  pinMode(dataPin, OUTPUT);
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
+
+  pinMode(whButton, INPUT);
+  pinMode(blButton, INPUT);
+
+  // Reset all the register pins
+  clearRegisters();
+  writeRegisters();
+
+  moveNotation = "";
+  moveEnd = "";
+  moveStart = "";
+
+  //check for pushbutton press
+  bool whButState = digitalRead(whButton), blButState = digitalRead(blButton);
+
+  delay(2000);
+  Serial.println("Choose your turn!!!");
+  Serial.println();
+
+  while((whButState == LOW) && (blButState == LOW))
+  {
+    whButState = digitalRead(whButton);
+    blButState = digitalRead(blButton);
+
+  }
+
+  if(whButState == HIGH)
+  {
+    my_piece_color = WHITE;
+    opp_piece_color = BLACK;
+    Serial.println("My Piece color : WHITE");
+  }
+  else if(blButState == HIGH)
+  {
+    my_piece_color = BLACK;
+    opp_piece_color = WHITE;
+    Serial.println("My Piece color : BLACK");
+  }
+
+  Serial.println(" White moves first");
+  delay(1000);
+
+  // check to make sure all chess pieces are in starting positions
+  do   
+   {
+     c = scanBoardStart(piecesTemp1);         // read the Hall Effect sensors
+     Serial.print(" Pieces count : ");
+     Serial.println(c);
+     Serial.println();
+     same = comparePieceArraysStart();
+     printPiecesLoc(piecesTemp1);
+   }while ((c != bdCount)|| !same );  // wait until all pieces in correct places 
+   
+  Serial.println("Lets Begin!!!!!");
+  Serial.println();
+  Serial.println("****************************************************************************");
+  Serial.println();
 }
 
 void loop() {
