@@ -26,6 +26,7 @@
     - [Mobile App Testing](#mobile-app-testing)
     - [Server & Database Testing](#server-and-database-testing)
   - [Embedded System Testing](#embedded-system-tests)
+  - [Algorithm Testing](#Algorithm-Testing)
   - [Budget of the Product](#budget-of-the-product)
   - [Advising Lecturers](#advising-lecturers)
   - [Links](#links)
@@ -179,6 +180,14 @@ When a player log into the platform his login information will be checked in the
   - *How was the test done?*
   
     ![LED panel test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/LED_Panel_Test.gif)
+    
+- **Algorithm Test**
+  
+  - *Test 01*
+    ![Algorithm_Test_1](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Algorithm-Testing1.gif)
+    
+  - *Test 02*
+    ![Algorithm_Test_2](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Algorithm-Testing2.gif)
 
 ## Budget of the Product
 
