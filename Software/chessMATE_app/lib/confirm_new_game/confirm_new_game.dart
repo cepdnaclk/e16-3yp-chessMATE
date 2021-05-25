@@ -8,9 +8,9 @@ import 'package:flutter/services.dart';
 class ConfirmNewGame extends StatefulWidget {
   ConfirmNewGame({
     Key key,
-    this.opponentName,
-    this.willStream,
+    this.opponentName, 
     this.opponentId,
+    this.willStream,
   }) : super(key: key);
 
   // Name of the opponent
