@@ -188,6 +188,10 @@ When a player log into the platform his login information will be checked in the
     
   - *Test 02*
     ![Algorithm_Test_2](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Algorithm-Testing2.gif)
+    
+- **System Test**
+
+    ![Embedded_System_Test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/EmbeddedSystem_Testing.gif)
 
 ## Budget of the Product
 
