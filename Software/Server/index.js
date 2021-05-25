@@ -274,7 +274,7 @@ wsServer.on('request', function(request) {
                 .connection
                 .sendUTF(JSON.stringify({'action':'new_game', 'data': (player.name).concat(";")
                 .concat(player.id).concat(";").
-                concat(data[1])}));
+                concat(data[2])}));
 
                 // mark the both players as not available
                 player.available = false;
@@ -285,6 +285,7 @@ wsServer.on('request', function(request) {
                 match.ongoing = true;
                 match.community = player.community;
                 if(data[2] == "Yes") match.is_Stream = true;
+                console.log(data[2]);
                 Matches.push(match);
                 break;
 
