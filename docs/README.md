@@ -19,7 +19,7 @@
   - [3D Model of our Product](#3d-model-of-our-product)
   - [User Interfaces for Mobile Application](#user-interfaces-for-mobile-application)
   - [Cloud Architecture](#cloud-architecture)
-  - [Mobile App Demonstrations](#mobile-app-demo)
+  - [Mobile App Demonstrations](#mobile-app-demonstrations)
   - [PCB Designs](#pcb-designs)
   - [Test Summary](#test-summary)
   - [Test Results](#test-results)
@@ -190,24 +190,23 @@ When a player log into the platform his login information will be checked in the
   - *Test 02*
     ![Algorithm_Test_2](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Algorithm-Testing2.gif)
     
-## **System Testing**
-
-   - ![Embedded_System_Test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/EmbeddedSystem_Testing.gif)
+## **System Testing** 
+![Embedded_System_Test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/EmbeddedSystem_Testing.gif)
    
 
 ##  Demonstration
 
   - App vs App Game Demonstration
      
-    ![AppVsApp](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Demonstration_Videos/App_vs_App.mp4)
+    ![AppVsApp](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/App-vs-App.gif)
     
   - Game Streaming Demostraion
  
-    ![GameStream](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Demonstration_Videos/Game_View.mp4)
+    ![GameStream](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Game-View.gif)
   
   - System Demostraion
 
-    ![System_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Demonstration_Videos/System_Demo.mp4)
+    ![System_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Game_View.gif)
    
 
 ## Budget of the Product
