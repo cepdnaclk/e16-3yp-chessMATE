@@ -25,8 +25,9 @@
   - [Test Results](#test-results)
     - [Mobile App Testing](#mobile-app-testing)
     - [Server & Database Testing](#server-and-database-testing)
-  - [Embedded System Testing](#embedded-system-tests)
-  - [Algorithm Testing](#Algorithm-Testing)
+  - [Embedded System Testing](#embedded-system-testing)
+  - [System Test](#system-testing)
+  - [Demonstration](#demonstration)
   - [Budget of the Product](#budget-of-the-product)
   - [Advising Lecturers](#advising-lecturers)
   - [Links](#links)
@@ -189,9 +190,25 @@ When a player log into the platform his login information will be checked in the
   - *Test 02*
     ![Algorithm_Test_2](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Algorithm-Testing2.gif)
     
-- **System Test**
+## **System Testing**
 
-    ![Embedded_System_Test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/EmbeddedSystem_Testing.gif)
+   - ![Embedded_System_Test](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/EmbeddedSystem_Testing.gif)
+   
+
+##  Demonstration
+
+  - App vs App Game Demonstration
+     
+    ![AppVsApp](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Demonstration_Videos/App_vs_App.mp4)
+    
+  - Game Streaming Demostraion
+ 
+    ![GameStream](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Demonstration_Videos/Game_View.mp4)
+  
+  - System Demostraion
+
+    ![System_Demo](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Demonstration_Videos/System_Demo.mp4)
+   
 
 ## Budget of the Product
 
