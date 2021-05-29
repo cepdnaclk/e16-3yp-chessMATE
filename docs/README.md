@@ -204,7 +204,7 @@ When a player log into the platform his login information will be checked in the
  
     ![GameStream](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/Game-View.gif)   
   
-  - System Demostraion
+  - System Demonstration
   
     - *Part 01*
     ![GameStream](https://raw.githubusercontent.com/cepdnaclk/e16-3yp-chessMATE/main/Files/System-Demonstration-part1.gif)
